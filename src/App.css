@@ -1,0 +1,38 @@
+.App {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.Overlay {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 10px;
+    left: 50px;
+    height: max-content;
+    width: max-content;
+    pointer-events: all;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 6px;
+}
+
+.App-logo {
+    height: 40vmin;
+}
+.App-link {
+    color: #09d3ac;
+}
+
+h1 {
+    font-size: 16pt;
+    font-weight: bold;
+}

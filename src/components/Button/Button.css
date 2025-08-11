@@ -1,0 +1,6 @@
+.ShowOverlayButton {
+    pointer-events: all;
+    top: 175px;
+    left: 8px;
+    position: relative;
+}

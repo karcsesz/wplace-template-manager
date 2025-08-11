@@ -1,0 +1,17 @@
+.OverlayList {
+    display: flex;
+    flex-direction: column;
+}
+
+.OverlayList > button {
+    padding: 8px;
+    margin-top: 6px;
+}
+
+.OverlayListEntry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
