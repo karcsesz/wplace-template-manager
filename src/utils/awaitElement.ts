@@ -1,6 +1,6 @@
-import {log} from "./log";
+import { log } from "./log";
 
-export async function awaitElement(selector: string): Promise<Element> {
+export async function awaitElement<T = Element>(selector: string): Promise<T> {
     const MAX_TRIES = 60;
     let tries = 0;
     return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ export async function awaitElement(selector: string): Promise<Element> {
             }
             const elm = probe();
             if (elm) {
-                resolve(elm);
+                resolve(elm as T);
                 return;
             }
 

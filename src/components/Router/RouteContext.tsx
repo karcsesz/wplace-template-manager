@@ -1,10 +1,14 @@
-import React, { createContext, FC, PropsWithChildren, ReactNode, useState } from "react";
+import React, { createContext, FC, PropsWithChildren, ReactNode, useEffect, useState } from "react";
 
 export const RouteContext = createContext<{
     route: ReactNode | null;
-    setRoute: React.Dispatch<React.SetStateAction<ReactNode>>;
+    setRoute: (route: string) => void;
     routeNodes: Map<string, ReactNode>;
-}>({ route: null, setRoute: () => {}, routeNodes: new Map<string, React.ReactNode>() });
+}>({
+    route: null,
+    setRoute: (route: string) => {},
+    routeNodes: new Map<string, React.ReactNode>(),
+});
 
 export const RouteProvider: FC<PropsWithChildren<{ routes: Map<string, ReactNode> }>> = ({
     children,
@@ -12,8 +16,17 @@ export const RouteProvider: FC<PropsWithChildren<{ routes: Map<string, ReactNode
 }) => {
     const [route, setRoute] = useState<ReactNode>(null);
 
+    useEffect(() => {
+        setRoute(routes.get("/"));
+    }, [routes]);
+
+    const setRouteAction = (route: string) => {
+        const routeNode = routes.get(route);
+        setRoute(routeNode);
+    };
+
     return (
-        <RouteContext.Provider value={{ route, setRoute, routeNodes: routes }}>
+        <RouteContext.Provider value={{ route, setRoute: setRouteAction, routeNodes: routes }}>
             {children}
         </RouteContext.Provider>
     );

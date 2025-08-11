@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Button } from "./components/Button/Button";
 import { RouteProvider } from "./components/Router/RouteContext";
 import { Outlet } from "./components/Router/Outlet";
 import { Overview } from "./pages/Overview";
+import { Create } from "./pages/Create";
+import { Import } from "./pages/Import";
 
-const routes = new Map([["/", <Overview />]]);
+const routes = new Map([
+    ["/", <Overview />],
+    ["/create", <Create />],
+    ["/import", <Import />],
+]);
 
 function App() {
-    const [showOverlay, setShowOverlay] = React.useState(false);
+    const [showOverlay, setShowOverlay] = useState(false);
+
     return (
-        <div className="App">
-            <Button onClick={() => setShowOverlay(!showOverlay)} />
-            {showOverlay && (
-                <RouteProvider routes={routes}>
-                    <Outlet />
-                </RouteProvider>
-            )}
-        </div>
+        <RouteProvider routes={routes}>
+            <div className="App">
+                <Button onClick={() => setShowOverlay(!showOverlay)} />
+                {showOverlay && <Outlet />}
+            </div>
+        </RouteProvider>
     );
 }
 

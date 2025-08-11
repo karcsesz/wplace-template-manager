@@ -1,0 +1,25 @@
+.Overlay {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 10px;
+    left: 50px;
+    height: max-content;
+    width: max-content;
+    pointer-events: all;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 6px;
+}
+
+.Overlay > nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.Overlay input[type="number"] {
+    width: 6rem;
+}
