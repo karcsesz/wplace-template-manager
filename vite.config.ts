@@ -1,10 +1,11 @@
 import { PluginOption, defineConfig } from "vite";
 import fs from "node:fs";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig(({ mode }) => {
     console.log("Building in", mode);
     return {
-        plugins: [bundlePlugin],
+        plugins: [bundlePlugin, svgr()],
         base: "./",
         root: "./",
         build: {

@@ -28,6 +28,8 @@ export const Import: FC = () => {
                     )
                 }
             />
+
+            <h1> Import is WIP and doesn't work </h1>
         </Overlay>
     );
 };

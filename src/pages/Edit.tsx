@@ -49,8 +49,57 @@ export const Edit: FC = () => {
             });
     }, [FreeColorMap, PaidColorMap, search, selectedColors]);
 
+    const exportButton = (
+        <button
+            className={"btn btn-sm"}
+            onClick={async () => {
+                const overlay = overlays[currentOverlayIndex];
+                const image = base64ToImage(overlay.image, "image/png");
+                const imageBuffer = await image.arrayBuffer();
+
+                const result = addMetadata(
+                    new Uint8Array(imageBuffer),
+                    "wplace-data",
+                    `${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
+                );
+
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        "image/png": new Blob([new Uint8Array(result)], { type: "image/png" }),
+                    }),
+                ]);
+            }}
+        >
+            Export
+        </button>
+    );
+
+    const deleteButton = (
+        <button
+            className={"btn btn-sm"}
+            onClick={() => {
+                setOverlay([
+                    ...overlays.slice(0, currentOverlayIndex),
+                    ...overlays.slice(currentOverlayIndex + 1),
+                ]);
+                location.reload();
+            }}
+        >
+            Delete
+        </button>
+    );
+
     return (
-        <Overlay headline={"Edit " + name} showBack>
+        <Overlay
+            headline={"Edit " + name}
+            showBack
+            customRenderer={
+                <div>
+                    {exportButton}
+                    {deleteButton}
+                </div>
+            }
+        >
             <label>
                 <input
                     type={"checkbox"}
@@ -85,40 +134,6 @@ export const Edit: FC = () => {
                 }}
             >
                 Save
-            </button>
-            <button
-                className={"btn btn-primary"}
-                onClick={async () => {
-                    const overlay = overlays[currentOverlayIndex];
-                    const image = base64ToImage(overlay.image, "image/png");
-                    const imageBuffer = await image.arrayBuffer();
-
-                    const result = addMetadata(
-                        new Uint8Array(imageBuffer),
-                        "wplace-data",
-                        `${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
-                    );
-
-                    await navigator.clipboard.write([
-                        new ClipboardItem({
-                            "image/png": new Blob([new Uint8Array(result)], { type: "image/png" }),
-                        }),
-                    ]);
-                }}
-            >
-                Export
-            </button>
-            <button
-                className={"btn btn-destructive"}
-                onClick={() => {
-                    setOverlay([
-                        ...overlays.slice(0, currentOverlayIndex),
-                        ...overlays.slice(currentOverlayIndex + 1),
-                    ]);
-                    location.reload();
-                }}
-            >
-                Delete
             </button>
         </Overlay>
     );

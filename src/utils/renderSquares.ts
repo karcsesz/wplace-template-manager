@@ -96,6 +96,10 @@ const createTemplateBitmap = async (
 
     const imageData = ctx.getImageData(0, 0, canvas.height, canvas.width);
 
+    if (!imageData.data) {
+        return createImageBitmap(canvas);
+    }
+
     for (let y = 0; y < canvas.height; y++) {
         for (let x = 0; x < canvas.width; x++) {
             const pixelIndex = (y * canvas.height + x) * 4;

@@ -55,15 +55,18 @@ export const Create: FC = () => {
                     }
                 />
             </div>
-            <input
-                type={"file"}
-                accept={"image/*"}
-                className={"btn btn-sm"}
-                onChange={async (e) => {
-                    setImage(e.target.files![0]);
-                }}
-            />
+            <label className={"FileInput btn btn-sm"}>
+                Template Image:
+                <input
+                    type={"file"}
+                    accept={"image/*"}
+                    onChange={async (e) => {
+                        setImage(e.target.files![0]);
+                    }}
+                />
+            </label>
             <button
+                className={"btn btn-primary"}
                 onClick={() => {
                     imageToBase64(image!).then((base64) =>
                         setOverlay([

@@ -3,7 +3,7 @@ import "./Button.css";
 
 export const Button: FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
-        <div className={"ShowOverlayButton btn btn-sm btn-circle"} onClick={onClick}>
+        <div className={"ShowOverlayButton btn btn-md shadow-md btn-circle"} onClick={onClick}>
             O
         </div>
     );
