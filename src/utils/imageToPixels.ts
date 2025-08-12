@@ -1,3 +1,5 @@
+import { FreeColor, InvertedFreeColorMap, InvertedPaidColorMap, PaidColor } from "../colorMap";
+
 export async function imageToPixels(image: any) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
@@ -31,7 +33,18 @@ export async function imageToPixels(image: any) {
                 g.toString(16).padStart(2, "0") +
                 b.toString(16).padStart(2, "0");
 
-            row.push(hex);
+            let key: keyof typeof FreeColor | keyof typeof PaidColor | "" | undefined =
+                InvertedFreeColorMap.get(hex as FreeColor);
+
+            if (!key) {
+                key = InvertedPaidColorMap.get(hex as PaidColor);
+            }
+
+            if (!key) {
+                key = "";
+            }
+
+            row.push(key);
         }
         pixels.push(row);
     }

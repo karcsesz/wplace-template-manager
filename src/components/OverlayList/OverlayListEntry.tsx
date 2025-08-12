@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from "react";
+import { useNavigate } from "../Router/navigate";
 export const OverlayListEntry: FC<{
     image: string;
     name: string;
     chunk: [number, number];
     position: [number, number];
 }> = ({ name, image, chunk, position }) => {
+    const navigate = useNavigate();
     const imgRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
@@ -16,15 +18,7 @@ export const OverlayListEntry: FC<{
         <div className={"OverlayListEntry"}>
             <img ref={imgRef} alt={"logo"} />
             <span> {name} </span>
-            <span
-                onClick={() =>
-                    navigator.clipboard.writeText(
-                        `${image}|${chunk[0]}},${chunk[1]}|${position[0]},${position[1]}`,
-                    )
-                }
-            >
-                ⚙️
-            </span>
+            <span onClick={() => navigate("/edit/" + name)}>⚙️</span>
         </div>
     );
 };

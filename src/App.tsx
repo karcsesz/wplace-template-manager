@@ -6,11 +6,13 @@ import { Outlet } from "./components/Router/Outlet";
 import { Overview } from "./pages/Overview";
 import { Create } from "./pages/Create";
 import { Import } from "./pages/Import";
+import { Edit } from "./pages/Edit";
 
 const routes = new Map([
     ["/", <Overview />],
     ["/create", <Create />],
     ["/import", <Import />],
+    ["/edit/{name}", <Edit />],
 ]);
 
 function App() {

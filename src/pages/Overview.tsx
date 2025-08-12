@@ -4,8 +4,7 @@ import { Overlay } from "../components/Overlay/Overlay";
 
 export const Overview: FC = () => {
     return (
-        <Overlay>
-            <h1>Overlay Manager</h1>
+        <Overlay headline={"Overlay Manager"}>
             <OverlayList />
         </Overlay>
     );

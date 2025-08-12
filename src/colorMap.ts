@@ -30,7 +30,6 @@ export enum FreeColor {
     DARK_BROWN = "#684634",
     BROWN = "#95682a",
     BEIGE = "#f8b277",
-    TRANSPARENT = "none",
 }
 
 export enum PaidColor {
@@ -68,5 +67,16 @@ export enum PaidColor {
     LIGHT_SLATE = "#b3b9d1",
 }
 
-export const FreeColorMap = new Map(Object.entries(FreeColor) as Array<keyof typeof FreeColor>);
-export const PaidColorMap = new Map(Object.entries(PaidColor) as Array<keyof typeof PaidColor>);
+const FreeColorEntries = Object.entries(FreeColor) as [keyof typeof FreeColor, FreeColor][];
+const PaidColorEntries = Object.entries(PaidColor) as [keyof typeof PaidColor, PaidColor][];
+
+export const FreeColorMap = new Map<keyof typeof FreeColor, FreeColor>(FreeColorEntries);
+export const PaidColorMap = new Map<keyof typeof PaidColor, PaidColor>(PaidColorEntries);
+export const InvertedFreeColorMap = new Map<FreeColor, keyof typeof FreeColor>(
+    FreeColorEntries.map(([first, second]) => [second, first]),
+);
+export const InvertedPaidColorMap = new Map<PaidColor, keyof typeof PaidColor>(
+    PaidColorEntries.map(([first, second]) => [second, first]),
+);
+
+export type Color = keyof typeof FreeColor | keyof typeof PaidColor;

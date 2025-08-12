@@ -7,16 +7,12 @@ export const Import: FC = () => {
     const [template, setTemplate] = useState<string>("");
 
     return (
-        <Overlay>
-            <nav>
-                <button onClick={() => navigate("/")}> {"<"} </button>
-                <h1>Import Overlay</h1>
-                <input
-                    name={"template"}
-                    placeholder={"Template"}
-                    onChange={(event) => setTemplate(event.target.value)}
-                />
-            </nav>
+        <Overlay headline={"Import Overlay"} showBack>
+            <input
+                name={"template"}
+                placeholder={"Template"}
+                onChange={(event) => setTemplate(event.target.value)}
+            />
         </Overlay>
     );
 };
