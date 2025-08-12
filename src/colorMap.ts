@@ -14,7 +14,7 @@ export enum FreeColor {
     GREEN = "#13e67b",
     LIGHT_GREEN = "#87ff5e",
     DARK_TEAL = "#0c816e",
-    TEAL = "#10ae82",
+    TEAL = "#10aea6",
     LIGHT_TEAL = "#13e1be",
     CYAN = "#60f7f2",
     DARK_BLUE = "#28509e",

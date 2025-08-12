@@ -1,11 +1,12 @@
 import { atomWithStorage } from "jotai/utils";
-import { FreeColor, PaidColor } from "../colorMap";
+import { Color } from "../colorMap";
 
 export type Overlay = {
     chunk: [number, number];
     coordinate: [number, number];
     image: string;
-    colorSelection: (keyof typeof PaidColor | keyof typeof FreeColor)[];
+    templateColors: Color[];
+    colorSelection: Color[];
     onlyShowSelectedColors: boolean;
     name: string;
 };

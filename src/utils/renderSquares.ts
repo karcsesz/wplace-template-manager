@@ -53,8 +53,8 @@ export async function renderSquares(
 
         let colorFilter: ColorValue[] | undefined;
 
-        if (overlay.onlyShowSelectedColors) {
-            colorFilter = overlay.colorSelection.map((color) => {
+        if (overlay?.onlyShowSelectedColors) {
+            colorFilter = overlay?.colorSelection.map((color) => {
                 const freeColor = FreeColorMap.get(color as keyof typeof FreeColor);
                 if (freeColor) {
                     return freeColor;
@@ -93,12 +93,7 @@ const createTemplateBitmap = async (
     ctx.imageSmoothingEnabled = false;
 
     ctx.drawImage(imageBitmap, 0, 0, imageBitmap.width * 3, imageBitmap.height * 3);
-
     const imageData = ctx.getImageData(0, 0, canvas.height, canvas.width);
-
-    if (!imageData.data) {
-        return createImageBitmap(canvas);
-    }
 
     for (let y = 0; y < canvas.height; y++) {
         for (let x = 0; x < canvas.width; x++) {
@@ -109,9 +104,9 @@ const createTemplateBitmap = async (
 
             const hex =
                 "#" +
-                r.toString(16).padStart(2, "0") +
-                g.toString(16).padStart(2, "0") +
-                b.toString(16).padStart(2, "0");
+                r?.toString(16).padStart(2, "0") +
+                g?.toString(16).padStart(2, "0") +
+                b?.toString(16).padStart(2, "0");
 
             if (x % 3 !== 1 || y % 3 !== 1) {
                 imageData.data[pixelIndex + 3] = 0;

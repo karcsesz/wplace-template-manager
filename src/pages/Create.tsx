@@ -4,6 +4,7 @@ import { useNavigate } from "../components/Router/navigate";
 import { useAtom } from "jotai";
 import { overlayAtom } from "../atoms/overlay";
 import { imageToBase64 } from "../utils/imageToBase64";
+import { getColorsFromImage } from "../utils/getColorsFromImage";
 
 export const Create: FC = () => {
     const [name, setName] = useState<string>("");
@@ -59,7 +60,7 @@ export const Create: FC = () => {
                 Template Image:
                 <input
                     type={"file"}
-                    accept={"image/*"}
+                    accept={"image/png, image/jpeg"}
                     onChange={async (e) => {
                         setImage(e.target.files![0]);
                     }}
@@ -67,21 +68,22 @@ export const Create: FC = () => {
             </label>
             <button
                 className={"btn btn-primary"}
-                onClick={() => {
-                    imageToBase64(image!).then((base64) =>
-                        setOverlay([
-                            ...overlay,
-                            {
-                                chunk: startChunk,
-                                coordinate: startPosition,
-                                image: base64,
-                                colorSelection: [],
-                                onlyShowSelectedColors: false,
-                                name,
-                            },
-                        ]),
-                    );
-                    location.reload();
+                onClick={async () => {
+                    const colors = await getColorsFromImage(image!);
+                    const base64 = await imageToBase64(image!);
+                    setOverlay([
+                        ...overlay,
+                        {
+                            chunk: startChunk,
+                            coordinate: startPosition,
+                            image: base64,
+                            colorSelection: [],
+                            onlyShowSelectedColors: false,
+                            name,
+                            templateColors: colors,
+                        },
+                    ]);
+                    navigate("/");
                 }}
             >
                 Create

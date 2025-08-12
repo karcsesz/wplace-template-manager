@@ -1,14 +1,14 @@
 import React, { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { Overlay } from "../components/Overlay/Overlay";
 import { useParam } from "../components/Router/useParam";
-import { Color, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
+import { Color, FreeColorMap, PaidColorMap } from "../colorMap";
 import { formatString } from "../utils/formatString";
 import { useAtom } from "jotai";
 import { overlayAtom } from "../atoms/overlay";
 import { ColorCheckbox } from "../components/ColorCheckbox/ColorCheckbox";
 import { base64ToImage } from "../utils/base64ToImage";
-import { Buffer } from "buffer";
 import { addMetadata } from "meta-png";
+import { useNavigate } from "../components/Router/navigate";
 
 export const Edit: FC = () => {
     const [overlays, setOverlay] = useAtom(overlayAtom);
@@ -16,14 +16,15 @@ export const Edit: FC = () => {
     const [search, setSearch] = useState<string>("");
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = useState<boolean>(false);
     const name = useParam("name");
+    const navigate = useNavigate();
 
     const currentOverlayIndex = useMemo(() => {
         return overlays.findIndex((overlay) => overlay.name === name);
     }, [overlays, name]);
 
     useEffect(() => {
-        setOnlyShowSelectedColors(overlays[currentOverlayIndex].onlyShowSelectedColors ?? false);
-        setSelectedColors(overlays[currentOverlayIndex].colorSelection ?? []);
+        setOnlyShowSelectedColors(overlays[currentOverlayIndex]?.onlyShowSelectedColors ?? false);
+        setSelectedColors(overlays[currentOverlayIndex]?.colorSelection ?? []);
     }, [overlays, currentOverlayIndex]);
 
     const colorCheckboxOnchange = (event: ChangeEvent<HTMLInputElement>, key: Color) => {
@@ -36,6 +37,7 @@ export const Edit: FC = () => {
 
     const ColorCheckRenderer = useMemo(() => {
         return [...FreeColorMap.entries(), ...PaidColorMap.entries()]
+            .filter(([key]) => overlays[currentOverlayIndex]?.templateColors.includes(key))
             .filter(([key]) => formatString(key).toLowerCase().includes(search.toLowerCase()))
             .map(([key, value]) => {
                 return (
@@ -59,8 +61,8 @@ export const Edit: FC = () => {
 
                 const result = addMetadata(
                     new Uint8Array(imageBuffer),
-                    "wplace-data",
-                    `${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
+                    "wplace",
+                    `${overlay.name},${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
                 );
 
                 await navigator.clipboard.write([
@@ -82,7 +84,7 @@ export const Edit: FC = () => {
                     ...overlays.slice(0, currentOverlayIndex),
                     ...overlays.slice(currentOverlayIndex + 1),
                 ]);
-                location.reload();
+                navigate("/");
             }}
         >
             Delete
@@ -107,7 +109,8 @@ export const Edit: FC = () => {
                     onChange={(event) => {
                         setOnlyShowSelectedColors(event.target.checked);
                     }}
-                />{" "}
+                    style={{ marginRight: "10px" }}
+                />
                 Only show selected Colors
             </label>
 
@@ -116,6 +119,9 @@ export const Edit: FC = () => {
                 onChange={(event) => setSearch(event.target.value)}
                 className={"btn btn-sm"}
                 placeholder={"Search"}
+                onKeyDown={(event) => {
+                    event.stopPropagation();
+                }}
             />
             <div className={"Grid"}>{ColorCheckRenderer}</div>
             <button
@@ -130,7 +136,7 @@ export const Edit: FC = () => {
                         },
                         ...overlays.slice(currentOverlayIndex + 1),
                     ]);
-                    location.reload();
+                    navigate("/");
                 }}
             >
                 Save
