@@ -23,19 +23,25 @@ function App() {
     const [showOverlay, setShowOverlay] = useState(false);
     const overlays = useAtomValue(overlayAtom);
 
-    useEffect(() => {
-        window.addEventListener("message", async (event: MessageEvent<BlobEventData>) => {
-            const { source, blob, requestId, chunk } = event.data;
+    const handleMessage = async (event: MessageEvent<BlobEventData>) => {
+        const { source, blob, requestId, chunk } = event.data;
 
-            if (source === "wplace-tile-request") {
-                window.postMessage({
-                    requestId,
-                    source: "overlay-renderer",
-                    blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
-                    chunk,
-                } as BlobEventData);
-            }
-        });
+        if (source === "wplace-tile-request") {
+            window.postMessage({
+                requestId,
+                source: "overlay-renderer",
+                blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
+                chunk,
+            } as BlobEventData);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
     }, [overlays]);
 
     return (

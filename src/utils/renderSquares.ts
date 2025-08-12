@@ -9,8 +9,28 @@ export async function renderSquares(
     chunkX: number,
     chunkY: number,
 ): Promise<Blob | null> {
-    const chunkOverlays = overlays.filter((overlay) => {
-        return overlay.chunk[0] === chunkX && overlay.chunk[1] === chunkY;
+    const expandedOverlays = await Promise.all(
+        overlays.map(async (overlay) => {
+            const image = base64ToImage(overlay.image, "image/png");
+            const bitmap = await createImageBitmap(image);
+
+            return {
+                ...overlay,
+                height: bitmap.height,
+                width: bitmap.width,
+                bitmap: bitmap,
+                toChunkX:
+                    overlay.chunk[0] + Math.floor((overlay.coordinate[0] + bitmap.width) / 1000),
+                toChunkY:
+                    overlay.chunk[1] + Math.floor((overlay.coordinate[1] + bitmap.height) / 1000),
+            };
+        }),
+    );
+    const chunkOverlays = expandedOverlays.filter((overlay) => {
+        const greaterThanMin = chunkX >= overlay.chunk[0] && chunkY >= overlay.chunk[1];
+        const smallerThanMax = chunkX <= overlay.toChunkX && chunkY <= overlay.toChunkY;
+
+        return greaterThanMin && smallerThanMax;
     });
 
     const canvas = document.createElement("canvas");
@@ -25,6 +45,9 @@ export async function renderSquares(
     ctx.drawImage(img, 0, 0, 3000, 3000);
 
     for (const overlay of chunkOverlays) {
+        const chunkXIndex = overlay.toChunkX - overlay.chunk[0] - (overlay.toChunkX - chunkX);
+        const chunkYIndex = overlay.toChunkY - overlay.chunk[1] - (overlay.toChunkY - chunkY);
+
         const image = base64ToImage(overlay.image, "image/png");
         const bitmap = await createImageBitmap(image);
 
@@ -45,8 +68,8 @@ export async function renderSquares(
 
         ctx.drawImage(
             templateBitmap,
-            overlay.coordinate[0] * 3,
-            overlay.coordinate[1] * 3,
+            overlay.coordinate[0] * 3 - chunkXIndex * 3000,
+            overlay.coordinate[1] * 3 - chunkYIndex * 3000,
             templateBitmap.width,
             templateBitmap.height,
         );
