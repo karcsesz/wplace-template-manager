@@ -4,6 +4,7 @@ export type BlobEventData = {
     blob: Blob;
     source: string;
     requestId: string;
+    chunk: [number, number];
 };
 
 inject(() => {
@@ -25,6 +26,7 @@ inject(() => {
             callback(blob);
         }
     });
+
     /*
      * -------------
      * Fetch Creator
@@ -53,12 +55,19 @@ inject(() => {
             const originalResponse = await response;
             const currentRequestId = Math.random().toString(36);
 
+            const urlParts = route.split("/");
+
+            let chunkY = urlParts.pop()!;
+            chunkY = chunkY.substring(0, chunkY.length - 4);
+            const chunkX = urlParts.pop()!;
+
             console.log("currentRequestId", currentRequestId);
 
             window.postMessage({
                 requestId: currentRequestId,
                 source: "wplace-tile-request",
                 blob: await originalResponse.blob(),
+                chunk: [Number(chunkX), Number(chunkY)],
             } as BlobEventData);
 
             return new Promise((resolve) => {

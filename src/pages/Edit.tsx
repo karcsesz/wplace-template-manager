@@ -6,21 +6,25 @@ import { formatString } from "../utils/formatString";
 import { useAtom } from "jotai";
 import { overlayAtom } from "../atoms/overlay";
 import { ColorCheckbox } from "../components/ColorCheckbox/ColorCheckbox";
+import { base64ToImage } from "../utils/base64ToImage";
+import { Buffer } from "buffer";
+import { addMetadata } from "meta-png";
 
 export const Edit: FC = () => {
-    const [overlay, setOverlay] = useAtom(overlayAtom);
-    const [selectedColors, setSelectedColors] = React.useState<Color[]>([]);
+    const [overlays, setOverlay] = useAtom(overlayAtom);
+    const [selectedColors, setSelectedColors] = useState<Color[]>([]);
+    const [search, setSearch] = useState<string>("");
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = useState<boolean>(false);
     const name = useParam("name");
 
     const currentOverlayIndex = useMemo(() => {
-        return overlay.findIndex((overlay) => overlay.name === name);
-    }, [overlay, name]);
+        return overlays.findIndex((overlay) => overlay.name === name);
+    }, [overlays, name]);
 
     useEffect(() => {
-        setOnlyShowSelectedColors(overlay[currentOverlayIndex].onlyShowSelectedColors ?? false);
-        setSelectedColors(overlay[currentOverlayIndex].colorSelection ?? []);
-    }, [overlay, currentOverlayIndex]);
+        setOnlyShowSelectedColors(overlays[currentOverlayIndex].onlyShowSelectedColors ?? false);
+        setSelectedColors(overlays[currentOverlayIndex].colorSelection ?? []);
+    }, [overlays, currentOverlayIndex]);
 
     const colorCheckboxOnchange = (event: ChangeEvent<HTMLInputElement>, key: Color) => {
         if (event.target.checked) {
@@ -29,6 +33,21 @@ export const Edit: FC = () => {
             setSelectedColors((prev) => prev.filter((color) => color !== key));
         }
     };
+
+    const ColorCheckRenderer = useMemo(() => {
+        return [...FreeColorMap.entries(), ...PaidColorMap.entries()]
+            .filter(([key]) => formatString(key).toLowerCase().includes(search.toLowerCase()))
+            .map(([key, value]) => {
+                return (
+                    <ColorCheckbox
+                        onChange={(event) => colorCheckboxOnchange(event, key)}
+                        color={value}
+                        name={key}
+                        checked={selectedColors.includes(key)}
+                    />
+                );
+            });
+    }, [FreeColorMap, PaidColorMap, search, selectedColors]);
 
     return (
         <Overlay headline={"Edit " + name} showBack>
@@ -43,44 +62,51 @@ export const Edit: FC = () => {
                 Only show selected Colors
             </label>
 
-            <div className={"Grid"}>
-                {Array.from(FreeColorMap.entries()).map(([key, value]) => {
-                    return (
-                        <ColorCheckbox
-                            onChange={(event) => colorCheckboxOnchange(event, key)}
-                            color={value}
-                            name={key}
-                            checked={selectedColors.includes(key)}
-                        />
-                    );
-                })}
-                {Array.from(PaidColorMap.entries()).map(([key, value]) => {
-                    return (
-                        <ColorCheckbox
-                            onChange={(event) => colorCheckboxOnchange(event, key)}
-                            color={value}
-                            name={key}
-                            checked={selectedColors.includes(key)}
-                        />
-                    );
-                })}
-            </div>
+            <input
+                type={"search"}
+                onChange={(event) => setSearch(event.target.value)}
+                className={"btn btn-sm"}
+                placeholder={"Search"}
+            />
+            <div className={"Grid"}>{ColorCheckRenderer}</div>
             <button
                 className={"btn btn-primary"}
                 onClick={() => {
                     setOverlay([
-                        ...overlay.slice(0, currentOverlayIndex),
+                        ...overlays.slice(0, currentOverlayIndex),
                         {
-                            ...overlay[currentOverlayIndex],
+                            ...overlays[currentOverlayIndex],
                             colorSelection: selectedColors,
                             onlyShowSelectedColors,
                         },
-                        ...overlay.slice(currentOverlayIndex + 1),
+                        ...overlays.slice(currentOverlayIndex + 1),
                     ]);
                     location.reload();
                 }}
             >
                 Save
+            </button>
+            <button
+                className={"btn btn-primary"}
+                onClick={async () => {
+                    const overlay = overlays[currentOverlayIndex];
+                    const image = base64ToImage(overlay.image, "image/png");
+                    const imageBuffer = await image.arrayBuffer();
+
+                    const result = addMetadata(
+                        new Uint8Array(imageBuffer),
+                        "wplace-data",
+                        `${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
+                    );
+
+                    await navigator.clipboard.write([
+                        new ClipboardItem({
+                            "image/png": new Blob([new Uint8Array(result)], { type: "image/png" }),
+                        }),
+                    ]);
+                }}
+            >
+                Export
             </button>
         </Overlay>
     );

@@ -12,6 +12,7 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "jotai": "^2.13.1",
+    "meta-png": "^1.0.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "vite": "^7.1.1",

@@ -7,6 +7,10 @@ import { Overview } from "./pages/Overview";
 import { Create } from "./pages/Create";
 import { Import } from "./pages/Import";
 import { Edit } from "./pages/Edit";
+import { BlobEventData } from "./fetch";
+import { renderSquares } from "./utils/renderSquares";
+import { useAtomValue } from "jotai/index";
+import { overlayAtom } from "./atoms/overlay";
 
 const routes = new Map([
     ["/", <Overview />],
@@ -17,6 +21,21 @@ const routes = new Map([
 
 function App() {
     const [showOverlay, setShowOverlay] = useState(false);
+    const overlays = useAtomValue(overlayAtom);
+
+    window.addEventListener("message", async (event: MessageEvent<BlobEventData>) => {
+        const { source, blob, requestId, chunk } = event.data;
+
+        if (source === "wplace-tile-request") {
+            console.log("Rendering requestId", requestId, "in chunk", chunk.toString());
+            window.postMessage({
+                requestId,
+                source: "overlay-renderer",
+                blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
+                chunk,
+            } as BlobEventData);
+        }
+    });
 
     return (
         <RouteProvider routes={routes}>
