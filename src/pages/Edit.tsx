@@ -108,6 +108,18 @@ export const Edit: FC = () => {
             >
                 Export
             </button>
+            <button
+                className={"btn btn-destructive"}
+                onClick={() => {
+                    setOverlay([
+                        ...overlays.slice(0, currentOverlayIndex),
+                        ...overlays.slice(currentOverlayIndex + 1),
+                    ]);
+                    location.reload();
+                }}
+            >
+                Delete
+            </button>
         </Overlay>
     );
 };

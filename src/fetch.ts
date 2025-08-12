@@ -38,7 +38,7 @@ inject(() => {
             const response = originalFetch(input, init);
             let route: string;
 
-            if ((input as Request).url.length) {
+            if ((input as Request).url?.length) {
                 route = (input as Request).url;
             } else {
                 route = input.toString();
@@ -60,8 +60,6 @@ inject(() => {
             let chunkY = urlParts.pop()!;
             chunkY = chunkY.substring(0, chunkY.length - 4);
             const chunkX = urlParts.pop()!;
-
-            console.log("currentRequestId", currentRequestId);
 
             window.postMessage({
                 requestId: currentRequestId,

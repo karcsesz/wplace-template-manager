@@ -1,8 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { Overlay } from "../components/Overlay/Overlay";
 import { useNavigate } from "../components/Router/navigate";
-import { imageToPixels } from "../utils/imageToPixels";
-import { renderSquares } from "../utils/renderSquares";
 import { useAtom } from "jotai";
 import { overlayAtom } from "../atoms/overlay";
 import { imageToBase64 } from "../utils/imageToBase64";
@@ -80,7 +78,7 @@ export const Create: FC = () => {
                             },
                         ]),
                     );
-                    navigate("/");
+                    location.reload();
                 }}
             >
                 Create

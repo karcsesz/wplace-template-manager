@@ -80,3 +80,4 @@ export const InvertedPaidColorMap = new Map<PaidColor, keyof typeof PaidColor>(
 );
 
 export type Color = keyof typeof FreeColor | keyof typeof PaidColor;
+export type ColorValue = FreeColor | PaidColor;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Button } from "./components/Button/Button";
 import { RouteProvider } from "./components/Router/RouteContext";
@@ -23,19 +23,20 @@ function App() {
     const [showOverlay, setShowOverlay] = useState(false);
     const overlays = useAtomValue(overlayAtom);
 
-    window.addEventListener("message", async (event: MessageEvent<BlobEventData>) => {
-        const { source, blob, requestId, chunk } = event.data;
+    useEffect(() => {
+        window.addEventListener("message", async (event: MessageEvent<BlobEventData>) => {
+            const { source, blob, requestId, chunk } = event.data;
 
-        if (source === "wplace-tile-request") {
-            console.log("Rendering requestId", requestId, "in chunk", chunk.toString());
-            window.postMessage({
-                requestId,
-                source: "overlay-renderer",
-                blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
-                chunk,
-            } as BlobEventData);
-        }
-    });
+            if (source === "wplace-tile-request") {
+                window.postMessage({
+                    requestId,
+                    source: "overlay-renderer",
+                    blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
+                    chunk,
+                } as BlobEventData);
+            }
+        });
+    }, [overlays]);
 
     return (
         <RouteProvider routes={routes}>

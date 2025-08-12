@@ -1,5 +1,7 @@
 import { Overlay, overlayAtom } from "../atoms/overlay";
 import { base64ToImage } from "./base64ToImage";
+import { Color, ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
+import { log } from "./log";
 
 export async function renderSquares(
     baseBlob: Blob,
@@ -10,26 +12,43 @@ export async function renderSquares(
     const chunkOverlays = overlays.filter((overlay) => {
         return overlay.chunk[0] === chunkX && overlay.chunk[1] === chunkY;
     });
+
     const canvas = document.createElement("canvas");
 
-    canvas.width = 1000;
-    canvas.height = 1000;
+    canvas.width = 3000;
+    canvas.height = 3000;
 
     const ctx = canvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
 
     const img = await createImageBitmap(baseBlob);
-    ctx.drawImage(img, 0, 0, 1000, 1000);
+    ctx.drawImage(img, 0, 0, 3000, 3000);
 
     for (const overlay of chunkOverlays) {
         const image = base64ToImage(overlay.image, "image/png");
         const bitmap = await createImageBitmap(image);
 
+        let colorFilter: ColorValue[] | undefined;
+
+        if (overlay.onlyShowSelectedColors) {
+            colorFilter = overlay.colorSelection.map((color) => {
+                const freeColor = FreeColorMap.get(color as keyof typeof FreeColor);
+                if (freeColor) {
+                    return freeColor;
+                } else {
+                    return PaidColorMap.get(color as keyof typeof PaidColor)!;
+                }
+            });
+        }
+
+        const templateBitmap = await createTemplateBitmap(bitmap, colorFilter);
+
         ctx.drawImage(
-            bitmap,
-            overlay.coordinate[0],
-            overlay.coordinate[1],
-            bitmap.width,
-            bitmap.height,
+            templateBitmap,
+            overlay.coordinate[0] * 3,
+            overlay.coordinate[1] * 3,
+            templateBitmap.width,
+            templateBitmap.height,
         );
     }
 
@@ -37,3 +56,45 @@ export async function renderSquares(
         canvas.toBlob((blob) => resolve(blob));
     });
 }
+
+const createTemplateBitmap = async (
+    imageBitmap: ImageBitmap,
+    colorFilter?: ColorValue[],
+): Promise<ImageBitmap> => {
+    const canvas = document.createElement("canvas");
+
+    canvas.width = imageBitmap.width * 3;
+    canvas.height = imageBitmap.height * 3;
+
+    const ctx = canvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(imageBitmap, 0, 0, imageBitmap.width * 3, imageBitmap.height * 3);
+
+    const imageData = ctx.getImageData(0, 0, canvas.height, canvas.width);
+
+    for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+            const pixelIndex = (y * canvas.height + x) * 4;
+            const r = imageData.data[pixelIndex];
+            const g = imageData.data[pixelIndex + 1];
+            const b = imageData.data[pixelIndex + 2];
+
+            const hex =
+                "#" +
+                r.toString(16).padStart(2, "0") +
+                g.toString(16).padStart(2, "0") +
+                b.toString(16).padStart(2, "0");
+
+            if (x % 3 !== 1 || y % 3 !== 1) {
+                imageData.data[pixelIndex + 3] = 0;
+            }
+            if (colorFilter && !colorFilter.includes(hex as ColorValue)) {
+                imageData.data[pixelIndex + 3] = 0;
+            }
+        }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+    return createImageBitmap(canvas);
+};
