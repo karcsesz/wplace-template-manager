@@ -49,7 +49,9 @@ export async function renderSquares(
         const chunkYIndex = overlay.toChunkY - overlay.chunk[1] - (overlay.toChunkY - chunkY);
 
         const image = base64ToImage(overlay.image, "image/png");
-        const bitmap = await createImageBitmap(image);
+        const bitmap = await createImageBitmap(image, {
+            imageOrientation: "from-image",
+        });
 
         let colorFilter: ColorValue[] | undefined;
 
@@ -89,15 +91,15 @@ const createTemplateBitmap = async (
     canvas.width = imageBitmap.width * 3;
     canvas.height = imageBitmap.height * 3;
 
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
     ctx.imageSmoothingEnabled = false;
 
-    ctx.drawImage(imageBitmap, 0, 0, imageBitmap.width * 3, imageBitmap.height * 3);
-    const imageData = ctx.getImageData(0, 0, canvas.height, canvas.width);
+    ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     for (let y = 0; y < canvas.height; y++) {
         for (let x = 0; x < canvas.width; x++) {
-            const pixelIndex = (y * canvas.height + x) * 4;
+            const pixelIndex = (y * canvas.width + x) * 4;
             const r = imageData.data[pixelIndex];
             const g = imageData.data[pixelIndex + 1];
             const b = imageData.data[pixelIndex + 2];
@@ -118,5 +120,8 @@ const createTemplateBitmap = async (
     }
 
     ctx.putImageData(imageData, 0, 0);
-    return createImageBitmap(canvas);
+    const bitmap = createImageBitmap(canvas);
+    canvas.remove();
+
+    return bitmap;
 };
