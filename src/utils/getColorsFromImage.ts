@@ -1,14 +1,15 @@
 import {
     Color,
+    ColorValue,
     FreeColor,
     InvertedFreeColorMap,
     InvertedPaidColorMap,
     PaidColor,
 } from "../colorMap";
+import { rgbToHex } from "./rgbToHex";
 
-export const getColorsFromImage = async (blob: Blob) => {
+export const getColorsFromImage = async (image: ImageBitmap) => {
     const canvas = document.createElement("canvas");
-    const image = await createImageBitmap(blob);
 
     canvas.width = image.width;
     canvas.height = image.height;
@@ -17,33 +18,29 @@ export const getColorsFromImage = async (blob: Blob) => {
     ctx.drawImage(image, 0, 0);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const colors: Color[] = [];
+    const colors: Set<ColorValue> = new Set();
 
     for (let i = 0; i < imageData.data.length; i += 4) {
-        const pixelIndex = i * 4;
-        const r = imageData.data[pixelIndex];
-        const g = imageData.data[pixelIndex + 1];
-        const b = imageData.data[pixelIndex + 2];
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
 
-        const hex =
-            "#" +
-            r?.toString(16).padStart(2, "0") +
-            g?.toString(16).padStart(2, "0") +
-            b?.toString(16).padStart(2, "0");
-
-        if (!colors.includes(hex as Color)) {
-            let color: Color | undefined = InvertedFreeColorMap.get(hex as FreeColor);
-            if (!color) {
-                color = InvertedPaidColorMap.get(hex as PaidColor);
-            }
-
-            if (!color) {
-                continue;
-            }
-
-            colors.push(color!);
+        if (r && g && b) {
+            const hex = rgbToHex(r, g, b);
+            colors.add(hex as ColorValue);
         }
     }
 
-    return colors;
+    const mappedColors = Array.from(colors.values()).map((hex) => {
+        let color: Color | undefined = InvertedFreeColorMap.get(hex as FreeColor);
+        if (!color) {
+            color = InvertedPaidColorMap.get(hex as PaidColor);
+        }
+
+        return color;
+    });
+
+    canvas.remove();
+
+    return mappedColors.filter((color) => !!color);
 };

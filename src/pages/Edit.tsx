@@ -1,20 +1,25 @@
 import React, { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { Overlay } from "../components/Overlay/Overlay";
 import { useParam } from "../components/Router/useParam";
-import { Color, FreeColorMap, PaidColorMap } from "../colorMap";
-import { formatString } from "../utils/formatString";
 import { useAtom } from "jotai";
 import { overlayAtom } from "../atoms/overlay";
-import { ColorCheckbox } from "../components/ColorCheckbox/ColorCheckbox";
 import { base64ToImage } from "../utils/base64ToImage";
-import { addMetadata } from "meta-png";
 import { useNavigate } from "../components/Router/navigate";
+import text from "png-chunk-text";
+import encode from "png-chunks-encode";
+import extract from "png-chunks-extract";
+import { Buffer } from "buffer";
+import { positionAtom } from "../atoms/position";
+import { ColorPicker } from "../components/ColorPicker/ColorPicker";
+import { Color } from "../colorMap";
 
 export const Edit: FC = () => {
     const [overlays, setOverlay] = useAtom(overlayAtom);
-    const [selectedColors, setSelectedColors] = useState<Color[]>([]);
-    const [search, setSearch] = useState<string>("");
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = useState<boolean>(false);
+    const [startChunk, setStartChunk] = useState<number[]>([]);
+    const [startPosition, setStartPosition] = useState<number[]>([]);
+    const [selectedColors, setSelectedColors] = useState<Color[]>([]);
+    const [position] = useAtom(positionAtom);
     const name = useParam("name");
     const navigate = useNavigate();
 
@@ -27,29 +32,12 @@ export const Edit: FC = () => {
         setSelectedColors(overlays[currentOverlayIndex]?.colorSelection ?? []);
     }, [overlays, currentOverlayIndex]);
 
-    const colorCheckboxOnchange = (event: ChangeEvent<HTMLInputElement>, key: Color) => {
-        if (event.target.checked) {
-            setSelectedColors((prev) => [...prev, key]);
-        } else {
-            setSelectedColors((prev) => prev.filter((color) => color !== key));
+    useEffect(() => {
+        if (overlays[currentOverlayIndex]) {
+            setStartChunk(overlays[currentOverlayIndex].chunk);
+            setStartPosition(overlays[currentOverlayIndex].coordinate);
         }
-    };
-
-    const ColorCheckRenderer = useMemo(() => {
-        return [...FreeColorMap.entries(), ...PaidColorMap.entries()]
-            .filter(([key]) => overlays[currentOverlayIndex]?.templateColors.includes(key))
-            .filter(([key]) => formatString(key).toLowerCase().includes(search.toLowerCase()))
-            .map(([key, value]) => {
-                return (
-                    <ColorCheckbox
-                        onChange={(event) => colorCheckboxOnchange(event, key)}
-                        color={value}
-                        name={key}
-                        checked={selectedColors.includes(key)}
-                    />
-                );
-            });
-    }, [FreeColorMap, PaidColorMap, search, selectedColors]);
+    }, []);
 
     const exportButton = (
         <button
@@ -57,19 +45,28 @@ export const Edit: FC = () => {
             onClick={async () => {
                 const overlay = overlays[currentOverlayIndex];
                 const image = base64ToImage(overlay.image, "image/png");
-                const imageBuffer = await image.arrayBuffer();
+                const imageBuffer = Buffer.from(await image.arrayBuffer());
+                const chunks = extract(imageBuffer);
 
-                const result = addMetadata(
-                    new Uint8Array(imageBuffer),
-                    "wplace",
-                    `${overlay.name},${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
+                chunks.splice(
+                    chunks.length - 1,
+                    0,
+                    text.encode(
+                        "wplace",
+                        `${overlay.name},${overlay.chunk[0]},${overlay.chunk[1]},${overlay.coordinate[0]},${overlay.coordinate[1]}`,
+                    ),
                 );
 
-                await navigator.clipboard.write([
-                    new ClipboardItem({
-                        "image/png": new Blob([new Uint8Array(result)], { type: "image/png" }),
-                    }),
-                ]);
+                const newBlob = new Blob([new Uint8Array(encode(chunks))], {
+                    type: "image/png",
+                });
+
+                const url = URL.createObjectURL(newBlob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = overlay.name + ".png";
+                a.click();
+                URL.revokeObjectURL(url);
             }}
         >
             Export
@@ -102,6 +99,56 @@ export const Edit: FC = () => {
                 </div>
             }
         >
+            <h2> Position: </h2>
+            <div className={"row"}>
+                <input
+                    type={"number"}
+                    name={"chunkX"}
+                    className={"btn btn-sm"}
+                    placeholder={"Chunk X"}
+                    value={startChunk[0]}
+                    onChange={(event) => setStartChunk(([x, y]) => [Number(event.target.value), y])}
+                />
+                <input
+                    type={"number"}
+                    name={"chunkY"}
+                    className={"btn btn-sm"}
+                    placeholder={"Chunk Y"}
+                    value={startChunk[1]}
+                    onChange={(event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])}
+                />
+                <input
+                    type={"number"}
+                    name={"posX"}
+                    className={"btn btn-sm"}
+                    placeholder={"Pos X"}
+                    value={startPosition[0]}
+                    onChange={(event) =>
+                        setStartPosition(([x, y]) => [Number(event.target.value), y])
+                    }
+                />
+                <input
+                    type={"number"}
+                    name={"posY"}
+                    className={"btn btn-sm"}
+                    placeholder={"Pos Y"}
+                    value={startPosition[1]}
+                    onChange={(event) =>
+                        setStartPosition(([x, y]) => [x, Number(event.target.value)])
+                    }
+                />
+                <button
+                    className={"btn btn-sm"}
+                    onClick={() => {
+                        if (position.position.length && position.chunk.length) {
+                            setStartChunk(position.chunk as [number, number]);
+                            setStartPosition(position.position as [number, number]);
+                        }
+                    }}
+                >
+                    P
+                </button>
+            </div>
             <label>
                 <input
                     type={"checkbox"}
@@ -113,17 +160,13 @@ export const Edit: FC = () => {
                 />
                 Only show selected Colors
             </label>
-
-            <input
-                type={"search"}
-                onChange={(event) => setSearch(event.target.value)}
-                className={"btn btn-sm"}
-                placeholder={"Search"}
-                onKeyDown={(event) => {
-                    event.stopPropagation();
-                }}
+            <ColorPicker
+                colorList={overlays[currentOverlayIndex]?.templateColors}
+                setSelectedColorState={setSelectedColors}
+                selectedColorState={selectedColors}
+                defaultAllPaid={true}
+                defaultAllFree={true}
             />
-            <div className={"Grid"}>{ColorCheckRenderer}</div>
             <button
                 className={"btn btn-primary"}
                 onClick={() => {
@@ -132,6 +175,8 @@ export const Edit: FC = () => {
                         {
                             ...overlays[currentOverlayIndex],
                             colorSelection: selectedColors,
+                            chunk: startChunk as [number, number],
+                            coordinate: startPosition as [number, number],
                             onlyShowSelectedColors,
                         },
                         ...overlays.slice(currentOverlayIndex + 1),

@@ -2,6 +2,7 @@ import { Overlay, overlayAtom } from "../atoms/overlay";
 import { base64ToImage } from "./base64ToImage";
 import { Color, ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
 import { log } from "./log";
+import { rgbToHex } from "./rgbToHex";
 
 export async function renderSquares(
     baseBlob: Blob,
@@ -77,9 +78,13 @@ export async function renderSquares(
         );
     }
 
-    return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob));
+    const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!));
     });
+
+    canvas.remove();
+
+    return blob;
 }
 
 const createTemplateBitmap = async (
@@ -104,11 +109,7 @@ const createTemplateBitmap = async (
             const g = imageData.data[pixelIndex + 1];
             const b = imageData.data[pixelIndex + 2];
 
-            const hex =
-                "#" +
-                r?.toString(16).padStart(2, "0") +
-                g?.toString(16).padStart(2, "0") +
-                b?.toString(16).padStart(2, "0");
+            const hex = rgbToHex(r, g, b);
 
             if (x % 3 !== 1 || y % 3 !== 1) {
                 imageData.data[pixelIndex + 3] = 0;

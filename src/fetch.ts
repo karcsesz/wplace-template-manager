@@ -7,8 +7,22 @@ export type BlobEventData = {
     chunk: [number, number];
 };
 
+export type JumpEventData = {
+    source: string;
+    position: [number, number];
+    chunk: [number, number];
+};
+
+export type PositionEventData = {
+    source: string;
+    chunk: [number, number];
+    position: [number, number];
+};
+
 inject(() => {
     const BlobQueue = new Map<string, (blob: Blob) => void>();
+    let jumpToPosition: [number, number] | null = null;
+    let jumpToChunk: [number, number] | null = null;
 
     const matchPattern = (pattern: string, path: string): boolean => {
         const regexPattern = pattern.replace(/\./g, "\\.").replace(/\*/g, ".*");
@@ -16,14 +30,18 @@ inject(() => {
         return regex.test(path);
     };
 
-    window.addEventListener("message", (event: MessageEvent<BlobEventData>) => {
-        const { source, blob, requestId } = event.data;
+    window.addEventListener("message", (event: MessageEvent) => {
+        const { source, blob, requestId, position, chunk } = event.data;
 
         if (source === "overlay-renderer") {
-            console.log("received result", requestId);
             const callback = BlobQueue.get(requestId)!;
 
             callback(blob);
+        }
+
+        if (source === "overlay-location-service") {
+            jumpToPosition = position;
+            jumpToChunk = chunk;
         }
     });
 
@@ -44,6 +62,49 @@ inject(() => {
                 route = input.toString();
             }
 
+            const originalResponse = await response;
+
+            if (matchPattern("https://backend.wplace.live/s0/tile/random", route)) {
+                if (jumpToPosition && jumpToChunk) {
+                    const response = new Response(
+                        JSON.stringify({
+                            pixel: { x: jumpToPosition[0], y: jumpToPosition[1] },
+                            tile: { x: jumpToChunk[0], y: jumpToChunk[1] },
+                        }),
+                        {
+                            headers: originalResponse.headers,
+                            status: originalResponse.status,
+                            statusText: originalResponse.statusText,
+                        },
+                    );
+
+                    jumpToChunk = null;
+                    jumpToPosition = null;
+
+                    return response;
+                }
+            }
+
+            if (route.startsWith("https://backend.wplace.live/s0/pixel/")) {
+                const segments = route.split("/");
+                const rawData = segments.pop();
+
+                const chunkX = segments.pop();
+                const chunkY = rawData?.match(/^(\d+)\?/);
+                const positionX = rawData?.match(/x=(\d+)/);
+                const positionY = rawData?.match(/y=(\d+)/);
+
+                if (!chunkX || !chunkY || !positionX || !positionY) {
+                    console.warn("Couldn't read chunk and position from request!");
+                } else {
+                    window.postMessage({
+                        source: "wplace-position-request",
+                        position: [parseInt(positionX[1], 10), parseInt(positionY[1], 10)],
+                        chunk: [Number(chunkX), parseInt(chunkY[1], 10)],
+                    } as PositionEventData);
+                }
+            }
+
             if (!matchPattern("https://backend.wplace.live/files/s0/tiles/*/*.png", route)) {
                 return response;
             }
@@ -52,7 +113,6 @@ inject(() => {
                 Apply custom response to Tile Request
              */
 
-            const originalResponse = await response;
             const currentRequestId = Math.random().toString(36);
 
             const urlParts = route.split("/");

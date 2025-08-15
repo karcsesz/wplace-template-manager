@@ -9,8 +9,9 @@ import { Import } from "./pages/Import";
 import { Edit } from "./pages/Edit";
 import { BlobEventData } from "./fetch";
 import { renderSquares } from "./utils/renderSquares";
-import { useAtomValue } from "jotai/index";
+import { useSetAtom, useAtomValue } from "jotai";
 import { overlayAtom } from "./atoms/overlay";
+import { positionAtom } from "./atoms/position";
 
 const routes = new Map([
     ["/", <Overview />],
@@ -21,10 +22,11 @@ const routes = new Map([
 
 function App() {
     const [showOverlay, setShowOverlay] = useState(false);
+    const setPosition = useSetAtom(positionAtom);
     const overlays = useAtomValue(overlayAtom);
 
-    const handleMessage = async (event: MessageEvent<BlobEventData>) => {
-        const { source, blob, requestId, chunk } = event.data;
+    const handleMessage = async (event: MessageEvent) => {
+        const { source, blob, requestId, chunk, position } = event.data;
 
         if (source === "wplace-tile-request") {
             window.postMessage({
@@ -33,6 +35,10 @@ function App() {
                 blob: await renderSquares(blob, overlays, chunk[0], chunk[1]),
                 chunk,
             } as BlobEventData);
+        }
+
+        if (source === "wplace-position-request") {
+            setPosition({ position, chunk });
         }
     };
 

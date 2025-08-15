@@ -502,6 +502,21 @@
   resolved "https://npm.local.kassen.systems/@types/estree/-/estree-1.0.8.tgz"
   integrity sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==
 
+"@types/png-chunk-text@^1.0.3":
+  version "1.0.3"
+  resolved "https://npm.local.kassen.systems/@types/png-chunk-text/-/png-chunk-text-1.0.3.tgz#ec4746150d7fb34b24f15d635619ee1df316e75a"
+  integrity sha512-7keEFz73uNJ9Ar1XMCNnHEXT9pICJnouMQCCYgBEmHMgdkXaQzSTmSvr6tUDSqgdEgmlRAxZd97wprgliyZoCg==
+
+"@types/png-chunks-encode@^1.0.2":
+  version "1.0.2"
+  resolved "https://npm.local.kassen.systems/@types/png-chunks-encode/-/png-chunks-encode-1.0.2.tgz#9e1952bcb14ba8370eb1a94a56bb0452b4f905d5"
+  integrity sha512-Dxn0aXEcSg1wVeHjvNlygm/+fKBDzWMCdxJYhjGUTeefFW/jYxWcrg+W7ppLBfH44iJMqeVBHtHBwtYQUeYvgw==
+
+"@types/png-chunks-extract@^1.0.2":
+  version "1.0.2"
+  resolved "https://npm.local.kassen.systems/@types/png-chunks-extract/-/png-chunks-extract-1.0.2.tgz#31dd8d74d6ba879ace317c1e042dcdabc6300d6e"
+  integrity sha512-z6djfFIbrrddtunoMJBOPlyZrnmeuG1kkvHUNi2QfpOb+JMMLuLliHHTmMyRi7k7LiTAut0HbdGCF6ibDtQAHQ==
+
 "@types/react-dom@^19.1.7":
   version "19.1.7"
   resolved "https://npm.local.kassen.systems/@types/react-dom/-/react-dom-19.1.7.tgz"
@@ -571,6 +586,11 @@ cosmiconfig@^8.1.3:
     js-yaml "^4.1.0"
     parse-json "^5.2.0"
     path-type "^4.0.0"
+
+crc-32@^0.3.0:
+  version "0.3.0"
+  resolved "https://npm.local.kassen.systems/crc-32/-/crc-32-0.3.0.tgz#6a3d3687f5baec41f7e9b99fe1953a2e5d19775e"
+  integrity sha512-kucVIjOmMc1f0tv53BJ/5WIX+MGLcKuoBhnGqQrgKJNqLByb/sVMWfW/Aw6hw0jgcqjJ2pi9E5y32zOIpaUlsA==
 
 csstype@^3.0.2:
   version "3.1.3"
@@ -795,6 +815,26 @@ picomatch@^4.0.2, picomatch@^4.0.3:
   resolved "https://npm.local.kassen.systems/picomatch/-/picomatch-4.0.3.tgz"
   integrity sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==
 
+png-chunk-text@^1.0.0:
+  version "1.0.0"
+  resolved "https://npm.local.kassen.systems/png-chunk-text/-/png-chunk-text-1.0.0.tgz#1c6006d8e34ba471d38e1c9c54b3f53e1085e18f"
+  integrity sha512-DEROKU3SkkLGWNMzru3xPVgxyd48UGuMSZvioErCure6yhOc/pRH2ZV+SEn7nmaf7WNf3NdIpH+UTrRdKyq9Lw==
+
+png-chunks-encode@^1.0.0:
+  version "1.0.0"
+  resolved "https://npm.local.kassen.systems/png-chunks-encode/-/png-chunks-encode-1.0.0.tgz#d9ea5e35caeeed782658c1ab7bafa7a5edb1a878"
+  integrity sha512-J1jcHgbQRsIIgx5wxW9UmCymV3wwn4qCCJl6KYgEU/yHCh/L2Mwq/nMOkRPtmV79TLxRZj5w3tH69pvygFkDqA==
+  dependencies:
+    crc-32 "^0.3.0"
+    sliced "^1.0.1"
+
+png-chunks-extract@^1.0.0:
+  version "1.0.0"
+  resolved "https://npm.local.kassen.systems/png-chunks-extract/-/png-chunks-extract-1.0.0.tgz#fad4a905e66652197351c65e35b92c64311e472d"
+  integrity sha512-ZiVwF5EJ0DNZyzAqld8BP1qyJBaGOFaq9zl579qfbkcmOwWLLO4I9L8i2O4j3HkI6/35i0nKG2n+dZplxiT89Q==
+  dependencies:
+    crc-32 "^0.3.0"
+
 postcss@^8.5.6:
   version "8.5.6"
   resolved "https://npm.local.kassen.systems/postcss/-/postcss-8.5.6.tgz"
@@ -864,6 +904,11 @@ semver@^6.3.1:
   version "6.3.1"
   resolved "https://npm.local.kassen.systems/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
+
+sliced@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.local.kassen.systems/sliced/-/sliced-1.0.1.tgz#0b3a662b5d04c3177b1926bea82b03f837a2ef41"
+  integrity sha512-VZBmZP8WU3sMOZm1bdgTadsQbcscK0UM8oKxKVBs4XAhUo2Xxzm/OFMGBkPusxw9xL3Uy8LrzEqGqJhclsr0yA==
 
 snake-case@^3.0.4:
   version "3.0.4"

@@ -5,6 +5,8 @@ export type Overlay = {
     chunk: [number, number];
     coordinate: [number, number];
     image: string;
+    height: number;
+    width: number;
     templateColors: Color[];
     colorSelection: Color[];
     onlyShowSelectedColors: boolean;

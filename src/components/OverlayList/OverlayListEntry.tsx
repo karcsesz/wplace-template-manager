@@ -2,6 +2,10 @@ import React, { FC, useEffect, useRef } from "react";
 import { useNavigate } from "../Router/navigate";
 // @ts-ignore
 import Cog from "./cog.svg";
+// @ts-ignore
+import Location from "./location.svg";
+import { JumpEventData } from "../../fetch";
+import { awaitElement } from "../../utils/awaitElement";
 export const OverlayListEntry: FC<{
     image: string;
     name: string;
@@ -22,15 +26,31 @@ export const OverlayListEntry: FC<{
                 <img ref={imgRef} alt={"logo"} />
                 <span> {name} </span>
             </div>
-            <div className={"groupRow"}>
+            <div className={"groupRow"} style={{ flexGrow: 1, justifyContent: "flex-end" }}>
                 <span className={"btn btn-sm"}> {chunk[0]} </span>
                 <span className={"btn btn-sm"}> {chunk[1]} </span>
                 <span className={"btn btn-sm"}> {position[0]} </span>
                 <span className={"btn btn-sm"}> {position[1]} </span>
             </div>
-            <span onClick={() => navigate("/edit/" + name)}>
+            <button onClick={() => navigate("/edit/" + name)}>
                 <img src={Cog} alt={"options"} className={"icon"} />
-            </span>
+            </button>
+            <button
+                onClick={() => {
+                    window.postMessage({
+                        source: "overlay-location-service",
+                        chunk,
+                        position,
+                    } as JumpEventData);
+                    awaitElement("button[title='Explore']").then((button) => {
+                        button.dispatchEvent(
+                            new Event("click", { bubbles: true, cancelable: true }),
+                        );
+                    });
+                }}
+            >
+                <img src={Location} alt={"options"} className={"icon"} />
+            </button>
         </div>
     );
 };

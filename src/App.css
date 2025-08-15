@@ -31,6 +31,15 @@ h1 {
     gap: 8px;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
 .groupRow {
     display: flex;
     flex-direction: row;
@@ -102,7 +111,6 @@ h1 {
     font-size: 14px;
 }
 
-/* Arrow for the tooltip */
 .ColorCheckbox span::after {
     content: "";
     position: absolute;
@@ -114,7 +122,6 @@ h1 {
     border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
 }
 
-/* Show the tooltip on hover */
 .ColorCheckbox:hover span {
     visibility: visible;
 }
@@ -134,4 +141,26 @@ h1 {
 .FileInput > input[type=file] {
     height: auto;
     width: min-content;
+}
+
+img {
+    image-rendering: pixelated;
+}
+
+#imagePreview {
+    height: 6rem;
+    width: 6rem;
+}
+
+details {
+    user-select: none;
+}
+
+summary {
+    display: flex;
+    cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+    display: none;
 }
