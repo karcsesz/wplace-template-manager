@@ -7,11 +7,12 @@
     height: max-content;
     width: max-content;
     pointer-events: all;
-    background-color: white;
-    padding: 16px;
-    border-radius: 10px;
     gap: 1rem;
     max-width: 80vw;
+    max-height: 90vh;
+    flex-grow: 0;
+    flex-wrap: nowrap;
+    overflow: auto;
 }
 
 .Overlay > nav {
@@ -40,5 +41,5 @@
 }
 
 .Overlay input[type="number"] {
-    width: 6rem;
+    width: 3.5rem;
 }

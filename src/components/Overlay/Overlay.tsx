@@ -10,7 +10,7 @@ export const Overlay: FC<
     const navigate = useNavigate();
 
     return (
-        <div className="Overlay shadow-xl">
+        <div className="Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md">
             {(showBack || headline) && (
                 <nav>
                     <div>
@@ -19,7 +19,7 @@ export const Overlay: FC<
                                 <img src={Chevron} alt={"back"} />
                             </button>
                         )}
-                        {headline && <h1>{headline}</h1>}
+                        {headline && <h3 className={"text-lg"}>{headline}</h3>}
                     </div>
                     {customRenderer}
                 </nav>

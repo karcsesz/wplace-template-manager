@@ -45,8 +45,8 @@ export const Import: FC = () => {
 
     return (
         <Overlay headline={"Import Overlay"} showBack>
-            <label className={"FileInput btn btn-sm"}>
-                Template Image:
+            <label className={"FileInput input w-full"}>
+                <span className={"label"}>Template Image</span>
                 <input
                     name={"template"}
                     placeholder={"Template"}

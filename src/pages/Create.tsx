@@ -10,6 +10,9 @@ import { Color, ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } f
 import { optimizeColors } from "../utils/optimizeColors";
 import { ColorPicker } from "../components/ColorPicker/ColorPicker";
 
+// @ts-ignore
+import Location from "../components/OverlayList/location.svg";
+
 export const Create: FC = () => {
     // Inputs
     const [name, setName] = useState<string>("");
@@ -92,51 +95,64 @@ export const Create: FC = () => {
     const navigate = useNavigate();
     return (
         <Overlay headline={"Create new Overlay"} showBack>
-            <input
-                name={"name"}
-                className={"btn btn-sm"}
-                placeholder={"Name"}
-                onChange={(event) => setName(event.target.value)}
-            />
+            <label className={"input w-full"}>
+                <span className="label">Name</span>
+                <input
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder={"Name"}
+                    className={"h-full"}
+                    onKeyDown={(event) => {
+                        event.stopPropagation();
+                    }}
+                />
+            </label>
             <div className={"row"}>
-                <input
-                    type={"number"}
-                    name={"chunkX"}
-                    className={"btn btn-sm"}
-                    placeholder={"Chunk X"}
-                    value={startChunk[0]}
-                    onChange={(event) => setStartChunk(([x, y]) => [Number(event.target.value), y])}
-                />
-                <input
-                    type={"number"}
-                    name={"chunkY"}
-                    className={"btn btn-sm"}
-                    placeholder={"Chunk Y"}
-                    value={startChunk[1]}
-                    onChange={(event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])}
-                />
-                <input
-                    type={"number"}
-                    name={"posX"}
-                    className={"btn btn-sm"}
-                    placeholder={"Pos X"}
-                    value={startPosition[0]}
-                    onChange={(event) =>
-                        setStartPosition(([x, y]) => [Number(event.target.value), y])
-                    }
-                />
-                <input
-                    type={"number"}
-                    name={"posY"}
-                    className={"btn btn-sm"}
-                    placeholder={"Pos Y"}
-                    value={startPosition[1]}
-                    onChange={(event) =>
-                        setStartPosition(([x, y]) => [x, Number(event.target.value)])
-                    }
-                />
+                <label className={"input"}>
+                    <span className="label">CX</span>
+                    <input
+                        placeholder={"Chunk"}
+                        type={"number"}
+                        value={startChunk[0]}
+                        onChange={(event) =>
+                            setStartChunk(([x, y]) => [Number(event.target.value), y])
+                        }
+                    />
+                </label>
+                <label className={"input"}>
+                    <span className="label">CY</span>
+                    <input
+                        placeholder={"Chunk"}
+                        type={"number"}
+                        value={startChunk[1]}
+                        onChange={(event) =>
+                            setStartChunk(([x, y]) => [x, Number(event.target.value)])
+                        }
+                    />
+                </label>
+                <label className={"input"}>
+                    <span className="label">PX</span>
+                    <input
+                        placeholder={"Pos."}
+                        type={"number"}
+                        value={startPosition[0]}
+                        onChange={(event) =>
+                            setStartPosition(([x, y]) => [Number(event.target.value), y])
+                        }
+                    />
+                </label>
+                <label className={"input max-w-2"}>
+                    <span className="label">PY</span>
+                    <input
+                        placeholder={"Pos."}
+                        type={"number"}
+                        value={startPosition[1]}
+                        onChange={(event) =>
+                            setStartPosition(([x, y]) => [x, Number(event.target.value)])
+                        }
+                    />
+                </label>
                 <button
-                    className={"btn btn-sm"}
+                    className={"btn btn-md"}
                     onClick={() => {
                         if (position.position.length && position.chunk.length) {
                             setStartChunk(position.chunk as [number, number]);
@@ -144,11 +160,11 @@ export const Create: FC = () => {
                         }
                     }}
                 >
-                    P
+                    <img src={Location} alt={"location icon"} className={"icon"} />
                 </button>
             </div>
-            <label className={"FileInput btn btn-sm"}>
-                Template Image:
+            <label className={"FileInput input w-full"}>
+                <span className={"label"}>Template Image</span>
                 <input
                     type={"file"}
                     ref={fileInput}
@@ -196,7 +212,7 @@ export const Create: FC = () => {
                         onChange={(e) => setScale(Number(e.target.value))}
                         style={{ width: "100%" }}
                     />
-                    <div>
+                    <div className={"column"} style={{ alignItems: "flex-start" }}>
                         <ColorPicker
                             setSelectedColorState={setSelectedColors}
                             selectedColorState={selectedColors}

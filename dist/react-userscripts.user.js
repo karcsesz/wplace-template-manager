@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        wplace.live Overlay Manager
+// @name        wplace.live Template Manager
 // @namespace   https://github.com/cedrickassen/wplace-overlay-manager
 // @version     0.1
-// @description An advanced overlay manager for wplace.live
+// @description An advanced template manager for wplace.live
 // @updateURL    https://raw.githubusercontent.com/CedricKassen/wplace-overlay-manager/refs/heads/main/dist/react-userscripts.user.js
 // @downloadURL  https://raw.githubusercontent.com/CedricKassen/wplace-overlay-manager/refs/heads/main/dist/react-userscripts.user.js
 // @author      Cedric Kassen
@@ -12138,8 +12138,8 @@
       if (!imgRef.current) return;
       imgRef.current.src = "data:image/bmp;base64," + image;
     }, [image]);
-    return /* @__PURE__ */ React.createElement("div", { className: "OverlayListEntry" }, /* @__PURE__ */ React.createElement("div", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo" }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement("div", { className: "groupRow", style: { flexGrow: 1, justifyContent: "flex-end" } }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", position[1], " ")), /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement("img", { src: Cog, alt: "options", className: "icon" })), /* @__PURE__ */ React.createElement(
-      "button",
+    return /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo", style: { width: "2.5rem" } }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement("td", { className: "groupRow", style: { flexGrow: 1, justifyContent: "flex-end" } }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[1], " ")), /* @__PURE__ */ React.createElement("td", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement("img", { src: Cog, alt: "options", className: "icon" })), /* @__PURE__ */ React.createElement(
+      "td",
       {
         onClick: () => {
           window.postMessage({
@@ -12983,12 +12983,12 @@
         }
       );
     });
-    return /* @__PURE__ */ React.createElement("div", { className: "OverlayList" }, overlaysList);
+    return /* @__PURE__ */ React.createElement("table", { className: "table max-sm:text-sm" }, /* @__PURE__ */ React.createElement("tbody", null, overlaysList));
   };
   const Chevron = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'%20standalone='no'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20width='800px'%20height='800px'%20viewBox='-5.5%200%2026%2026'%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20xmlns:xlink='http://www.w3.org/1999/xlink'%20xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'%3e%3ctitle%3echevron-left%3c/title%3e%3cdesc%3eCreated%20with%20Sketch%20Beta.%3c/desc%3e%3cdefs%3e%3c/defs%3e%3cg%20id='Page-1'%20stroke='none'%20stroke-width='1'%20fill='none'%20fill-rule='evenodd'%20sketch:type='MSPage'%3e%3cg%20id='Icon-Set-Filled'%20sketch:type='MSLayerGroup'%20transform='translate(-423.000000,%20-1196.000000)'%20fill='%23000000'%3e%3cpath%20d='M428.115,1209%20L437.371,1200.6%20C438.202,1199.77%20438.202,1198.43%20437.371,1197.6%20C436.541,1196.76%20435.194,1196.76%20434.363,1197.6%20L423.596,1207.36%20C423.146,1207.81%20422.948,1208.41%20422.985,1209%20C422.948,1209.59%20423.146,1210.19%20423.596,1210.64%20L434.363,1220.4%20C435.194,1221.24%20436.541,1221.24%20437.371,1220.4%20C438.202,1219.57%20438.202,1218.23%20437.371,1217.4%20L428.115,1209'%20id='chevron-left'%20sketch:type='MSShapeGroup'%3e%3c/path%3e%3c/g%3e%3c/g%3e%3c/svg%3e";
   const Overlay = ({ children, headline, showBack, customRenderer }) => {
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement("div", { className: "Overlay shadow-xl" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement("img", { src: Chevron, alt: "back" })), headline && /* @__PURE__ */ React.createElement("h1", null, headline)), customRenderer), children);
+    return /* @__PURE__ */ React.createElement("div", { className: "Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement("img", { src: Chevron, alt: "back" })), headline && /* @__PURE__ */ React.createElement("h3", { className: "text-lg" }, headline)), customRenderer), children);
   };
   const Overview = () => {
     const navigate = useNavigate();
@@ -15053,19 +15053,17 @@
     const PaidColorCheckRenderer = reactExports.useMemo(() => {
       return createColorCheckRenderer(PaidColorMap.entries());
     }, [FreeColorMap, search, selectedColorState]);
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Search"), /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "search",
         onChange: (event) => setSearch(event.target.value),
-        className: "btn btn-sm",
-        placeholder: "Search",
+        placeholder: "Color Name",
         onKeyDown: (event) => {
           event.stopPropagation();
-        },
-        style: { width: "100%" }
+        }
       }
-    ), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "checkbox",
@@ -15147,58 +15145,52 @@
       }
     };
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
       "input",
       {
-        name: "name",
-        className: "btn btn-sm",
+        onChange: (event) => setName(event.target.value),
         placeholder: "Name",
-        onChange: (event) => setName(event.target.value)
+        className: "h-full",
+        onKeyDown: (event) => {
+          event.stopPropagation();
+        }
       }
-    ), /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
       "input",
       {
+        placeholder: "Chunk",
         type: "number",
-        name: "chunkX",
-        className: "btn btn-sm",
-        placeholder: "Chunk X",
         value: startChunk[0],
         onChange: (event) => setStartChunk(([x, y]) => [Number(event.target.value), y])
       }
-    ), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CY"), /* @__PURE__ */ React.createElement(
       "input",
       {
+        placeholder: "Chunk",
         type: "number",
-        name: "chunkY",
-        className: "btn btn-sm",
-        placeholder: "Chunk Y",
         value: startChunk[1],
         onChange: (event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])
       }
-    ), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PX"), /* @__PURE__ */ React.createElement(
       "input",
       {
+        placeholder: "Pos.",
         type: "number",
-        name: "posX",
-        className: "btn btn-sm",
-        placeholder: "Pos X",
         value: startPosition[0],
         onChange: (event) => setStartPosition(([x, y]) => [Number(event.target.value), y])
       }
-    ), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", { className: "input max-w-2" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
       "input",
       {
+        placeholder: "Pos.",
         type: "number",
-        name: "posY",
-        className: "btn btn-sm",
-        placeholder: "Pos Y",
         value: startPosition[1],
         onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
       }
-    ), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement(
       "button",
       {
-        className: "btn btn-sm",
+        className: "btn btn-md",
         onClick: () => {
           if (position.position.length && position.chunk.length) {
             setStartChunk(position.chunk);
@@ -15206,8 +15198,8 @@
           }
         }
       },
-      "P"
-    )), /* @__PURE__ */ React.createElement("label", { className: "FileInput btn btn-sm" }, "Template Image:", /* @__PURE__ */ React.createElement(
+      /* @__PURE__ */ React.createElement("img", { src: Location, alt: "location icon", className: "icon" })
+    )), /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "file",
@@ -15238,7 +15230,7 @@
         onChange: (e) => setScale(Number(e.target.value)),
         style: { width: "100%" }
       }
-    ), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("div", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement(
       ColorPicker,
       {
         setSelectedColorState: setSelectedColors,
@@ -15558,7 +15550,7 @@
         imgRef.current.src = "data:image/bmp;base64," + image;
       }
     }, [image]);
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput btn btn-sm" }, "Template Image:", /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
         name: "template",
@@ -16141,7 +16133,7 @@
 ;
 (function(){
                     const el = document.createElement("style");
-                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 100;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\nimg {\n    image-rendering: pixelated;\n}\n\n#imagePreview {\n    height: 6rem;\n    width: 6rem;\n}\n\ndetails {\n    user-select: none;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}.ShowOverlayButton {\n    pointer-events: all;\n    top: 280px;\n    right: 12px;\n    position: absolute;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    background-color: white;\n    padding: 16px;\n    border-radius: 10px;\n    gap: 1rem;\n    max-width: 80vw;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 6rem;\n}";
+                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 100;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\nimg {\n    image-rendering: pixelated;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.ShowOverlayButton {\n    pointer-events: all;\n    top: 280px;\n    right: 12px;\n    position: absolute;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
                     el.type = "text/css";
                     document.head.appendChild(el);
                 })();

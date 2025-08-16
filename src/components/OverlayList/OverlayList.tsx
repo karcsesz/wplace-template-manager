@@ -19,5 +19,9 @@ export const OverlayList: FC = () => {
         );
     });
 
-    return <div className={"OverlayList"}>{overlaysList}</div>;
+    return (
+        <table className={"table max-sm:text-sm"}>
+            <tbody>{overlaysList}</tbody>
+        </table>
+    );
 };

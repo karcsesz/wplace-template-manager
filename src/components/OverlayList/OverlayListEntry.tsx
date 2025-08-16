@@ -21,21 +21,21 @@ export const OverlayListEntry: FC<{
     }, [image]);
 
     return (
-        <div className={"OverlayListEntry"}>
-            <div className={"groupRow"}>
-                <img ref={imgRef} alt={"logo"} />
+        <tr>
+            <td className={"groupRow"}>
+                <img ref={imgRef} alt={"logo"} style={{ width: "2.5rem" }} />
                 <span> {name} </span>
-            </div>
-            <div className={"groupRow"} style={{ flexGrow: 1, justifyContent: "flex-end" }}>
-                <span className={"btn btn-sm"}> {chunk[0]} </span>
-                <span className={"btn btn-sm"}> {chunk[1]} </span>
-                <span className={"btn btn-sm"}> {position[0]} </span>
-                <span className={"btn btn-sm"}> {position[1]} </span>
-            </div>
-            <button onClick={() => navigate("/edit/" + name)}>
+            </td>
+            <td className={"groupRow"} style={{ flexGrow: 1, justifyContent: "flex-end" }}>
+                <span className={"btn btn-sm coordinate-display"}> {chunk[0]} </span>
+                <span className={"btn btn-sm coordinate-display"}> {chunk[1]} </span>
+                <span className={"btn btn-sm coordinate-display"}> {position[0]} </span>
+                <span className={"btn btn-sm coordinate-display"}> {position[1]} </span>
+            </td>
+            <td onClick={() => navigate("/edit/" + name)}>
                 <img src={Cog} alt={"options"} className={"icon"} />
-            </button>
-            <button
+            </td>
+            <td
                 onClick={() => {
                     window.postMessage({
                         source: "overlay-location-service",
@@ -50,7 +50,7 @@ export const OverlayListEntry: FC<{
                 }}
             >
                 <img src={Location} alt={"options"} className={"icon"} />
-            </button>
-        </div>
+            </td>
+        </tr>
     );
 };

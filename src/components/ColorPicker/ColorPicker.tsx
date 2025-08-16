@@ -85,16 +85,17 @@ export const ColorPicker: FC<{
 
     return (
         <>
-            <input
-                type={"search"}
-                onChange={(event) => setSearch(event.target.value)}
-                className={"btn btn-sm"}
-                placeholder={"Search"}
-                onKeyDown={(event) => {
-                    event.stopPropagation();
-                }}
-                style={{ width: "100%" }}
-            />
+            <label className={"input w-full"}>
+                <span className="label">Search</span>
+                <input
+                    type={"search"}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder={"Color Name"}
+                    onKeyDown={(event) => {
+                        event.stopPropagation();
+                    }}
+                />
+            </label>
             <label>
                 <input
                     type={"checkbox"}
