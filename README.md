@@ -17,18 +17,19 @@ working in groups and on bigger projects with many colors a breeze.
 
 ## Feature Comparison
 
-| Feature                         | wplace.live Template Manager | Blue Marble           | WPlace Overlay Pro    |
-|---------------------------------|------------------------------|-----------------------|-----------------------|
-| Show Image Overay               | ☑️                           | ☑️                    | ☑️                    |
+| Feature                         | wplace.live Template Manager | Blue Marble           | WPlace Overlay Pro   |
+|---------------------------------|------------------------------|-----------------------|----------------------|
+| Show Image Overay               | ☑️                           | ☑️                    | ☑️                   |
 | Fully Hidable UI                | ☑️                           | Partial (Collapsible) | Partial (Collapsible) |
-| Build-In Color Matching         | ☑️                           | ❌                     | ☑️                    |
-| Level and Droplet Overview      | ❌                            | ☑️                    | ❌                     |
-| Build-In Resizing               | ☑️                           | ❌                     | ☑️                    |
-| Live Preview                    | ❌                            | ❌                     | ☑️                    |
-| Persistence                     | ☑️                           | ❌                     | ☑️                    |
-| Multiple Templates              | ☑️                           | ❌                     | ☑️                    |
-| Export (with embedded Metadata) | ☑️                           | ❌                     | ❌                     |
-| Template Color Selector         | ☑️                           | ❌                     | ❌                     |
+| Build-In Color Matching         | ☑️                           | ❌                     | ☑️                   |
+| Level and Droplet Overview      | ❌                            | ☑️                    | ❌                    |
+| Build-In Resizing               | ☑️                           | ❌                     | ☑️                   |
+| Live Preview                    | ❌                            | ❌                     | ☑️                   |
+| Persistence                     | ☑️                           | ❌                     | ☑️                   |
+| Multiple Templates              | ☑️                           | ❌                     | ☑️                   |
+| Export (with embedded Metadata) | ☑️                           | ❌                     | ❌                    |
+| Template Color Selector         | ☑️                           | ❌                     | ❌                    |
+| Jump to Template Location       | ☑️                           | ❌                     | ❌                    |
 
 ## Installation
 
