@@ -14976,6 +14976,11 @@
       data[i] = closestColor.r;
       data[i + 1] = closestColor.g;
       data[i + 2] = closestColor.b;
+      if (data[i + 3] > 127) {
+        data[i + 3] = 255;
+      } else {
+        data[i + 3] = 0;
+      }
     }
     ctx.putImageData(imageData, 0, 0);
     const blob = await new Promise((resolve) => {
