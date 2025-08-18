@@ -45,7 +45,7 @@ working in groups and on bigger projects with many colors a breeze.
 
 ### wplace.live Template Manager
 
-- Download the Script via [this link](https://raw.githubusercontent.com/CedricKassen/wplace-overlay-manager/refs/heads/main/dist/react-userscripts.user.js).
+- Download the Script via [this link](https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js).
   (Crtl + S to save the script as a file)
 - Drag and Drop the file into the Tampermonkey overview
 - Click the Install Button 
