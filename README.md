@@ -19,7 +19,7 @@ working in groups and on bigger projects with many colors a breeze.
 
 | Feature                         | wplace.live Template Manager | Blue Marble           | WPlace Overlay Pro   |
 |---------------------------------|------------------------------|-----------------------|----------------------|
-| Show Image Overay               | ☑️                           | ☑️                    | ☑️                   |
+| Show Image Template               | ☑️                           | ☑️                    | ☑️                   |
 | Fully Hidable UI                | ☑️                           | Partial (Collapsible) | Partial (Collapsible) |
 | Build-In Color Matching         | ☑️                           | ❌                     | ☑️                   |
 | Level and Droplet Overview      | ❌                            | ☑️                    | ❌                    |
