@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
             lib: {
                 entry: "./src/index.tsx",
                 name: "userscript",
-                fileName: (_format) => `react-userscripts.user.js`,
+                fileName: (_format) => `wplace-template-manager.user.js`,
                 formats: ["iife"],
             },
             rollupOptions: {
