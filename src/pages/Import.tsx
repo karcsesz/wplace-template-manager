@@ -44,7 +44,7 @@ export const Import: FC = () => {
     }, [image]);
 
     return (
-        <Overlay headline={"Import Overlay"} showBack>
+        <Overlay headline={"Import Template"} showBack>
             <label className={"FileInput input w-full"}>
                 <span className={"label"}>Template Image</span>
                 <input

@@ -6,7 +6,7 @@ import { awaitElement } from "./utils/awaitElement";
 import App from "./App";
 import "./fetch";
 
-log("wplace.live Overlay Manager successfully loaded.");
+log("wplace.live Template Manager successfully loaded.");
 
 async function main() {
     const body = await awaitElement("body > div");

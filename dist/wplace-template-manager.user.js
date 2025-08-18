@@ -12024,7 +12024,7 @@
     return observer;
   }
   function log(...args) {
-    console.log("%cOverlay Manager:", "color: purple; font-weight: bold", ...args);
+    console.log("%cTemplate Manager:", "color: purple; font-weight: bold", ...args);
   }
   async function awaitElement(selector) {
     const MAX_TRIES = 60;
@@ -12995,7 +12995,7 @@
     return /* @__PURE__ */ React.createElement(
       Overlay,
       {
-        headline: "Overlay Manager",
+        headline: "Template Manager",
         customRenderer: /* @__PURE__ */ React.createElement(
           "button",
           {
@@ -13004,7 +13004,7 @@
               navigate("/import");
             }
           },
-          "Import Overlay"
+          "Import Template"
         )
       },
       /* @__PURE__ */ React.createElement(OverlayList, null),
@@ -14901,11 +14901,12 @@
       const r = imageData.data[i];
       const g = imageData.data[i + 1];
       const b = imageData.data[i + 2];
-      if (r && g && b) {
+      if (r !== void 0 && g !== void 0 && b !== void 0) {
         const hex = rgbToHex(r, g, b);
         colors.add(hex);
       }
     }
+    console.log(colors);
     const mappedColors = Array.from(colors.values()).map((hex) => {
       let color = InvertedFreeColorMap.get(hex);
       if (!color) {
@@ -15555,7 +15556,7 @@
         imgRef.current.src = "data:image/bmp;base64," + image;
       }
     }, [image]);
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Template", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
         name: "template",
@@ -16121,7 +16122,7 @@
     const originalFetch = window.fetch;
     window.fetch = createFetch(originalFetch);
   });
-  log("wplace.live Overlay Manager successfully loaded.");
+  log("wplace.live Template Manager successfully loaded.");
   async function main() {
     const body = await awaitElement("body > div");
     const container = document.createElement("div");

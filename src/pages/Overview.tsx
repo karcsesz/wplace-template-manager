@@ -7,7 +7,7 @@ export const Overview: FC = () => {
     const navigate = useNavigate();
     return (
         <Overlay
-            headline={"Overlay Manager"}
+            headline={"Template Manager"}
             customRenderer={
                 <button
                     className={"btn btn-sm"}
@@ -15,7 +15,7 @@ export const Overview: FC = () => {
                         navigate("/import");
                     }}
                 >
-                    Import Overlay
+                    Import Template
                 </button>
             }
         >

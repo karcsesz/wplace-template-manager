@@ -25,11 +25,13 @@ export const getColorsFromImage = async (image: ImageBitmap) => {
         const g = imageData.data[i + 1];
         const b = imageData.data[i + 2];
 
-        if (r && g && b) {
+        if (r !== undefined && g !== undefined && b !== undefined) {
             const hex = rgbToHex(r, g, b);
             colors.add(hex as ColorValue);
         }
     }
+
+    console.log(colors);
 
     const mappedColors = Array.from(colors.values()).map((hex) => {
         let color: Color | undefined = InvertedFreeColorMap.get(hex as FreeColor);
