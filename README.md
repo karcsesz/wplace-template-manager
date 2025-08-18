@@ -10,7 +10,7 @@ We installed Blue Marble, put our pixel arts through an online converter, and st
 But only a few pixels in, we already longed for features Blue Marble didn't provide. And that's where I stepped in.
 
 In the meantime, another overlay by the name of "WPlace Overlay Pro" appeared. Not as well known as Blue Marble,
-but way better in comparison. But I was already committed, and still have a few aces up my sleave.
+but way better in comparison. But I was already committed, and still have a few aces up my sleeve.
 With wplace.live Template Manager, names and coordinates are embedded in exported images, providing a seamless and
 user-error-free importing experience. Also the ability to only show certain colors in the template overlay makes
 working in groups and on bigger projects with many colors a breeze.
