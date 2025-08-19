@@ -12,9 +12,7 @@ import { Buffer } from "buffer";
 import { positionAtom } from "../atoms/position";
 import { ColorPicker } from "../components/ColorPicker/ColorPicker";
 import { Color } from "../colorMap";
-
-// @ts-ignore
-import Location from "../components/OverlayList/location.svg";
+import { Location } from "../components/Icons/Location";
 
 export const Edit: FC = () => {
     const [overlays, setOverlay] = useAtom(overlayAtom);
@@ -157,7 +155,7 @@ export const Edit: FC = () => {
                         }
                     }}
                 >
-                    <img src={Location} alt={"location icon"} className={"icon"} />
+                    <Location className={"icon"} />
                 </button>
             </div>
             <label>

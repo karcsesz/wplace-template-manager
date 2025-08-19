@@ -1,8 +1,7 @@
 import React, { FC, PropsWithChildren, ReactNode } from "react";
 import "./Overlay.css";
 import { useNavigate } from "../Router/navigate";
-// @ts-ignore
-import Chevron from "./chevron.svg";
+import { Chevron } from "../Icons/Chevron";
 
 export const Overlay: FC<
     PropsWithChildren<{ showBack?: boolean; headline?: string; customRenderer?: ReactNode }>
@@ -16,7 +15,7 @@ export const Overlay: FC<
                     <div>
                         {showBack && (
                             <button onClick={() => navigate("/")}>
-                                <img src={Chevron} alt={"back"} />
+                                <Chevron className={"icon"} />
                             </button>
                         )}
                         {headline && <h3 className={"text-lg"}>{headline}</h3>}

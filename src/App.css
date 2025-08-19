@@ -143,8 +143,8 @@ h1 {
     width: min-content;
 }
 
-img {
-    image-rendering: pixelated;
+.icon path {
+    fill: var(--color-base-content);;
 }
 
 #imagePreview {

@@ -9,9 +9,7 @@ import { positionAtom } from "../atoms/position";
 import { Color, ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
 import { optimizeColors } from "../utils/optimizeColors";
 import { ColorPicker } from "../components/ColorPicker/ColorPicker";
-
-// @ts-ignore
-import Location from "../components/OverlayList/location.svg";
+import { Location } from "../components/Icons/Location";
 
 export const Create: FC = () => {
     // Inputs
@@ -160,7 +158,7 @@ export const Create: FC = () => {
                         }
                     }}
                 >
-                    <img src={Location} alt={"location icon"} className={"icon"} />
+                    <Location className={"icon"} />
                 </button>
             </div>
             <label className={"FileInput input w-full"}>

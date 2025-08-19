@@ -1,12 +1,16 @@
 // ==UserScript==
-// @name        wplace.live Template Manager
-// @namespace   https://github.com/cedrickassen/wplace-overlay-manager
-// @version     1.0
-// @description An advanced template manager for wplace.live
+// @name         wplace.live Template Manager
+// @namespace    https://github.com/cedrickassen/wplace-overlay-manager
+// @version      1.1
+// @homepageURL  https://github.com/CedricKassen/wplace-template-manager
+// @supportURL   https://github.com/CedricKassen/wplace-template-manager/issues
+// @license      MIT
+// @description  An advanced template manager for wplace.live
 // @updateURL    https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js
 // @downloadURL  https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js
-// @author      Cedric Kassen
-// @match     *://*.wplace.live/*
+// @author       Cedric Kassen
+// @match        *://*.wplace.live/*
+// @run-at       document-start
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // @grant        GM.setValue
@@ -12129,8 +12133,41 @@
       setRoute(route);
     };
   };
-  const Cog = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20fill='%23000000'%20width='800px'%20height='800px'%20viewBox='0%200%2032%2032'%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%3e%3ctitle%3ecog%3c/title%3e%3cpath%20d='M0%2016q0-0.832%200.576-1.408t1.44-0.576h1.984q0.032%200%200.064%200t0.064%200.032%200.064%200q0.448-2.72%202.080-4.992-0.128-0.064-0.16-0.096l-1.408-1.44q-0.608-0.576-0.608-1.408t0.608-1.408%201.408-0.608%201.408%200.608l1.408%201.408q0.032%200.032%200.096%200.16%202.304-1.632%205.024-2.048%200-0.032-0.032-0.096t0-0.128v-1.984q0-0.832%200.576-1.408t1.408-0.608%201.408%200.608%200.608%201.408v1.984q0%200.032-0.032%200.096t0%200.128q2.72%200.416%204.992%202.048%200.064-0.128%200.096-0.16l1.408-1.408q0.576-0.608%201.408-0.608t1.44%200.608%200.576%201.408-0.576%201.408l-1.408%201.408q-0.064%200.064-0.192%200.128%201.632%202.272%202.080%204.992%200.032%200%200.096%200t0.096-0.032h2.016q0.8%200%201.408%200.576t0.576%201.408-0.576%201.44-1.408%200.576h-2.016q-0.032%200-0.096-0.032t-0.096-0.032q-0.448%202.752-2.080%205.024%200.128%200.064%200.192%200.128l1.408%201.408q0.576%200.576%200.576%201.376t-0.576%201.44-1.44%200.576-1.408-0.576l-1.408-1.408q-0.032-0.064-0.096-0.16-2.272%201.6-4.992%202.048%200%200.032%200%200.096t0.032%200.096v2.016q0%200.832-0.608%201.408t-1.408%200.576-1.408-0.576-0.576-1.408v-2.016q0-0.032%200-0.096t0.032-0.096q-2.72-0.448-5.024-2.048-0.064%200.128-0.096%200.16l-1.408%201.408q-0.576%200.576-1.408%200.576t-1.408-0.576-0.608-1.44%200.608-1.376l1.408-1.408q0.064-0.064%200.16-0.128-1.632-2.272-2.080-5.024%200%200-0.064%200.032t-0.128%200.032h-1.984q-0.832%200-1.44-0.576t-0.576-1.44zM8%2016q0%203.328%202.336%205.664t5.664%202.336%205.664-2.336%202.336-5.664-2.336-5.632-5.664-2.368-5.664%202.368-2.336%205.632z'%3e%3c/path%3e%3c/svg%3e";
-  const Location = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20width='800px'%20height='800px'%20viewBox='0%200%2016%2016'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill='%23000000'%20d='M8,0%20C11.3137,0%2014,2.68629%2014,6%20C14,7.33918%2013.5613,8.57588%2012.8197,9.57422%20L7.99994,16%20L3.1803,9.57422%20C2.43873,8.57588%202,7.33918%202,6%20C2,2.68629%204.68629,0%208,0%20Z%20M8,2%20C5.79086,2%204,3.79086%204,6%20C4,6.89363%204.29068,7.71358%204.78334,8.37826%20L7.99996,12.6668%20L11.2167,8.37817%20C11.7093,7.71351%2012,6.89359%2012,6%20C12,3.79086%2010.2091,2%208,2%20Z%20M8,4%20C9.10457,4%2010,4.89543%2010,6%20C10,7.10457%209.10457,8%208,8%20C6.89543,8%206,7.10457%206,6%20C6,4.89543%206.89543,4%208,4%20Z'/%3e%3c/svg%3e";
+  const Location = (props) => {
+    return /* @__PURE__ */ React.createElement(
+      "svg",
+      {
+        ...props,
+        width: "800px",
+        height: "800px",
+        viewBox: "0 0 16 16",
+        xmlns: "http://www.w3.org/2000/svg"
+      },
+      /* @__PURE__ */ React.createElement(
+        "path",
+        {
+          fill: "#000000",
+          d: "M8,0 C11.3137,0 14,2.68629 14,6 C14,7.33918 13.5613,8.57588 12.8197,9.57422 L7.99994,16 L3.1803,9.57422 C2.43873,8.57588 2,7.33918 2,6 C2,2.68629 4.68629,0 8,0 Z M8,2 C5.79086,2 4,3.79086 4,6 C4,6.89363 4.29068,7.71358 4.78334,8.37826 L7.99996,12.6668 L11.2167,8.37817 C11.7093,7.71351 12,6.89359 12,6 C12,3.79086 10.2091,2 8,2 Z M8,4 C9.10457,4 10,4.89543 10,6 C10,7.10457 9.10457,8 8,8 C6.89543,8 6,7.10457 6,6 C6,4.89543 6.89543,4 8,4 Z"
+        }
+      )
+    );
+  };
+  const Cog = (props) => {
+    return /* @__PURE__ */ React.createElement(
+      "svg",
+      {
+        ...props,
+        fill: "#000000",
+        width: "800px",
+        height: "800px",
+        viewBox: "0 0 32 32",
+        version: "1.1",
+        xmlns: "http://www.w3.org/2000/svg"
+      },
+      /* @__PURE__ */ React.createElement("title", null, "cog"),
+      /* @__PURE__ */ React.createElement("path", { d: "M0 16q0-0.832 0.576-1.408t1.44-0.576h1.984q0.032 0 0.064 0t0.064 0.032 0.064 0q0.448-2.72 2.080-4.992-0.128-0.064-0.16-0.096l-1.408-1.44q-0.608-0.576-0.608-1.408t0.608-1.408 1.408-0.608 1.408 0.608l1.408 1.408q0.032 0.032 0.096 0.16 2.304-1.632 5.024-2.048 0-0.032-0.032-0.096t0-0.128v-1.984q0-0.832 0.576-1.408t1.408-0.608 1.408 0.608 0.608 1.408v1.984q0 0.032-0.032 0.096t0 0.128q2.72 0.416 4.992 2.048 0.064-0.128 0.096-0.16l1.408-1.408q0.576-0.608 1.408-0.608t1.44 0.608 0.576 1.408-0.576 1.408l-1.408 1.408q-0.064 0.064-0.192 0.128 1.632 2.272 2.080 4.992 0.032 0 0.096 0t0.096-0.032h2.016q0.8 0 1.408 0.576t0.576 1.408-0.576 1.44-1.408 0.576h-2.016q-0.032 0-0.096-0.032t-0.096-0.032q-0.448 2.752-2.080 5.024 0.128 0.064 0.192 0.128l1.408 1.408q0.576 0.576 0.576 1.376t-0.576 1.44-1.44 0.576-1.408-0.576l-1.408-1.408q-0.032-0.064-0.096-0.16-2.272 1.6-4.992 2.048 0 0.032 0 0.096t0.032 0.096v2.016q0 0.832-0.608 1.408t-1.408 0.576-1.408-0.576-0.576-1.408v-2.016q0-0.032 0-0.096t0.032-0.096q-2.72-0.448-5.024-2.048-0.064 0.128-0.096 0.16l-1.408 1.408q-0.576 0.576-1.408 0.576t-1.408-0.576-0.608-1.44 0.608-1.376l1.408-1.408q0.064-0.064 0.16-0.128-1.632-2.272-2.080-5.024 0 0-0.064 0.032t-0.128 0.032h-1.984q-0.832 0-1.44-0.576t-0.576-1.44zM8 16q0 3.328 2.336 5.664t5.664 2.336 5.664-2.336 2.336-5.664-2.336-5.632-5.664-2.368-5.664 2.368-2.336 5.632z" })
+    );
+  };
   const OverlayListEntry = ({ name, image, chunk, position }) => {
     const navigate = useNavigate();
     const imgRef = reactExports.useRef(null);
@@ -12138,7 +12175,7 @@
       if (!imgRef.current) return;
       imgRef.current.src = "data:image/bmp;base64," + image;
     }, [image]);
-    return /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo", style: { width: "2.5rem" } }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement("td", { className: "groupRow", style: { flexGrow: 1, justifyContent: "flex-end" } }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[1], " ")), /* @__PURE__ */ React.createElement("td", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement("img", { src: Cog, alt: "options", className: "icon" })), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo", style: { width: "2.5rem" } }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement("td", { className: "groupRow", style: { flexGrow: 1, justifyContent: "flex-end" } }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[1], " ")), /* @__PURE__ */ React.createElement("td", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement(Cog, { className: "icon" })), /* @__PURE__ */ React.createElement(
       "td",
       {
         onClick: () => {
@@ -12154,7 +12191,7 @@
           });
         }
       },
-      /* @__PURE__ */ React.createElement("img", { src: Location, alt: "options", className: "icon" })
+      /* @__PURE__ */ React.createElement(Location, { className: "icon" })
     ));
   };
   const __vite_import_meta_env__$3 = {};
@@ -12985,10 +13022,40 @@
     });
     return /* @__PURE__ */ React.createElement("table", { className: "table max-sm:text-sm" }, /* @__PURE__ */ React.createElement("tbody", null, overlaysList));
   };
-  const Chevron = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'%20standalone='no'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20width='800px'%20height='800px'%20viewBox='-5.5%200%2026%2026'%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20xmlns:xlink='http://www.w3.org/1999/xlink'%20xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'%3e%3ctitle%3echevron-left%3c/title%3e%3cdesc%3eCreated%20with%20Sketch%20Beta.%3c/desc%3e%3cdefs%3e%3c/defs%3e%3cg%20id='Page-1'%20stroke='none'%20stroke-width='1'%20fill='none'%20fill-rule='evenodd'%20sketch:type='MSPage'%3e%3cg%20id='Icon-Set-Filled'%20sketch:type='MSLayerGroup'%20transform='translate(-423.000000,%20-1196.000000)'%20fill='%23000000'%3e%3cpath%20d='M428.115,1209%20L437.371,1200.6%20C438.202,1199.77%20438.202,1198.43%20437.371,1197.6%20C436.541,1196.76%20435.194,1196.76%20434.363,1197.6%20L423.596,1207.36%20C423.146,1207.81%20422.948,1208.41%20422.985,1209%20C422.948,1209.59%20423.146,1210.19%20423.596,1210.64%20L434.363,1220.4%20C435.194,1221.24%20436.541,1221.24%20437.371,1220.4%20C438.202,1219.57%20438.202,1218.23%20437.371,1217.4%20L428.115,1209'%20id='chevron-left'%20sketch:type='MSShapeGroup'%3e%3c/path%3e%3c/g%3e%3c/g%3e%3c/svg%3e";
+  const Chevron = (props) => {
+    return /* @__PURE__ */ React.createElement(
+      "svg",
+      {
+        ...props,
+        width: "800px",
+        height: "800px",
+        viewBox: "-5.5 0 26 26",
+        version: "1.1",
+        xmlns: "http://www.w3.org/2000/svg"
+      },
+      /* @__PURE__ */ React.createElement("title", null, "chevron-left"),
+      /* @__PURE__ */ React.createElement("desc", null, "Created with Sketch Beta."),
+      /* @__PURE__ */ React.createElement("defs", null),
+      /* @__PURE__ */ React.createElement("g", { id: "Page-1", stroke: "none", "stroke-width": "1", fill: "none", "fill-rule": "evenodd" }, /* @__PURE__ */ React.createElement(
+        "g",
+        {
+          id: "Icon-Set-Filled",
+          transform: "translate(-423.000000, -1196.000000)",
+          fill: "#000000"
+        },
+        /* @__PURE__ */ React.createElement(
+          "path",
+          {
+            d: "M428.115,1209 L437.371,1200.6 C438.202,1199.77 438.202,1198.43 437.371,1197.6 C436.541,1196.76 435.194,1196.76 434.363,1197.6 L423.596,1207.36 C423.146,1207.81 422.948,1208.41 422.985,1209 C422.948,1209.59 423.146,1210.19 423.596,1210.64 L434.363,1220.4 C435.194,1221.24 436.541,1221.24 437.371,1220.4 C438.202,1219.57 438.202,1218.23 437.371,1217.4 L428.115,1209",
+            id: "chevron-left"
+          }
+        )
+      ))
+    );
+  };
   const Overlay = ({ children, headline, showBack, customRenderer }) => {
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement("div", { className: "Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement("img", { src: Chevron, alt: "back" })), headline && /* @__PURE__ */ React.createElement("h3", { className: "text-lg" }, headline)), customRenderer), children);
+    return /* @__PURE__ */ React.createElement("div", { className: "Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement(Chevron, { className: "icon" })), headline && /* @__PURE__ */ React.createElement("h3", { className: "text-lg" }, headline)), customRenderer), children);
   };
   const Overview = () => {
     const navigate = useNavigate();
@@ -15246,7 +15313,7 @@
           }
         }
       },
-      /* @__PURE__ */ React.createElement("img", { src: Location, alt: "location icon", className: "icon" })
+      /* @__PURE__ */ React.createElement(Location, { className: "icon" })
     )), /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
@@ -15888,7 +15955,7 @@
             }
           }
         },
-        /* @__PURE__ */ React.createElement("img", { src: Location, alt: "location icon", className: "icon" })
+        /* @__PURE__ */ React.createElement(Location, { className: "icon" })
       )),
       /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
         "input",
@@ -16170,7 +16237,7 @@
 ;
 (function(){
                     const el = document.createElement("style");
-                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 100;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\nimg {\n    image-rendering: pixelated;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.ShowOverlayButton {\n    pointer-events: all;\n    top: 280px;\n    right: 12px;\n    position: absolute;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
+                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 100;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.ShowOverlayButton {\n    pointer-events: all;\n    top: 280px;\n    right: 12px;\n    position: absolute;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
                     el.type = "text/css";
                     document.head.appendChild(el);
                 })();

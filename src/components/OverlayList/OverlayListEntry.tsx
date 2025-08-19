@@ -1,11 +1,9 @@
 import React, { FC, useEffect, useRef } from "react";
 import { useNavigate } from "../Router/navigate";
-// @ts-ignore
-import Cog from "./cog.svg";
-// @ts-ignore
-import Location from "./location.svg";
 import { JumpEventData } from "../../fetch";
 import { awaitElement } from "../../utils/awaitElement";
+import { Location } from "../Icons/Location";
+import { Cog } from "../Icons/Cog";
 export const OverlayListEntry: FC<{
     image: string;
     name: string;
@@ -33,7 +31,7 @@ export const OverlayListEntry: FC<{
                 <span className={"btn btn-sm coordinate-display"}> {position[1]} </span>
             </td>
             <td onClick={() => navigate("/edit/" + name)}>
-                <img src={Cog} alt={"options"} className={"icon"} />
+                <Cog className={"icon"} />
             </td>
             <td
                 onClick={() => {
@@ -49,7 +47,7 @@ export const OverlayListEntry: FC<{
                     });
                 }}
             >
-                <img src={Location} alt={"options"} className={"icon"} />
+                <Location className={"icon"} />
             </td>
         </tr>
     );
