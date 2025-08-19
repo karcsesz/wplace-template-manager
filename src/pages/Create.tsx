@@ -140,7 +140,7 @@ export const Create: FC = () => {
                         }
                     />
                 </label>
-                <label className={"input max-w-2"}>
+                <label className={"input"}>
                     <span className="label">PY</span>
                     <input
                         placeholder={"Pos."}

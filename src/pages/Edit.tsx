@@ -13,6 +13,9 @@ import { positionAtom } from "../atoms/position";
 import { ColorPicker } from "../components/ColorPicker/ColorPicker";
 import { Color } from "../colorMap";
 
+// @ts-ignore
+import Location from "../components/OverlayList/location.svg";
+
 export const Edit: FC = () => {
     const [overlays, setOverlay] = useAtom(overlayAtom);
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = useState<boolean>(false);
@@ -101,44 +104,52 @@ export const Edit: FC = () => {
         >
             <h2> Position: </h2>
             <div className={"row"}>
-                <input
-                    type={"number"}
-                    name={"chunkX"}
-                    className={"btn btn-sm"}
-                    placeholder={"Chunk X"}
-                    value={startChunk[0]}
-                    onChange={(event) => setStartChunk(([x, y]) => [Number(event.target.value), y])}
-                />
-                <input
-                    type={"number"}
-                    name={"chunkY"}
-                    className={"btn btn-sm"}
-                    placeholder={"Chunk Y"}
-                    value={startChunk[1]}
-                    onChange={(event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])}
-                />
-                <input
-                    type={"number"}
-                    name={"posX"}
-                    className={"btn btn-sm"}
-                    placeholder={"Pos X"}
-                    value={startPosition[0]}
-                    onChange={(event) =>
-                        setStartPosition(([x, y]) => [Number(event.target.value), y])
-                    }
-                />
-                <input
-                    type={"number"}
-                    name={"posY"}
-                    className={"btn btn-sm"}
-                    placeholder={"Pos Y"}
-                    value={startPosition[1]}
-                    onChange={(event) =>
-                        setStartPosition(([x, y]) => [x, Number(event.target.value)])
-                    }
-                />
+                <label className={"input"}>
+                    <span className="label">CX</span>
+                    <input
+                        placeholder={"Chunk"}
+                        type={"number"}
+                        value={startChunk[0]}
+                        onChange={(event) =>
+                            setStartChunk(([x, y]) => [Number(event.target.value), y])
+                        }
+                    />
+                </label>
+                <label className={"input"}>
+                    <span className="label">CY</span>
+                    <input
+                        placeholder={"Chunk"}
+                        type={"number"}
+                        value={startChunk[1]}
+                        onChange={(event) =>
+                            setStartChunk(([x, y]) => [x, Number(event.target.value)])
+                        }
+                    />
+                </label>
+                <label className={"input"}>
+                    <span className="label">PX</span>
+                    <input
+                        placeholder={"Pos."}
+                        type={"number"}
+                        value={startPosition[0]}
+                        onChange={(event) =>
+                            setStartPosition(([x, y]) => [Number(event.target.value), y])
+                        }
+                    />
+                </label>
+                <label className={"input"}>
+                    <span className="label">PY</span>
+                    <input
+                        placeholder={"Pos."}
+                        type={"number"}
+                        value={startPosition[1]}
+                        onChange={(event) =>
+                            setStartPosition(([x, y]) => [x, Number(event.target.value)])
+                        }
+                    />
+                </label>
                 <button
-                    className={"btn btn-sm"}
+                    className={"btn btn-md"}
                     onClick={() => {
                         if (position.position.length && position.chunk.length) {
                             setStartChunk(position.chunk as [number, number]);
@@ -146,7 +157,7 @@ export const Edit: FC = () => {
                         }
                     }}
                 >
-                    P
+                    <img src={Location} alt={"location icon"} className={"icon"} />
                 </button>
             </div>
             <label>

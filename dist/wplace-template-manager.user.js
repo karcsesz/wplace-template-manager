@@ -15227,7 +15227,7 @@
         value: startPosition[0],
         onChange: (event) => setStartPosition(([x, y]) => [Number(event.target.value), y])
       }
-    )), /* @__PURE__ */ React.createElement("label", { className: "input max-w-2" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
       "input",
       {
         placeholder: "Pos.",
@@ -15845,50 +15845,42 @@
         customRenderer: /* @__PURE__ */ React.createElement("div", null, exportButton, deleteButton)
       },
       /* @__PURE__ */ React.createElement("h2", null, " Position: "),
-      /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement(
+      /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
         "input",
         {
+          placeholder: "Chunk",
           type: "number",
-          name: "chunkX",
-          className: "btn btn-sm",
-          placeholder: "Chunk X",
           value: startChunk[0],
           onChange: (event) => setStartChunk(([x, y]) => [Number(event.target.value), y])
         }
-      ), /* @__PURE__ */ React.createElement(
+      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CY"), /* @__PURE__ */ React.createElement(
         "input",
         {
+          placeholder: "Chunk",
           type: "number",
-          name: "chunkY",
-          className: "btn btn-sm",
-          placeholder: "Chunk Y",
           value: startChunk[1],
           onChange: (event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])
         }
-      ), /* @__PURE__ */ React.createElement(
+      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PX"), /* @__PURE__ */ React.createElement(
         "input",
         {
+          placeholder: "Pos.",
           type: "number",
-          name: "posX",
-          className: "btn btn-sm",
-          placeholder: "Pos X",
           value: startPosition[0],
           onChange: (event) => setStartPosition(([x, y]) => [Number(event.target.value), y])
         }
-      ), /* @__PURE__ */ React.createElement(
+      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
         "input",
         {
+          placeholder: "Pos.",
           type: "number",
-          name: "posY",
-          className: "btn btn-sm",
-          placeholder: "Pos Y",
           value: startPosition[1],
           onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
         }
-      ), /* @__PURE__ */ React.createElement(
+      )), /* @__PURE__ */ React.createElement(
         "button",
         {
-          className: "btn btn-sm",
+          className: "btn btn-md",
           onClick: () => {
             if (position.position.length && position.chunk.length) {
               setStartChunk(position.chunk);
@@ -15896,7 +15888,7 @@
             }
           }
         },
-        "P"
+        /* @__PURE__ */ React.createElement("img", { src: Location, alt: "location icon", className: "icon" })
       )),
       /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
         "input",
