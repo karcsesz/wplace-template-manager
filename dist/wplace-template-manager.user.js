@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        wplace.live Template Manager
 // @namespace   https://github.com/cedrickassen/wplace-overlay-manager
-// @version     0.1
+// @version     1.0
 // @description An advanced template manager for wplace.live
 // @updateURL    https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js
 // @downloadURL  https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js
@@ -15004,10 +15004,74 @@
       }
     ), /* @__PURE__ */ React.createElement("span", null, formatString(name)));
   };
-  const ColorPicker = ({ colorList, selectedColorState, setSelectedColorState, defaultAllFree, defaultAllPaid }) => {
+  const ColorPicker = ({ colorList, selectedColorState, setSelectedColorState }) => {
     const [search, setSearch] = reactExports.useState("");
-    const [allFree, setAllFree] = reactExports.useState(defaultAllFree ?? true);
-    const [allPaid, setAllPaid] = reactExports.useState(defaultAllPaid ?? true);
+    const [allFree, setAllFree] = reactExports.useState(true);
+    const [allPaid, setAllPaid] = reactExports.useState(true);
+    const availableFreeColors = reactExports.useMemo(() => {
+      return Array.from(FreeColorMap.keys()).filter(
+        (key) => colorList?.length ? colorList.includes(key) : true
+      );
+    }, [colorList]);
+    reactExports.useEffect(() => {
+      const allFreeColorsSelected = availableFreeColors.every(
+        (color) => selectedColorState.includes(color)
+      );
+      setAllFree(allFreeColorsSelected);
+    }, [selectedColorState, availableFreeColors]);
+    const handleAllFreeChange = (event) => {
+      const checked = event.target.checked;
+      setAllFree(checked);
+      if (checked) {
+        setSelectedColorState((prev) => {
+          const newSelection = [...prev];
+          availableFreeColors.forEach((color) => {
+            if (!newSelection.includes(color)) {
+              newSelection.push(color);
+            }
+          });
+          return newSelection;
+        });
+      } else {
+        setSelectedColorState(
+          (prev) => prev.filter(
+            (color) => !availableFreeColors.includes(color)
+          )
+        );
+      }
+    };
+    const availablePaidColors = reactExports.useMemo(() => {
+      return Array.from(PaidColorMap.keys()).filter(
+        (key) => colorList?.length ? colorList.includes(key) : true
+      );
+    }, [colorList]);
+    reactExports.useEffect(() => {
+      const allPaidColorsSelected = availablePaidColors.every(
+        (color) => selectedColorState.includes(color)
+      );
+      setAllPaid(allPaidColorsSelected);
+    }, [selectedColorState, availablePaidColors]);
+    const handleAllPaidChange = (event) => {
+      const checked = event.target.checked;
+      setAllPaid(checked);
+      if (checked) {
+        setSelectedColorState((prev) => {
+          const newSelection = [...prev];
+          availablePaidColors.forEach((color) => {
+            if (!newSelection.includes(color)) {
+              newSelection.push(color);
+            }
+          });
+          return newSelection;
+        });
+      } else {
+        setSelectedColorState(
+          (prev) => prev.filter(
+            (color) => !availablePaidColors.includes(color)
+          )
+        );
+      }
+    };
     const colorCheckboxOnchange = (event, key) => {
       if (event.target.checked) {
         setSelectedColorState((prev) => [...prev, key]);
@@ -15015,28 +15079,6 @@
         setSelectedColorState((prev) => prev.filter((color) => color !== key));
       }
     };
-    reactExports.useEffect(() => {
-      const freeColors = Array.from(FreeColorMap.keys()).filter(
-        (key) => colorList?.length ? colorList.includes(key) : true
-      );
-      setSelectedColorState((prev) => {
-        const withoutFree = prev.filter(
-          (color) => !FreeColorMap.has(color)
-        );
-        return allFree ? [...withoutFree, ...freeColors] : withoutFree;
-      });
-    }, [allFree, colorList]);
-    reactExports.useEffect(() => {
-      const paidColors = Array.from(PaidColorMap.keys()).filter(
-        (key) => colorList?.length ? colorList.includes(key) : true
-      );
-      setSelectedColorState((prev) => {
-        const withoutPaid = prev.filter(
-          (color) => !PaidColorMap.has(color)
-        );
-        return allPaid ? [...withoutPaid, ...paidColors] : withoutPaid;
-      });
-    }, [allPaid, colorList]);
     const createColorCheckRenderer = (input) => {
       return Array.from(input).filter(([key]) => {
         return colorList?.length ? colorList.includes(key) : true;
@@ -15075,7 +15117,7 @@
         type: "checkbox",
         style: { marginRight: "10px" },
         checked: allFree,
-        onChange: (event) => setAllFree(event.target.checked)
+        onChange: handleAllFreeChange
       }
     ), "Free Colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, ColorCheckRenderer), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
       "input",
@@ -15083,7 +15125,7 @@
         type: "checkbox",
         style: { marginRight: "10px" },
         checked: allPaid,
-        onChange: (event) => setAllPaid(event.target.checked)
+        onChange: handleAllPaidChange
       }
     ), "Paid colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, PaidColorCheckRenderer));
   };
@@ -15240,8 +15282,7 @@
       ColorPicker,
       {
         setSelectedColorState: setSelectedColors,
-        selectedColorState: selectedColors,
-        defaultAllPaid: false
+        selectedColorState: selectedColors
       }
     ))), /* @__PURE__ */ React.createElement(
       "button",
@@ -15873,9 +15914,7 @@
         {
           colorList: overlays[currentOverlayIndex]?.templateColors,
           setSelectedColorState: setSelectedColors,
-          selectedColorState: selectedColors,
-          defaultAllPaid: true,
-          defaultAllFree: true
+          selectedColorState: selectedColors
         }
       ),
       /* @__PURE__ */ React.createElement(

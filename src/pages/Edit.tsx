@@ -164,8 +164,6 @@ export const Edit: FC = () => {
                 colorList={overlays[currentOverlayIndex]?.templateColors}
                 setSelectedColorState={setSelectedColors}
                 selectedColorState={selectedColors}
-                defaultAllPaid={true}
-                defaultAllFree={true}
             />
             <button
                 className={"btn btn-primary"}

@@ -216,7 +216,6 @@ export const Create: FC = () => {
                         <ColorPicker
                             setSelectedColorState={setSelectedColors}
                             selectedColorState={selectedColors}
-                            defaultAllPaid={false}
                         />
                     </div>
                 </details>

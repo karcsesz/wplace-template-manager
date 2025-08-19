@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        wplace.live Template Manager
 // @namespace   https://github.com/cedrickassen/wplace-overlay-manager
-// @version     0.1
+// @version     1.0
 // @description An advanced template manager for wplace.live
 // @updateURL    https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js
 // @downloadURL  https://raw.githubusercontent.com/CedricKassen/wplace-template-manager/refs/heads/main/dist/wplace-template-manager.user.js

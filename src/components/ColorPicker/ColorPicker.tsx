@@ -15,12 +15,96 @@ export const ColorPicker: FC<{
     colorList?: Color[];
     setSelectedColorState: Dispatch<SetStateAction<Color[]>>;
     selectedColorState: Color[];
-    defaultAllFree?: boolean;
-    defaultAllPaid?: boolean;
-}> = ({ colorList, selectedColorState, setSelectedColorState, defaultAllFree, defaultAllPaid }) => {
+}> = ({ colorList, selectedColorState, setSelectedColorState }) => {
     const [search, setSearch] = useState<string>("");
-    const [allFree, setAllFree] = useState<boolean>(defaultAllFree ?? true);
-    const [allPaid, setAllPaid] = useState<boolean>(defaultAllPaid ?? true);
+    const [allFree, setAllFree] = useState<boolean>(true);
+    const [allPaid, setAllPaid] = useState<boolean>(true);
+
+    /*
+     * Handle check all button for free colors
+     */
+
+    const availableFreeColors = useMemo(() => {
+        return Array.from(FreeColorMap.keys()).filter((key) =>
+            colorList?.length ? colorList.includes(key) : true,
+        );
+    }, [colorList]);
+
+    useEffect(() => {
+        const allFreeColorsSelected = availableFreeColors.every((color) =>
+            selectedColorState.includes(color),
+        );
+
+        setAllFree(allFreeColorsSelected);
+    }, [selectedColorState, availableFreeColors]);
+
+    const handleAllFreeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked;
+        setAllFree(checked);
+
+        if (checked) {
+            setSelectedColorState((prev) => {
+                const newSelection = [...prev];
+                availableFreeColors.forEach((color) => {
+                    if (!newSelection.includes(color)) {
+                        newSelection.push(color);
+                    }
+                });
+                return newSelection;
+            });
+        } else {
+            setSelectedColorState((prev) =>
+                prev.filter(
+                    (color) => !availableFreeColors.includes(color as keyof typeof FreeColor),
+                ),
+            );
+        }
+    };
+
+    /*
+     * Handle check all button for free colors
+     */
+
+    const availablePaidColors = useMemo(() => {
+        return Array.from(PaidColorMap.keys()).filter((key) =>
+            colorList?.length ? colorList.includes(key) : true,
+        );
+    }, [colorList]);
+
+    useEffect(() => {
+        const allPaidColorsSelected = availablePaidColors.every((color) =>
+            selectedColorState.includes(color),
+        );
+
+        setAllPaid(allPaidColorsSelected);
+    }, [selectedColorState, availablePaidColors]);
+
+    const handleAllPaidChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked;
+        setAllPaid(checked);
+
+        if (checked) {
+            setSelectedColorState((prev) => {
+                const newSelection = [...prev];
+                availablePaidColors.forEach((color) => {
+                    if (!newSelection.includes(color)) {
+                        newSelection.push(color);
+                    }
+                });
+                return newSelection;
+            });
+        } else {
+            setSelectedColorState((prev) =>
+                prev.filter(
+                    (color) => !availablePaidColors.includes(color as keyof typeof PaidColor),
+                ),
+            );
+        }
+    };
+
+    /*
+     * The Rest (TM)
+     */
 
     const colorCheckboxOnchange = (event: ChangeEvent<HTMLInputElement>, key: Color) => {
         if (event.target.checked) {
@@ -29,32 +113,6 @@ export const ColorPicker: FC<{
             setSelectedColorState((prev) => prev.filter((color) => color !== key));
         }
     };
-
-    useEffect(() => {
-        const freeColors = Array.from(FreeColorMap.keys()).filter((key) =>
-            colorList?.length ? colorList.includes(key) : true,
-        );
-
-        setSelectedColorState((prev) => {
-            const withoutFree = prev.filter(
-                (color) => !FreeColorMap.has(color as keyof typeof FreeColor),
-            );
-            return allFree ? [...withoutFree, ...freeColors] : withoutFree;
-        });
-    }, [allFree, colorList]);
-
-    useEffect(() => {
-        const paidColors = Array.from(PaidColorMap.keys()).filter((key) =>
-            colorList?.length ? colorList.includes(key) : true,
-        );
-
-        setSelectedColorState((prev) => {
-            const withoutPaid = prev.filter(
-                (color) => !PaidColorMap.has(color as keyof typeof PaidColor),
-            );
-            return allPaid ? [...withoutPaid, ...paidColors] : withoutPaid;
-        });
-    }, [allPaid, colorList]);
 
     const createColorCheckRenderer = (input: IterableIterator<any>) => {
         return Array.from(input)
@@ -101,7 +159,7 @@ export const ColorPicker: FC<{
                     type={"checkbox"}
                     style={{ marginRight: "10px" }}
                     checked={allFree}
-                    onChange={(event) => setAllFree(event.target.checked)}
+                    onChange={handleAllFreeChange}
                 />
                 Free Colors
             </label>
@@ -111,7 +169,7 @@ export const ColorPicker: FC<{
                     type={"checkbox"}
                     style={{ marginRight: "10px" }}
                     checked={allPaid}
-                    onChange={(event) => setAllPaid(event.target.checked)}
+                    onChange={handleAllPaidChange}
                 />
                 Paid colors
             </label>
