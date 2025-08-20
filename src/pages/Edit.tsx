@@ -101,51 +101,53 @@ export const Edit: FC = () => {
             }
         >
             <h2> Position: </h2>
-            <div className={"row"}>
-                <label className={"input"}>
-                    <span className="label">CX</span>
-                    <input
-                        placeholder={"Chunk"}
-                        type={"number"}
-                        value={startChunk[0]}
-                        onChange={(event) =>
-                            setStartChunk(([x, y]) => [Number(event.target.value), y])
-                        }
-                    />
-                </label>
-                <label className={"input"}>
-                    <span className="label">CY</span>
-                    <input
-                        placeholder={"Chunk"}
-                        type={"number"}
-                        value={startChunk[1]}
-                        onChange={(event) =>
-                            setStartChunk(([x, y]) => [x, Number(event.target.value)])
-                        }
-                    />
-                </label>
-                <label className={"input"}>
-                    <span className="label">PX</span>
-                    <input
-                        placeholder={"Pos."}
-                        type={"number"}
-                        value={startPosition[0]}
-                        onChange={(event) =>
-                            setStartPosition(([x, y]) => [Number(event.target.value), y])
-                        }
-                    />
-                </label>
-                <label className={"input"}>
-                    <span className="label">PY</span>
-                    <input
-                        placeholder={"Pos."}
-                        type={"number"}
-                        value={startPosition[1]}
-                        onChange={(event) =>
-                            setStartPosition(([x, y]) => [x, Number(event.target.value)])
-                        }
-                    />
-                </label>
+            <div className={"row"} style={{ flexWrap: "nowrap" }}>
+                <div className={"row"}>
+                    <label className={"input"}>
+                        <span className="label">CX</span>
+                        <input
+                            placeholder={"Chunk"}
+                            type={"number"}
+                            value={startChunk[0]}
+                            onChange={(event) =>
+                                setStartChunk(([x, y]) => [Number(event.target.value), y])
+                            }
+                        />
+                    </label>
+                    <label className={"input"}>
+                        <span className="label">CY</span>
+                        <input
+                            placeholder={"Chunk"}
+                            type={"number"}
+                            value={startChunk[1]}
+                            onChange={(event) =>
+                                setStartChunk(([x, y]) => [x, Number(event.target.value)])
+                            }
+                        />
+                    </label>
+                    <label className={"input"}>
+                        <span className="label">PX</span>
+                        <input
+                            placeholder={"Pos."}
+                            type={"number"}
+                            value={startPosition[0]}
+                            onChange={(event) =>
+                                setStartPosition(([x, y]) => [Number(event.target.value), y])
+                            }
+                        />
+                    </label>
+                    <label className={"input"}>
+                        <span className="label">PY</span>
+                        <input
+                            placeholder={"Pos."}
+                            type={"number"}
+                            value={startPosition[1]}
+                            onChange={(event) =>
+                                setStartPosition(([x, y]) => [x, Number(event.target.value)])
+                            }
+                        />
+                    </label>
+                </div>
                 <button
                     className={"btn btn-md"}
                     onClick={() => {

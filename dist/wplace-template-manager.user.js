@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         wplace.live Template Manager
 // @namespace    https://github.com/cedrickassen/wplace-overlay-manager
-// @version      1.2
+// @version      1.3
 // @homepageURL  https://github.com/CedricKassen/wplace-template-manager
 // @supportURL   https://github.com/CedricKassen/wplace-template-manager/issues
 // @license      MIT
@@ -12054,9 +12054,6 @@
       delayedProbe();
     });
   }
-  const Button = ({ onClick }) => {
-    return /* @__PURE__ */ React.createElement("div", { className: "btn btn-md shadow-md btn-circle", onClick }, "O");
-  };
   const RouteContext = reactExports.createContext({
     route: null,
     params: {},
@@ -12175,8 +12172,18 @@
       if (!imgRef.current) return;
       imgRef.current.src = "data:image/bmp;base64," + image;
     }, [image]);
-    return /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo", style: { width: "2.5rem" } }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement("td", { className: "groupRow", style: { flexGrow: 1, justifyContent: "flex-end" } }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[1], " ")), /* @__PURE__ */ React.createElement("td", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement(Cog, { className: "icon" })), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "groupRow" }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "logo", style: { width: "2.5rem" } }), /* @__PURE__ */ React.createElement("span", null, " ", name, " ")), /* @__PURE__ */ React.createElement(
       "td",
+      {
+        className: "groupRow coordinates",
+        style: { flexGrow: 1, justifyContent: "flex-end" }
+      },
+      /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[0], " "),
+      /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", chunk[1], " "),
+      /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[0], " "),
+      /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm coordinate-display" }, " ", position[1], " ")
+    ), /* @__PURE__ */ React.createElement("td", { className: "groupRow", style: { gap: "2rem" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/edit/" + name) }, /* @__PURE__ */ React.createElement(Cog, { className: "icon" })), /* @__PURE__ */ React.createElement(
+      "button",
       {
         onClick: () => {
           window.postMessage({
@@ -12192,7 +12199,7 @@
         }
       },
       /* @__PURE__ */ React.createElement(Location, { className: "icon" })
-    ));
+    )));
   };
   const __vite_import_meta_env__$3 = {};
   const isSelfAtom = (atom2, a) => atom2.unstable_is ? atom2.unstable_is(a) : a === atom2;
@@ -13053,9 +13060,41 @@
       ))
     );
   };
+  const showOverlayAtom = atom(false);
+  const X = (props) => {
+    return /* @__PURE__ */ React.createElement(
+      "svg",
+      {
+        ...props,
+        width: "800px",
+        height: "800px",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        xmlns: "http://www.w3.org/2000/svg"
+      },
+      /* @__PURE__ */ React.createElement(
+        "path",
+        {
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd",
+          d: "M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z",
+          fill: "#000000"
+        }
+      )
+    );
+  };
   const Overlay = ({ children, headline, showBack, customRenderer }) => {
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement("div", { className: "Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement(Chevron, { className: "icon" })), headline && /* @__PURE__ */ React.createElement("h3", { className: "text-lg" }, headline)), customRenderer), children);
+    const setShowOverlay = useSetAtom(showOverlayAtom);
+    return /* @__PURE__ */ React.createElement("div", { className: "Overlay dropdown-content menu bg-base-100 rounded-box border-base-300 shadow-xl p-4 shadow-md" }, (showBack || headline) && /* @__PURE__ */ React.createElement("nav", null, /* @__PURE__ */ React.createElement("div", null, showBack && /* @__PURE__ */ React.createElement("button", { onClick: () => navigate("/") }, /* @__PURE__ */ React.createElement(Chevron, { className: "icon" })), headline && /* @__PURE__ */ React.createElement("h3", { className: "text-lg" }, headline)), /* @__PURE__ */ React.createElement("div", null, customRenderer, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => {
+          setShowOverlay(false);
+        }
+      },
+      /* @__PURE__ */ React.createElement(X, { className: "icon mobile-only" })
+    ))), children);
   };
   const Overview = () => {
     const navigate = useNavigate();
@@ -15168,7 +15207,7 @@
     const PaidColorCheckRenderer = reactExports.useMemo(() => {
       return createColorCheckRenderer(PaidColorMap.entries());
     }, [FreeColorMap, search, selectedColorState]);
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Search"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Search"), /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "search",
@@ -15260,7 +15299,7 @@
       }
     };
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
       "input",
       {
         onChange: (event) => setName(event.target.value),
@@ -15270,7 +15309,7 @@
           event.stopPropagation();
         }
       }
-    )), /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("div", { className: "row", style: { flexWrap: "nowrap" } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
       "input",
       {
         placeholder: "Chunk",
@@ -15302,7 +15341,7 @@
         value: startPosition[1],
         onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
       }
-    )), /* @__PURE__ */ React.createElement(
+    ))), /* @__PURE__ */ React.createElement(
       "button",
       {
         className: "btn btn-md",
@@ -15314,7 +15353,7 @@
         }
       },
       /* @__PURE__ */ React.createElement(Location, { className: "icon" })
-    )), /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
+    )), /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "file",
@@ -15912,7 +15951,7 @@
         customRenderer: /* @__PURE__ */ React.createElement("div", null, exportButton, deleteButton)
       },
       /* @__PURE__ */ React.createElement("h2", null, " Position: "),
-      /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
+      /* @__PURE__ */ React.createElement("div", { className: "row", style: { flexWrap: "nowrap" } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
         "input",
         {
           placeholder: "Chunk",
@@ -15944,7 +15983,7 @@
           value: startPosition[1],
           onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
         }
-      )), /* @__PURE__ */ React.createElement(
+      ))), /* @__PURE__ */ React.createElement(
         "button",
         {
           className: "btn btn-md",
@@ -16095,7 +16134,7 @@
     ["/edit/{name}", /* @__PURE__ */ React.createElement(Edit, null)]
   ]);
   function App() {
-    const [showOverlay, setShowOverlay] = reactExports.useState(false);
+    const [showOverlay, setShowOverlay] = useAtom(showOverlayAtom);
     const setPosition = useSetAtom(positionAtom);
     const [buttonPortal, setButtonPortal] = reactExports.useState(null);
     const overlays = useAtomValue(overlayAtom);
@@ -16131,7 +16170,14 @@
       return () => mutationOvserver.disconnect();
     }, []);
     return /* @__PURE__ */ React.createElement(RouteProvider, { routes }, /* @__PURE__ */ React.createElement("div", { className: "App" }, reactDomExports.createPortal(
-      /* @__PURE__ */ React.createElement(Button, { onClick: () => setShowOverlay(!showOverlay) }),
+      /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          className: "btn btn-md shadow-md btn-circle",
+          onClick: () => setShowOverlay(!showOverlay)
+        },
+        "O"
+      ),
       buttonPortal ?? document.body
     ), showOverlay && /* @__PURE__ */ React.createElement(Outlet, null)));
   }
@@ -16253,7 +16299,7 @@
 ;
 (function(){
                     const el = document.createElement("style");
-                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 10;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
+                    el.innerText = ".OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}\n\n.coordinates {\n    display: none !important;\n}\n\n@media only screen and (min-width: 575px) {\n    .coordinates {\n        display: flex !important;\n    }\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    pointer-events: all;\n    gap: 1rem;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n    width: 100vw;\n    bottom: 0;\n    left: 0;\n    border-radius: var(--radius-box);\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}\n\n@media only screen and (min-width: 835px) {\n    .Overlay {\n        top: 10px;\n        right: 80px;\n        left: unset;\n        height: max-content;\n        width: max-content;\n        max-width: 80vw;\n        max-height: 90vh;\n        border-radius: var(--radius-box);\n    }\n\n    .mobile-only {\n        display: none !important;\n    }\n}.App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 1000 ;\n    pointer-events: none;\n}\n\n@media only screen and (min-width: 835px) {\n    .App {\n        z-index: 10;\n    }\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    flex-grow: 0;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}\n\n.input {\n    max-width: max-content;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(6, 2rem);\n    gap: 8px;\n}\n\n@media only screen and (min-width: 350px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(8, 2rem);\n        }\n    }\n}\n\n@media only screen and (min-width: 580px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(14, 2rem);\n        }\n    }\n\n    .desktop-auto {\n        max-width: unset !important;\n    }\n}\n";
                     el.type = "text/css";
                     document.head.appendChild(el);
                 })();

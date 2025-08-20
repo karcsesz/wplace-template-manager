@@ -7,9 +7,10 @@ import { Import } from "./pages/Import";
 import { Edit } from "./pages/Edit";
 import { BlobEventData } from "./fetch";
 import { renderSquares } from "./utils/renderSquares";
-import { useSetAtom, useAtomValue } from "jotai";
+import { useSetAtom, useAtomValue, useAtom } from "jotai";
 import { overlayAtom } from "./atoms/overlay";
 import { positionAtom } from "./atoms/position";
+import { showOverlayAtom } from "./atoms/showOverlay";
 import { createPortal } from "react-dom";
 import { awaitElement } from "./utils/awaitElement";
 
@@ -23,7 +24,7 @@ const routes = new Map([
 ]);
 
 function App() {
-    const [showOverlay, setShowOverlay] = useState(false);
+    const [showOverlay, setShowOverlay] = useAtom(showOverlayAtom);
     const setPosition = useSetAtom(positionAtom);
     const [buttonPortal, setButtonPortal] = useState<HTMLDivElement | null>(null);
     const overlays = useAtomValue(overlayAtom);
