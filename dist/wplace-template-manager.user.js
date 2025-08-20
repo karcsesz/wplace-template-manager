@@ -12055,7 +12055,7 @@
     });
   }
   const Button = ({ onClick }) => {
-    return /* @__PURE__ */ React.createElement("div", { className: "ShowOverlayButton btn btn-md shadow-md btn-circle", onClick }, "O");
+    return /* @__PURE__ */ React.createElement("div", { className: "btn btn-md shadow-md btn-circle", onClick }, "O");
   };
   const RouteContext = reactExports.createContext({
     route: null,
@@ -16087,6 +16087,7 @@
     canvas.remove();
     return bitmap;
   };
+  var reactDomExports = requireReactDom();
   const routes = /* @__PURE__ */ new Map([
     ["/", /* @__PURE__ */ React.createElement(Overview, null)],
     ["/create", /* @__PURE__ */ React.createElement(Create, null)],
@@ -16096,6 +16097,7 @@
   function App() {
     const [showOverlay, setShowOverlay] = reactExports.useState(false);
     const setPosition = useSetAtom(positionAtom);
+    const [buttonPortal, setButtonPortal] = reactExports.useState(null);
     const overlays = useAtomValue(overlayAtom);
     const handleMessage = async (event) => {
       const { source, blob, requestId, chunk, position } = event.data;
@@ -16117,7 +16119,21 @@
         window.removeEventListener("message", handleMessage);
       };
     }, [overlays]);
-    return /* @__PURE__ */ React.createElement(RouteProvider, { routes }, /* @__PURE__ */ React.createElement("div", { className: "App" }, /* @__PURE__ */ React.createElement(Button, { onClick: () => setShowOverlay(!showOverlay) }), showOverlay && /* @__PURE__ */ React.createElement(Outlet, null)));
+    reactExports.useEffect(() => {
+      const mutationOvserver = new MutationObserver(() => {
+        awaitElement(
+          "div.absolute.right-2.top-2.z-30 > div.flex.flex-col.gap-4.items-center > div.flex.flex-col.items-center.gap-3"
+        ).then((element) => {
+          setButtonPortal(element);
+        });
+      });
+      mutationOvserver.observe(document.body, { childList: true, subtree: true });
+      return () => mutationOvserver.disconnect();
+    }, []);
+    return /* @__PURE__ */ React.createElement(RouteProvider, { routes }, /* @__PURE__ */ React.createElement("div", { className: "App" }, reactDomExports.createPortal(
+      /* @__PURE__ */ React.createElement(Button, { onClick: () => setShowOverlay(!showOverlay) }),
+      buttonPortal ?? document.body
+    ), showOverlay && /* @__PURE__ */ React.createElement(Outlet, null)));
   }
   function inject(callback) {
     const script = document.createElement("script");
@@ -16222,7 +16238,7 @@
   });
   log("wplace.live Template Manager successfully loaded.");
   async function main() {
-    const body = await awaitElement("body > div");
+    const body = await awaitElement("body");
     const container = document.createElement("div");
     body.appendChild(container);
     const root = clientExports.createRoot(container);
@@ -16237,7 +16253,7 @@
 ;
 (function(){
                     const el = document.createElement("style");
-                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 10;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.ShowOverlayButton {\n    pointer-events: all;\n    top: 280px;\n    right: 12px;\n    position: absolute;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
+                    el.innerText = ".App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 10;\n    pointer-events: none;\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(14, 2rem);\n    gap: 8px;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}.OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    top: 10px;\n    right: 80px;\n    height: max-content;\n    width: max-content;\n    pointer-events: all;\n    gap: 1rem;\n    max-width: 80vw;\n    max-height: 90vh;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}";
                     el.type = "text/css";
                     document.head.appendChild(el);
                 })();
