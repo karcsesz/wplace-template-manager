@@ -15,6 +15,7 @@ import { CoordinateForm } from "../components/FormInputs/CoordinateForm";
 import { ImageUpload } from "../components/FormInputs/ImageUpload";
 
 export const Edit: FC = () => {
+    const [error, setError] = useState<string>();
     // Inputs
     const [startChunk, setStartChunk] = useState<number[]>([]);
     const [startPosition, setStartPosition] = useState<number[]>([]);
@@ -24,6 +25,8 @@ export const Edit: FC = () => {
     const [imageColors, setImageColors] = useState<Color[]>();
     const [height, setHeight] = useState<number>(0);
     const [width, setWidth] = useState<number>(0);
+
+    const [changeName, setChangeName] = useState<string>();
 
     const [overlays, setOverlay] = useAtom(overlayAtom);
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = useState<boolean>(false);
@@ -45,6 +48,16 @@ export const Edit: FC = () => {
             setStartPosition(overlays[currentOverlayIndex].coordinate);
         }
     }, []);
+
+    useEffect(() => {
+        const overlay = overlays.find((overlay) => overlay.name === changeName);
+
+        if (overlay?.name) {
+            setError(`An overlay with the name ${overlay.name} already exists`);
+        } else {
+            setError(undefined);
+        }
+    }, [changeName]);
 
     const exportButton = (
         <button
@@ -106,11 +119,31 @@ export const Edit: FC = () => {
                 </div>
             }
         >
+            {error && <div className={"error btn btn-md btn-error"}>{error}</div>}
             <table className={"table max-sm:text-sm"}>
                 <tbody>
                     <tr>
+                        <td
+                            className={"column"}
+                            style={{ alignItems: "flex-start", width: "100%" }}
+                        >
+                            <h2> Change Name </h2>
+                            <label className={"input w-full desktop-auto"}>
+                                <span className="label">Name</span>
+                                <input
+                                    onChange={(event) => setChangeName(event.target.value)}
+                                    placeholder={"Name"}
+                                    className={"h-full"}
+                                    onKeyDown={(event) => {
+                                        event.stopPropagation();
+                                    }}
+                                />
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
                         <td className={"column"} style={{ alignItems: "flex-start" }}>
-                            <h2> Coordinates </h2>
+                            <h2> Change Coordinates </h2>
                             <CoordinateForm
                                 chunkValue={startChunk}
                                 coordinateValue={startPosition}
@@ -121,7 +154,7 @@ export const Edit: FC = () => {
                     </tr>
                     <tr>
                         <td className={"column"} style={{ alignItems: "flex-start" }}>
-                            <h2> Template Colors </h2>
+                            <h2> Set Visible Colors </h2>
                             <label>
                                 <input
                                     type={"checkbox"}
@@ -142,7 +175,7 @@ export const Edit: FC = () => {
                     </tr>
                     <tr>
                         <td className={"column"} style={{ alignItems: "flex-start" }}>
-                            <h2> Change Template Image</h2>
+                            <h2> Change Template Image </h2>
                             <ImageUpload
                                 setImage={setImage}
                                 setImageColors={setImageColors}
@@ -172,6 +205,13 @@ export const Edit: FC = () => {
                                           height,
                                           width,
                                           imageColors,
+                                      }
+                                    : {})(),
+
+                            ...(() =>
+                                changeName
+                                    ? {
+                                          name: changeName,
                                       }
                                     : {})(),
                         },

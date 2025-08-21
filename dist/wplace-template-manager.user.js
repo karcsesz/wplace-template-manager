@@ -15388,6 +15388,7 @@
     ))));
   };
   const Create = () => {
+    const [error, setError] = reactExports.useState();
     const [name, setName] = reactExports.useState("");
     const [startChunk, setStartChunk] = reactExports.useState([]);
     const [startPosition, setStartPosition] = reactExports.useState([]);
@@ -15395,9 +15396,17 @@
     const [imageColors, setImageColors] = reactExports.useState();
     const [height, setHeight] = reactExports.useState(0);
     const [width, setWidth] = reactExports.useState(0);
-    const [overlay, setOverlay] = useAtom(overlayAtom);
+    const [overlays, setOverlays] = useAtom(overlayAtom);
+    reactExports.useEffect(() => {
+      const overlay = overlays.find((overlay2) => overlay2.name === name);
+      if (overlay?.name) {
+        setError(`An overlay with the name ${overlay.name} already exists`);
+      } else {
+        setError(void 0);
+      }
+    }, [name]);
     const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error), /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
       "input",
       {
         onChange: (event) => setName(event.target.value),
@@ -15426,11 +15435,11 @@
     ), /* @__PURE__ */ React.createElement(
       "button",
       {
-        disabled: !name || !image || !startChunk.length || !startPosition.length,
+        disabled: !name || !image || !startChunk.length || !startPosition.length || !!error,
         className: "btn btn-primary",
         onClick: async () => {
-          setOverlay([
-            ...overlay,
+          setOverlays([
+            ...overlays,
             {
               chunk: startChunk,
               coordinate: startPosition,
@@ -15713,7 +15722,7 @@
   const extract = /* @__PURE__ */ getDefaultExportFromCjs(pngChunksExtractExports);
   const Import = () => {
     const navigate = useNavigate();
-    const [uploadBlob, setUploadBlob] = reactExports.useState();
+    const fileInput = reactExports.useRef(null);
     const imgRef = reactExports.useRef(null);
     const [overlays, setOverlays] = useAtom(overlayAtom);
     const [error, setError] = reactExports.useState(null);
@@ -15722,52 +15731,59 @@
     const [template, setTemplate] = reactExports.useState();
     const [height, setHeight] = reactExports.useState(0);
     const [width, setWidth] = reactExports.useState(0);
+    const pasteHandler = (event) => {
+      if (!fileInput.current) return;
+      fileInput.current.files = event.clipboardData?.files ?? new FileList();
+      fileInput.current.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    };
+    reactExports.useEffect(() => {
+      window.addEventListener("paste", pasteHandler);
+      return () => window.removeEventListener("paste", pasteHandler);
+    }, []);
     reactExports.useEffect(() => {
       if (imgRef.current) {
         imgRef.current.src = "data:image/bmp;base64," + image;
       }
     }, [image]);
-    reactExports.useEffect(() => {
-      if (!uploadBlob) return;
-      uploadBlob.arrayBuffer().then((imageBuffer) => {
-        const chunks = extract(bufferExports.Buffer.from(imageBuffer));
-        const textChunks = chunks.filter(function(chunk) {
-          return chunk.name === "tEXt";
-        }).map(function(chunk) {
-          return text.decode(chunk.data);
-        });
-        const dataChunk = textChunks.find(({ keyword }) => keyword === "wplace");
-        if (!dataChunk) {
-          setError("No wplace chunk found! Please create Overlay manually.");
-          return;
-        }
-        setError(null);
-        const importedData = dataChunk.text.split(",");
-        setTemplate({
-          name: importedData[0],
-          chunk: [Number(importedData[1]), Number(importedData[2])],
-          position: [Number(importedData[3]), Number(importedData[4])]
-        });
-      });
-      createImageBitmap(uploadBlob).then((bitmap) => {
-        setHeight(bitmap.height);
-        setWidth(bitmap.width);
-        getColorsFromImage(bitmap).then(setImageColors);
-      });
-      imageToBase64(uploadBlob).then(setImage);
-    }, [uploadBlob]);
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Template", showBack: true }, /* @__PURE__ */ React.createElement(ImageUpload, { setUploadBlob }), error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error), image && /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), template && /* @__PURE__ */ React.createElement(
-      CoordinateForm,
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Template", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
+      "input",
       {
-        coordinateValue: template.position,
-        chunkValue: template.chunk,
-        setCoordinateValue: () => {
-        },
-        setChunkValue: () => {
-        },
-        hidePostitionButton: true
+        name: "template",
+        placeholder: "Template",
+        accept: "image/png",
+        type: "file",
+        ref: fileInput,
+        onChange: async (event) => {
+          if (!fileInput.current?.files?.length) return;
+          const imageBuffer = bufferExports.Buffer.from(
+            await fileInput.current.files[0].arrayBuffer()
+          );
+          const chunks = extract(imageBuffer);
+          const textChunks = chunks.filter(function(chunk) {
+            return chunk.name === "tEXt";
+          }).map(function(chunk) {
+            return text.decode(chunk.data);
+          });
+          const dataChunk = textChunks.find(({ keyword }) => keyword === "wplace");
+          if (!dataChunk) {
+            setError("No wplace chunk found! Please create Overlay manually.");
+            return;
+          }
+          setError(null);
+          const importedData = dataChunk.text.split(",");
+          setTemplate({
+            name: importedData[0],
+            chunk: [Number(importedData[1]), Number(importedData[2])],
+            position: [Number(importedData[3]), Number(importedData[4])]
+          });
+          const bitmap = await createImageBitmap(fileInput.current.files[0]);
+          setHeight(bitmap.height);
+          setWidth(bitmap.width);
+          setImage(await imageToBase64(fileInput.current.files[0]));
+          setImageColors(await getColorsFromImage(bitmap));
+        }
       }
-    ), /* @__PURE__ */ React.createElement(
+    )), error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error), image && /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), template && /* @__PURE__ */ React.createElement("div", { className: "groupRow" }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.position[1], " ")), /* @__PURE__ */ React.createElement(
       "button",
       {
         className: "btn btn-primary",
@@ -15904,6 +15920,7 @@
   var pngChunksEncodeExports = requirePngChunksEncode();
   const encode = /* @__PURE__ */ getDefaultExportFromCjs(pngChunksEncodeExports);
   const Edit = () => {
+    const [error, setError] = reactExports.useState();
     const [startChunk, setStartChunk] = reactExports.useState([]);
     const [startPosition, setStartPosition] = reactExports.useState([]);
     const [selectedColors, setSelectedColors] = reactExports.useState([]);
@@ -15911,6 +15928,7 @@
     const [imageColors, setImageColors] = reactExports.useState();
     const [height, setHeight] = reactExports.useState(0);
     const [width, setWidth] = reactExports.useState(0);
+    const [changeName, setChangeName] = reactExports.useState();
     const [overlays, setOverlay] = useAtom(overlayAtom);
     const [onlyShowSelectedColors, setOnlyShowSelectedColors] = reactExports.useState(false);
     const name = useParam("name");
@@ -15928,6 +15946,14 @@
         setStartPosition(overlays[currentOverlayIndex].coordinate);
       }
     }, []);
+    reactExports.useEffect(() => {
+      const overlay = overlays.find((overlay2) => overlay2.name === changeName);
+      if (overlay?.name) {
+        setError(`An overlay with the name ${overlay.name} already exists`);
+      } else {
+        setError(void 0);
+      }
+    }, [changeName]);
     const exportButton = /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -15979,7 +16005,26 @@
         showBack: true,
         customRenderer: /* @__PURE__ */ React.createElement("div", null, exportButton, deleteButton)
       },
-      /* @__PURE__ */ React.createElement("table", { className: "table max-sm:text-sm" }, /* @__PURE__ */ React.createElement("tbody", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Coordinates "), /* @__PURE__ */ React.createElement(
+      error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error),
+      /* @__PURE__ */ React.createElement("table", { className: "table max-sm:text-sm" }, /* @__PURE__ */ React.createElement("tbody", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement(
+        "td",
+        {
+          className: "column",
+          style: { alignItems: "flex-start", width: "100%" }
+        },
+        /* @__PURE__ */ React.createElement("h2", null, " Change Name "),
+        /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
+          "input",
+          {
+            onChange: (event) => setChangeName(event.target.value),
+            placeholder: "Name",
+            className: "h-full",
+            onKeyDown: (event) => {
+              event.stopPropagation();
+            }
+          }
+        ))
+      )), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Change Coordinates "), /* @__PURE__ */ React.createElement(
         CoordinateForm,
         {
           chunkValue: startChunk,
@@ -15987,7 +16032,7 @@
           setChunkValue: setStartChunk,
           setCoordinateValue: setStartPosition
         }
-      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Template Colors "), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Set Visible Colors "), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
         "input",
         {
           type: "checkbox",
@@ -16004,7 +16049,7 @@
           setSelectedColorState: setSelectedColors,
           selectedColorState: selectedColors
         }
-      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Change Template Image"), /* @__PURE__ */ React.createElement(
+      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Change Template Image "), /* @__PURE__ */ React.createElement(
         ImageUpload,
         {
           setImage,
@@ -16031,6 +16076,9 @@
                   height,
                   width,
                   imageColors
+                } : {})(),
+                .../* @__PURE__ */ (() => changeName ? {
+                  name: changeName
                 } : {})()
               },
               ...overlays.slice(currentOverlayIndex + 1)

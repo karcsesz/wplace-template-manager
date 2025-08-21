@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Overlay } from "../components/Overlay/Overlay";
 import { useNavigate } from "../components/Router/navigate";
 import { useAtom } from "jotai";
@@ -8,6 +8,7 @@ import { CoordinateForm } from "../components/FormInputs/CoordinateForm";
 import { ImageUpload } from "../components/FormInputs/ImageUpload";
 
 export const Create: FC = () => {
+    const [error, setError] = useState<string>();
     // Inputs
     const [name, setName] = useState<string>("");
     const [startChunk, setStartChunk] = useState<number[]>([]);
@@ -18,11 +19,22 @@ export const Create: FC = () => {
     const [height, setHeight] = useState<number>(0);
     const [width, setWidth] = useState<number>(0);
 
-    const [overlay, setOverlay] = useAtom(overlayAtom);
+    const [overlays, setOverlays] = useAtom(overlayAtom);
+
+    useEffect(() => {
+        const overlay = overlays.find((overlay) => overlay.name === name);
+
+        if (overlay?.name) {
+            setError(`An overlay with the name ${overlay.name} already exists`);
+        } else {
+            setError(undefined);
+        }
+    }, [name]);
 
     const navigate = useNavigate();
     return (
         <Overlay headline={"Create new Overlay"} showBack>
+            {error && <div className={"error btn btn-md btn-error"}>{error}</div>}
             <label className={"input w-full desktop-auto"}>
                 <span className="label">Name</span>
                 <input
@@ -47,11 +59,11 @@ export const Create: FC = () => {
                 setWidth={setWidth}
             />
             <button
-                disabled={!name || !image || !startChunk.length || !startPosition.length}
+                disabled={!name || !image || !startChunk.length || !startPosition.length || !!error}
                 className={"btn btn-primary"}
                 onClick={async () => {
-                    setOverlay([
-                        ...overlay,
+                    setOverlays([
+                        ...overlays,
                         {
                             chunk: startChunk as [number, number],
                             coordinate: startPosition as [number, number],
