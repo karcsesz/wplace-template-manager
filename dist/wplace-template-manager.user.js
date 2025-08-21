@@ -16062,6 +16062,7 @@
         "button",
         {
           className: "btn btn-primary",
+          disabled: !!error,
           onClick: () => {
             setOverlay([
               ...overlays.slice(0, currentOverlayIndex),
