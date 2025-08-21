@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         wplace.live Template Manager
 // @namespace    https://github.com/cedrickassen/wplace-overlay-manager
-// @version      1.3
+// @version      1.4
 // @homepageURL  https://github.com/CedricKassen/wplace-template-manager
 // @supportURL   https://github.com/CedricKassen/wplace-template-manager/issues
 // @license      MIT
@@ -13126,6 +13126,276 @@
       )
     );
   };
+  const positionAtom = atom({
+    position: [],
+    chunk: []
+  });
+  const CoordinateForm = ({ chunkValue, coordinateValue, setChunkValue, setCoordinateValue, hidePostitionButton }) => {
+    const [position] = useAtom(positionAtom);
+    return /* @__PURE__ */ React.createElement("div", { className: "row", style: { flexWrap: "nowrap" } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        placeholder: "Chunk",
+        type: "number",
+        value: chunkValue[0],
+        onChange: (event) => setChunkValue(([x, y]) => [Number(event.target.value), y])
+      }
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CY"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        placeholder: "Chunk",
+        type: "number",
+        value: chunkValue[1],
+        onChange: (event) => setChunkValue(([x, y]) => [x, Number(event.target.value)])
+      }
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PX"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        placeholder: "Pos.",
+        type: "number",
+        value: coordinateValue[0],
+        onChange: (event) => setCoordinateValue(([x, y]) => [Number(event.target.value), y])
+      }
+    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        placeholder: "Pos.",
+        type: "number",
+        value: coordinateValue[1],
+        onChange: (event) => setCoordinateValue(([x, y]) => [x, Number(event.target.value)])
+      }
+    ))), !hidePostitionButton && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        className: "btn btn-md",
+        onClick: () => {
+          if (position.position.length && position.chunk.length) {
+            setChunkValue(position.chunk);
+            setCoordinateValue(position.position);
+          }
+        }
+      },
+      /* @__PURE__ */ React.createElement(Location, { className: "icon" })
+    ));
+  };
+  var FreeColor = /* @__PURE__ */ ((FreeColor2) => {
+    FreeColor2["BLACK"] = "#000000";
+    FreeColor2["DARK_GRAY"] = "#3c3c3c";
+    FreeColor2["GRAY"] = "#787878";
+    FreeColor2["LIGHT_GRAY"] = "#d2d2d2";
+    FreeColor2["WHITE"] = "#ffffff";
+    FreeColor2["DEEP_RED"] = "#600018";
+    FreeColor2["RED"] = "#ed1c24";
+    FreeColor2["ORANGE"] = "#ff7f27";
+    FreeColor2["GOLD"] = "#f6aa09";
+    FreeColor2["YELLOW"] = "#f9dd3b";
+    FreeColor2["LIGHT_YELLOW"] = "#fffabc";
+    FreeColor2["DARK_GREEN"] = "#0eb968";
+    FreeColor2["GREEN"] = "#13e67b";
+    FreeColor2["LIGHT_GREEN"] = "#87ff5e";
+    FreeColor2["DARK_TEAL"] = "#0c816e";
+    FreeColor2["TEAL"] = "#10aea6";
+    FreeColor2["LIGHT_TEAL"] = "#13e1be";
+    FreeColor2["CYAN"] = "#60f7f2";
+    FreeColor2["DARK_BLUE"] = "#28509e";
+    FreeColor2["BLUE"] = "#4093e4";
+    FreeColor2["INDIGO"] = "#6b50f6";
+    FreeColor2["LIGHT_INDIGO"] = "#99b1fb";
+    FreeColor2["DARK_PURPLE"] = "#780c99";
+    FreeColor2["PURPLE"] = "#aa38b9";
+    FreeColor2["LIGHT_PURPLE"] = "#e09ff9";
+    FreeColor2["DARK_PINK"] = "#cb007a";
+    FreeColor2["PINK"] = "#ec1f80";
+    FreeColor2["LIGHT_PINK"] = "#f38da9";
+    FreeColor2["DARK_BROWN"] = "#684634";
+    FreeColor2["BROWN"] = "#95682a";
+    FreeColor2["BEIGE"] = "#f8b277";
+    return FreeColor2;
+  })(FreeColor || {});
+  var PaidColor = /* @__PURE__ */ ((PaidColor2) => {
+    PaidColor2["MEDIUM_GRAY"] = "#aaaaaa";
+    PaidColor2["DARK_RED"] = "#a50e1e";
+    PaidColor2["LIGHT_RED"] = "#fa8072";
+    PaidColor2["DARK_ORANGE"] = "#e45c1a";
+    PaidColor2["DARK_GOLDENROD"] = "#9c8431";
+    PaidColor2["GOLDENROD"] = "#c5ad31";
+    PaidColor2["LIGHT_GOLDENROD"] = "#e8d45f";
+    PaidColor2["DARK_OLIVE"] = "#4a6b3a";
+    PaidColor2["OLIVE"] = "#5a944a";
+    PaidColor2["LIGHT_OLIVE"] = "#84c573";
+    PaidColor2["DARK_CYAN"] = "#0f799f";
+    PaidColor2["LIGHT_CYAN"] = "#bbfaf2";
+    PaidColor2["LIGHT_BLUE"] = "#7dc7ff";
+    PaidColor2["DARK_INDIGO"] = "#4d31b8";
+    PaidColor2["DARK_SLATE_BLUE"] = "#4a4284";
+    PaidColor2["SLATE_BLUE"] = "#7a71c4";
+    PaidColor2["LIGHT_SLATE_BLUE"] = "#b5aef1";
+    PaidColor2["DARK_PEACH"] = "#9b5249";
+    PaidColor2["PEACH"] = "#d18078";
+    PaidColor2["LIGHT_PEACH"] = "#fab6a4";
+    PaidColor2["LIGHT_BROWN"] = "#dba463";
+    PaidColor2["DARK_TAN"] = "#7b6352";
+    PaidColor2["TAN"] = "#9c846b";
+    PaidColor2["LIGHT_TAN"] = "#d6b594";
+    PaidColor2["DARK_BEIGE"] = "#d18051";
+    PaidColor2["LIGHT_BEIGE"] = "#ffc5a5";
+    PaidColor2["DARK_STONE"] = "#6d643f";
+    PaidColor2["STONE"] = "#948c6b";
+    PaidColor2["LIGHT_STONE"] = "#cdc59e";
+    PaidColor2["DARK_SLATE"] = "#333941";
+    PaidColor2["SLATE"] = "#6d758d";
+    PaidColor2["LIGHT_SLATE"] = "#b3b9d1";
+    return PaidColor2;
+  })(PaidColor || {});
+  const FreeColorEntries = Object.entries(FreeColor);
+  const PaidColorEntries = Object.entries(PaidColor);
+  const FreeColorMap = new Map(FreeColorEntries);
+  const PaidColorMap = new Map(PaidColorEntries);
+  const InvertedFreeColorMap = new Map(
+    FreeColorEntries.map(([first, second]) => [second, first])
+  );
+  const InvertedPaidColorMap = new Map(
+    PaidColorEntries.map(([first, second]) => [second, first])
+  );
+  const formatString = (input) => {
+    return input.split("_").map((word) => word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)).join(" ");
+  };
+  const ColorCheckbox = ({ checked, onChange, name, color }) => {
+    return /* @__PURE__ */ React.createElement("label", { className: "ColorCheckbox" }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "checkbox",
+        checked,
+        onChange,
+        style: { backgroundColor: color }
+      }
+    ), /* @__PURE__ */ React.createElement("span", null, formatString(name)));
+  };
+  const ColorPicker = ({ colorList, selectedColorState, setSelectedColorState }) => {
+    const [search, setSearch] = reactExports.useState("");
+    const [allFree, setAllFree] = reactExports.useState(true);
+    const [allPaid, setAllPaid] = reactExports.useState(true);
+    const availableFreeColors = reactExports.useMemo(() => {
+      return Array.from(FreeColorMap.keys()).filter(
+        (key) => colorList?.length ? colorList.includes(key) : true
+      );
+    }, [colorList]);
+    reactExports.useEffect(() => {
+      const allFreeColorsSelected = availableFreeColors.every(
+        (color) => selectedColorState.includes(color)
+      );
+      setAllFree(allFreeColorsSelected);
+    }, [selectedColorState, availableFreeColors]);
+    const handleAllFreeChange = (event) => {
+      const checked = event.target.checked;
+      setAllFree(checked);
+      if (checked) {
+        setSelectedColorState((prev) => {
+          const newSelection = [...prev];
+          availableFreeColors.forEach((color) => {
+            if (!newSelection.includes(color)) {
+              newSelection.push(color);
+            }
+          });
+          return newSelection;
+        });
+      } else {
+        setSelectedColorState(
+          (prev) => prev.filter(
+            (color) => !availableFreeColors.includes(color)
+          )
+        );
+      }
+    };
+    const availablePaidColors = reactExports.useMemo(() => {
+      return Array.from(PaidColorMap.keys()).filter(
+        (key) => colorList?.length ? colorList.includes(key) : true
+      );
+    }, [colorList]);
+    reactExports.useEffect(() => {
+      const allPaidColorsSelected = availablePaidColors.every(
+        (color) => selectedColorState.includes(color)
+      );
+      setAllPaid(allPaidColorsSelected);
+    }, [selectedColorState, availablePaidColors]);
+    const handleAllPaidChange = (event) => {
+      const checked = event.target.checked;
+      setAllPaid(checked);
+      if (checked) {
+        setSelectedColorState((prev) => {
+          const newSelection = [...prev];
+          availablePaidColors.forEach((color) => {
+            if (!newSelection.includes(color)) {
+              newSelection.push(color);
+            }
+          });
+          return newSelection;
+        });
+      } else {
+        setSelectedColorState(
+          (prev) => prev.filter(
+            (color) => !availablePaidColors.includes(color)
+          )
+        );
+      }
+    };
+    const colorCheckboxOnchange = (event, key) => {
+      if (event.target.checked) {
+        setSelectedColorState((prev) => [...prev, key]);
+      } else {
+        setSelectedColorState((prev) => prev.filter((color) => color !== key));
+      }
+    };
+    const createColorCheckRenderer = (input) => {
+      return Array.from(input).filter(([key]) => {
+        return colorList?.length ? colorList.includes(key) : true;
+      }).filter(([key]) => formatString(key).toLowerCase().includes(search.toLowerCase())).map(([key, value]) => {
+        return /* @__PURE__ */ React.createElement(
+          ColorCheckbox,
+          {
+            key: key + "-" + value,
+            onChange: (event) => colorCheckboxOnchange(event, key),
+            color: value,
+            name: key,
+            checked: selectedColorState.includes(key)
+          }
+        );
+      });
+    };
+    const ColorCheckRenderer = reactExports.useMemo(() => {
+      return createColorCheckRenderer(FreeColorMap.entries());
+    }, [FreeColorMap, search, selectedColorState]);
+    const PaidColorCheckRenderer = reactExports.useMemo(() => {
+      return createColorCheckRenderer(PaidColorMap.entries());
+    }, [FreeColorMap, search, selectedColorState]);
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Search"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "search",
+        onChange: (event) => setSearch(event.target.value),
+        placeholder: "Color Name",
+        onKeyDown: (event) => {
+          event.stopPropagation();
+        }
+      }
+    )), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "checkbox",
+        style: { marginRight: "10px" },
+        checked: allFree,
+        onChange: handleAllFreeChange
+      }
+    ), "Free Colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, ColorCheckRenderer), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "checkbox",
+        style: { marginRight: "10px" },
+        checked: allPaid,
+        onChange: handleAllPaidChange
+      }
+    ), "Paid colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, PaidColorCheckRenderer));
+  };
   var buffer = {};
   var base64Js = {};
   var hasRequiredBase64Js;
@@ -14913,85 +15183,6 @@
     const arrayBuffer = await image.arrayBuffer();
     return new bufferExports.Buffer(arrayBuffer).toString("base64");
   }
-  var FreeColor = /* @__PURE__ */ ((FreeColor2) => {
-    FreeColor2["BLACK"] = "#000000";
-    FreeColor2["DARK_GRAY"] = "#3c3c3c";
-    FreeColor2["GRAY"] = "#787878";
-    FreeColor2["LIGHT_GRAY"] = "#d2d2d2";
-    FreeColor2["WHITE"] = "#ffffff";
-    FreeColor2["DEEP_RED"] = "#600018";
-    FreeColor2["RED"] = "#ed1c24";
-    FreeColor2["ORANGE"] = "#ff7f27";
-    FreeColor2["GOLD"] = "#f6aa09";
-    FreeColor2["YELLOW"] = "#f9dd3b";
-    FreeColor2["LIGHT_YELLOW"] = "#fffabc";
-    FreeColor2["DARK_GREEN"] = "#0eb968";
-    FreeColor2["GREEN"] = "#13e67b";
-    FreeColor2["LIGHT_GREEN"] = "#87ff5e";
-    FreeColor2["DARK_TEAL"] = "#0c816e";
-    FreeColor2["TEAL"] = "#10aea6";
-    FreeColor2["LIGHT_TEAL"] = "#13e1be";
-    FreeColor2["CYAN"] = "#60f7f2";
-    FreeColor2["DARK_BLUE"] = "#28509e";
-    FreeColor2["BLUE"] = "#4093e4";
-    FreeColor2["INDIGO"] = "#6b50f6";
-    FreeColor2["LIGHT_INDIGO"] = "#99b1fb";
-    FreeColor2["DARK_PURPLE"] = "#780c99";
-    FreeColor2["PURPLE"] = "#aa38b9";
-    FreeColor2["LIGHT_PURPLE"] = "#e09ff9";
-    FreeColor2["DARK_PINK"] = "#cb007a";
-    FreeColor2["PINK"] = "#ec1f80";
-    FreeColor2["LIGHT_PINK"] = "#f38da9";
-    FreeColor2["DARK_BROWN"] = "#684634";
-    FreeColor2["BROWN"] = "#95682a";
-    FreeColor2["BEIGE"] = "#f8b277";
-    return FreeColor2;
-  })(FreeColor || {});
-  var PaidColor = /* @__PURE__ */ ((PaidColor2) => {
-    PaidColor2["MEDIUM_GRAY"] = "#aaaaaa";
-    PaidColor2["DARK_RED"] = "#a50e1e";
-    PaidColor2["LIGHT_RED"] = "#fa8072";
-    PaidColor2["DARK_ORANGE"] = "#e45c1a";
-    PaidColor2["DARK_GOLDENROD"] = "#9c8431";
-    PaidColor2["GOLDENROD"] = "#c5ad31";
-    PaidColor2["LIGHT_GOLDENROD"] = "#e8d45f";
-    PaidColor2["DARK_OLIVE"] = "#4a6b3a";
-    PaidColor2["OLIVE"] = "#5a944a";
-    PaidColor2["LIGHT_OLIVE"] = "#84c573";
-    PaidColor2["DARK_CYAN"] = "#0f799f";
-    PaidColor2["LIGHT_CYAN"] = "#bbfaf2";
-    PaidColor2["LIGHT_BLUE"] = "#7dc7ff";
-    PaidColor2["DARK_INDIGO"] = "#4d31b8";
-    PaidColor2["DARK_SLATE_BLUE"] = "#4a4284";
-    PaidColor2["SLATE_BLUE"] = "#7a71c4";
-    PaidColor2["LIGHT_SLATE_BLUE"] = "#b5aef1";
-    PaidColor2["DARK_PEACH"] = "#9b5249";
-    PaidColor2["PEACH"] = "#d18078";
-    PaidColor2["LIGHT_PEACH"] = "#fab6a4";
-    PaidColor2["LIGHT_BROWN"] = "#dba463";
-    PaidColor2["DARK_TAN"] = "#7b6352";
-    PaidColor2["TAN"] = "#9c846b";
-    PaidColor2["LIGHT_TAN"] = "#d6b594";
-    PaidColor2["DARK_BEIGE"] = "#d18051";
-    PaidColor2["LIGHT_BEIGE"] = "#ffc5a5";
-    PaidColor2["DARK_STONE"] = "#6d643f";
-    PaidColor2["STONE"] = "#948c6b";
-    PaidColor2["LIGHT_STONE"] = "#cdc59e";
-    PaidColor2["DARK_SLATE"] = "#333941";
-    PaidColor2["SLATE"] = "#6d758d";
-    PaidColor2["LIGHT_SLATE"] = "#b3b9d1";
-    return PaidColor2;
-  })(PaidColor || {});
-  const FreeColorEntries = Object.entries(FreeColor);
-  const PaidColorEntries = Object.entries(PaidColor);
-  const FreeColorMap = new Map(FreeColorEntries);
-  const PaidColorMap = new Map(PaidColorEntries);
-  const InvertedFreeColorMap = new Map(
-    FreeColorEntries.map(([first, second]) => [second, first])
-  );
-  const InvertedPaidColorMap = new Map(
-    PaidColorEntries.map(([first, second]) => [second, first])
-  );
   const rgbToHex = (r, g, b) => {
     return "#" + r.toString(16).padStart(2, "0") + g.toString(16).padStart(2, "0") + b.toString(16).padStart(2, "0");
   };
@@ -15023,10 +15214,6 @@
     canvas.remove();
     return mappedColors.filter((color) => !!color);
   };
-  const positionAtom = atom({
-    position: [],
-    chunk: []
-  });
   const hexToRgb = (hex) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!result) {
@@ -15096,169 +15283,16 @@
     canvas.remove();
     return blob;
   };
-  const formatString = (input) => {
-    return input.split("_").map((word) => word.charAt(0).toUpperCase() + word.toLowerCase().slice(1)).join(" ");
-  };
-  const ColorCheckbox = ({ checked, onChange, name, color }) => {
-    return /* @__PURE__ */ React.createElement("label", { className: "ColorCheckbox" }, /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        type: "checkbox",
-        checked,
-        onChange,
-        style: { backgroundColor: color }
-      }
-    ), /* @__PURE__ */ React.createElement("span", null, formatString(name)));
-  };
-  const ColorPicker = ({ colorList, selectedColorState, setSelectedColorState }) => {
-    const [search, setSearch] = reactExports.useState("");
-    const [allFree, setAllFree] = reactExports.useState(true);
-    const [allPaid, setAllPaid] = reactExports.useState(true);
-    const availableFreeColors = reactExports.useMemo(() => {
-      return Array.from(FreeColorMap.keys()).filter(
-        (key) => colorList?.length ? colorList.includes(key) : true
-      );
-    }, [colorList]);
-    reactExports.useEffect(() => {
-      const allFreeColorsSelected = availableFreeColors.every(
-        (color) => selectedColorState.includes(color)
-      );
-      setAllFree(allFreeColorsSelected);
-    }, [selectedColorState, availableFreeColors]);
-    const handleAllFreeChange = (event) => {
-      const checked = event.target.checked;
-      setAllFree(checked);
-      if (checked) {
-        setSelectedColorState((prev) => {
-          const newSelection = [...prev];
-          availableFreeColors.forEach((color) => {
-            if (!newSelection.includes(color)) {
-              newSelection.push(color);
-            }
-          });
-          return newSelection;
-        });
-      } else {
-        setSelectedColorState(
-          (prev) => prev.filter(
-            (color) => !availableFreeColors.includes(color)
-          )
-        );
-      }
-    };
-    const availablePaidColors = reactExports.useMemo(() => {
-      return Array.from(PaidColorMap.keys()).filter(
-        (key) => colorList?.length ? colorList.includes(key) : true
-      );
-    }, [colorList]);
-    reactExports.useEffect(() => {
-      const allPaidColorsSelected = availablePaidColors.every(
-        (color) => selectedColorState.includes(color)
-      );
-      setAllPaid(allPaidColorsSelected);
-    }, [selectedColorState, availablePaidColors]);
-    const handleAllPaidChange = (event) => {
-      const checked = event.target.checked;
-      setAllPaid(checked);
-      if (checked) {
-        setSelectedColorState((prev) => {
-          const newSelection = [...prev];
-          availablePaidColors.forEach((color) => {
-            if (!newSelection.includes(color)) {
-              newSelection.push(color);
-            }
-          });
-          return newSelection;
-        });
-      } else {
-        setSelectedColorState(
-          (prev) => prev.filter(
-            (color) => !availablePaidColors.includes(color)
-          )
-        );
-      }
-    };
-    const colorCheckboxOnchange = (event, key) => {
-      if (event.target.checked) {
-        setSelectedColorState((prev) => [...prev, key]);
-      } else {
-        setSelectedColorState((prev) => prev.filter((color) => color !== key));
-      }
-    };
-    const createColorCheckRenderer = (input) => {
-      return Array.from(input).filter(([key]) => {
-        return colorList?.length ? colorList.includes(key) : true;
-      }).filter(([key]) => formatString(key).toLowerCase().includes(search.toLowerCase())).map(([key, value]) => {
-        return /* @__PURE__ */ React.createElement(
-          ColorCheckbox,
-          {
-            key: key + "-" + value,
-            onChange: (event) => colorCheckboxOnchange(event, key),
-            color: value,
-            name: key,
-            checked: selectedColorState.includes(key)
-          }
-        );
-      });
-    };
-    const ColorCheckRenderer = reactExports.useMemo(() => {
-      return createColorCheckRenderer(FreeColorMap.entries());
-    }, [FreeColorMap, search, selectedColorState]);
-    const PaidColorCheckRenderer = reactExports.useMemo(() => {
-      return createColorCheckRenderer(PaidColorMap.entries());
-    }, [FreeColorMap, search, selectedColorState]);
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Search"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        type: "search",
-        onChange: (event) => setSearch(event.target.value),
-        placeholder: "Color Name",
-        onKeyDown: (event) => {
-          event.stopPropagation();
-        }
-      }
-    )), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        type: "checkbox",
-        style: { marginRight: "10px" },
-        checked: allFree,
-        onChange: handleAllFreeChange
-      }
-    ), "Free Colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, ColorCheckRenderer), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        type: "checkbox",
-        style: { marginRight: "10px" },
-        checked: allPaid,
-        onChange: handleAllPaidChange
-      }
-    ), "Paid colors"), /* @__PURE__ */ React.createElement("div", { className: "Grid" }, PaidColorCheckRenderer));
-  };
-  const Create = () => {
-    const [name, setName] = reactExports.useState("");
+  const ImageUpload = ({ setImageColors, setImage, setWidth, setHeight }) => {
     const [optimizeImage, setOptimizeImage] = reactExports.useState(false);
-    const [startChunk, setStartChunk] = reactExports.useState([]);
-    const [startPosition, setStartPosition] = reactExports.useState([]);
     const [selectedColors, setSelectedColors] = reactExports.useState([]);
     const [scale, setScale] = reactExports.useState(1);
     const [uploadBlob, setUploadBlob] = reactExports.useState();
-    const [image, setImage] = reactExports.useState();
-    const [imageColors, setImageColors] = reactExports.useState();
-    const [height, setHeight] = reactExports.useState(0);
-    const [width, setWidth] = reactExports.useState(0);
-    const [overlay, setOverlay] = useAtom(overlayAtom);
-    const [position] = useAtom(positionAtom);
+    const [localImage, setLocalImage] = reactExports.useState();
+    const [localHeight, setLocalHeight] = reactExports.useState(0);
+    const [localWidth, setLocalWidth] = reactExports.useState(0);
     const fileInput = reactExports.useRef(null);
     const imgRef = reactExports.useRef(null);
-    reactExports.useEffect(() => {
-      if (imgRef.current) {
-        imgRef.current.src = "data:image/bmp;base64," + image;
-      }
-    }, [image]);
-    reactExports.useEffect(() => {
-      void generateImage();
-    }, [uploadBlob, selectedColors, optimizeImage, scale]);
     const pasteHandler = (event) => {
       if (!fileInput.current) return;
       fileInput.current.files = event.clipboardData?.files ?? new FileList();
@@ -15268,13 +15302,26 @@
       window.addEventListener("paste", pasteHandler);
       return () => window.removeEventListener("paste", pasteHandler);
     }, []);
+    reactExports.useEffect(() => {
+      if (imgRef.current) {
+        imgRef.current.src = "data:image/bmp;base64," + localImage;
+      }
+    }, [localImage]);
+    reactExports.useEffect(() => {
+      void generateImage();
+    }, [uploadBlob, selectedColors, optimizeImage, scale]);
     const generateImage = async () => {
       if (!uploadBlob) return;
       const bitmap = await createImageBitmap(uploadBlob);
       setHeight(bitmap.height);
       setWidth(bitmap.width);
+      setLocalWidth(bitmap.width);
+      setLocalHeight(bitmap.height);
       if (!optimizeImage || !selectedColors?.length) {
-        imageToBase64(uploadBlob).then(setImage);
+        imageToBase64(uploadBlob).then((b64) => {
+          setImage(b64);
+          setLocalImage(b64);
+        });
         getColorsFromImage(bitmap).then(setImageColors);
       } else {
         optimizeColors(
@@ -15293,67 +15340,15 @@
           }),
           scale
         ).then(async (convertedImage) => {
-          imageToBase64(convertedImage).then(setImage);
+          imageToBase64(convertedImage).then((b64) => {
+            setImage(b64);
+            setLocalImage(b64);
+          });
           getColorsFromImage(await createImageBitmap(convertedImage)).then(setImageColors);
         });
       }
     };
-    const navigate = useNavigate();
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        onChange: (event) => setName(event.target.value),
-        placeholder: "Name",
-        className: "h-full",
-        onKeyDown: (event) => {
-          event.stopPropagation();
-        }
-      }
-    )), /* @__PURE__ */ React.createElement("div", { className: "row", style: { flexWrap: "nowrap" } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        placeholder: "Chunk",
-        type: "number",
-        value: startChunk[0],
-        onChange: (event) => setStartChunk(([x, y]) => [Number(event.target.value), y])
-      }
-    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CY"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        placeholder: "Chunk",
-        type: "number",
-        value: startChunk[1],
-        onChange: (event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])
-      }
-    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PX"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        placeholder: "Pos.",
-        type: "number",
-        value: startPosition[0],
-        onChange: (event) => setStartPosition(([x, y]) => [Number(event.target.value), y])
-      }
-    )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        placeholder: "Pos.",
-        type: "number",
-        value: startPosition[1],
-        onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
-      }
-    ))), /* @__PURE__ */ React.createElement(
-      "button",
-      {
-        className: "btn btn-md",
-        onClick: () => {
-          if (position.position.length && position.chunk.length) {
-            setStartChunk(position.chunk);
-            setStartPosition(position.position);
-          }
-        }
-      },
-      /* @__PURE__ */ React.createElement(Location, { className: "icon" })
-    )), /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "file",
@@ -15363,7 +15358,7 @@
           setUploadBlob(e.target.files[0]);
         }
       }
-    )), image && /* @__PURE__ */ React.createElement("details", null, /* @__PURE__ */ React.createElement("summary", null, /* @__PURE__ */ React.createElement("div", { className: "row", style: { justifyContent: "center", gap: "2rem" } }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), /* @__PURE__ */ React.createElement("div", { className: "column" }, /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Height:"), " ", Math.floor(height * scale), "px"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Width:"), " ", Math.floor(width * scale), "px"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Scale:"), " ", scale, "x")))), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+    )), localImage && /* @__PURE__ */ React.createElement("details", { style: { width: "100%" } }, /* @__PURE__ */ React.createElement("summary", null, /* @__PURE__ */ React.createElement("div", { className: "row", style: { justifyContent: "center", gap: "2rem" } }, /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), /* @__PURE__ */ React.createElement("div", { className: "column" }, /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Height:"), " ", Math.floor(localHeight * scale), "px"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Width:"), " ", Math.floor(localWidth * scale), "px"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("b", null, "Scale:"), " ", scale, "x")))), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "checkbox",
@@ -15390,7 +15385,45 @@
         setSelectedColorState: setSelectedColors,
         selectedColorState: selectedColors
       }
-    ))), /* @__PURE__ */ React.createElement(
+    ))));
+  };
+  const Create = () => {
+    const [name, setName] = reactExports.useState("");
+    const [startChunk, setStartChunk] = reactExports.useState([]);
+    const [startPosition, setStartPosition] = reactExports.useState([]);
+    const [image, setImage] = reactExports.useState();
+    const [imageColors, setImageColors] = reactExports.useState();
+    const [height, setHeight] = reactExports.useState(0);
+    const [width, setWidth] = reactExports.useState(0);
+    const [overlay, setOverlay] = useAtom(overlayAtom);
+    const navigate = useNavigate();
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Create new Overlay", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "input w-full desktop-auto" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Name"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        onChange: (event) => setName(event.target.value),
+        placeholder: "Name",
+        className: "h-full",
+        onKeyDown: (event) => {
+          event.stopPropagation();
+        }
+      }
+    )), /* @__PURE__ */ React.createElement(
+      CoordinateForm,
+      {
+        chunkValue: startChunk,
+        coordinateValue: startPosition,
+        setChunkValue: setStartChunk,
+        setCoordinateValue: setStartPosition
+      }
+    ), /* @__PURE__ */ React.createElement(
+      ImageUpload,
+      {
+        setImage,
+        setImageColors,
+        setHeight,
+        setWidth
+      }
+    ), /* @__PURE__ */ React.createElement(
       "button",
       {
         disabled: !name || !image || !startChunk.length || !startPosition.length,
@@ -15680,7 +15713,7 @@
   const extract = /* @__PURE__ */ getDefaultExportFromCjs(pngChunksExtractExports);
   const Import = () => {
     const navigate = useNavigate();
-    const fileInput = reactExports.useRef(null);
+    const [uploadBlob, setUploadBlob] = reactExports.useState();
     const imgRef = reactExports.useRef(null);
     const [overlays, setOverlays] = useAtom(overlayAtom);
     const [error, setError] = reactExports.useState(null);
@@ -15689,59 +15722,52 @@
     const [template, setTemplate] = reactExports.useState();
     const [height, setHeight] = reactExports.useState(0);
     const [width, setWidth] = reactExports.useState(0);
-    const pasteHandler = (event) => {
-      if (!fileInput.current) return;
-      fileInput.current.files = event.clipboardData?.files ?? new FileList();
-      fileInput.current.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
-    };
-    reactExports.useEffect(() => {
-      window.addEventListener("paste", pasteHandler);
-      return () => window.removeEventListener("paste", pasteHandler);
-    }, []);
     reactExports.useEffect(() => {
       if (imgRef.current) {
         imgRef.current.src = "data:image/bmp;base64," + image;
       }
     }, [image]);
-    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Template", showBack: true }, /* @__PURE__ */ React.createElement("label", { className: "FileInput input w-full" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "Template Image"), /* @__PURE__ */ React.createElement(
-      "input",
-      {
-        name: "template",
-        placeholder: "Template",
-        accept: "image/png",
-        type: "file",
-        ref: fileInput,
-        onChange: async (event) => {
-          if (!fileInput.current?.files?.length) return;
-          const imageBuffer = bufferExports.Buffer.from(
-            await fileInput.current.files[0].arrayBuffer()
-          );
-          const chunks = extract(imageBuffer);
-          const textChunks = chunks.filter(function(chunk) {
-            return chunk.name === "tEXt";
-          }).map(function(chunk) {
-            return text.decode(chunk.data);
-          });
-          const dataChunk = textChunks.find(({ keyword }) => keyword === "wplace");
-          if (!dataChunk) {
-            setError("No wplace chunk found! Please create Overlay manually.");
-            return;
-          }
-          setError(null);
-          const importedData = dataChunk.text.split(",");
-          setTemplate({
-            name: importedData[0],
-            chunk: [Number(importedData[1]), Number(importedData[2])],
-            position: [Number(importedData[3]), Number(importedData[4])]
-          });
-          const bitmap = await createImageBitmap(fileInput.current.files[0]);
-          setHeight(bitmap.height);
-          setWidth(bitmap.width);
-          setImage(await imageToBase64(fileInput.current.files[0]));
-          setImageColors(await getColorsFromImage(bitmap));
+    reactExports.useEffect(() => {
+      if (!uploadBlob) return;
+      uploadBlob.arrayBuffer().then((imageBuffer) => {
+        const chunks = extract(bufferExports.Buffer.from(imageBuffer));
+        const textChunks = chunks.filter(function(chunk) {
+          return chunk.name === "tEXt";
+        }).map(function(chunk) {
+          return text.decode(chunk.data);
+        });
+        const dataChunk = textChunks.find(({ keyword }) => keyword === "wplace");
+        if (!dataChunk) {
+          setError("No wplace chunk found! Please create Overlay manually.");
+          return;
         }
+        setError(null);
+        const importedData = dataChunk.text.split(",");
+        setTemplate({
+          name: importedData[0],
+          chunk: [Number(importedData[1]), Number(importedData[2])],
+          position: [Number(importedData[3]), Number(importedData[4])]
+        });
+      });
+      createImageBitmap(uploadBlob).then((bitmap) => {
+        setHeight(bitmap.height);
+        setWidth(bitmap.width);
+        getColorsFromImage(bitmap).then(setImageColors);
+      });
+      imageToBase64(uploadBlob).then(setImage);
+    }, [uploadBlob]);
+    return /* @__PURE__ */ React.createElement(Overlay, { headline: "Import Template", showBack: true }, /* @__PURE__ */ React.createElement(ImageUpload, { setUploadBlob }), error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error), image && /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), template && /* @__PURE__ */ React.createElement(
+      CoordinateForm,
+      {
+        coordinateValue: template.position,
+        chunkValue: template.chunk,
+        setCoordinateValue: () => {
+        },
+        setChunkValue: () => {
+        },
+        hidePostitionButton: true
       }
-    )), error && /* @__PURE__ */ React.createElement("div", { className: "error btn btn-md btn-error" }, error), image && /* @__PURE__ */ React.createElement("img", { ref: imgRef, alt: "imported image", id: "imagePreview" }), template && /* @__PURE__ */ React.createElement("div", { className: "groupRow" }, /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.chunk[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.chunk[1], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.position[0], " "), /* @__PURE__ */ React.createElement("span", { className: "btn btn-sm" }, " ", template.position[1], " ")), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement(
       "button",
       {
         className: "btn btn-primary",
@@ -15878,12 +15904,15 @@
   var pngChunksEncodeExports = requirePngChunksEncode();
   const encode = /* @__PURE__ */ getDefaultExportFromCjs(pngChunksEncodeExports);
   const Edit = () => {
-    const [overlays, setOverlay] = useAtom(overlayAtom);
-    const [onlyShowSelectedColors, setOnlyShowSelectedColors] = reactExports.useState(false);
     const [startChunk, setStartChunk] = reactExports.useState([]);
     const [startPosition, setStartPosition] = reactExports.useState([]);
     const [selectedColors, setSelectedColors] = reactExports.useState([]);
-    const [position] = useAtom(positionAtom);
+    const [image, setImage] = reactExports.useState();
+    const [imageColors, setImageColors] = reactExports.useState();
+    const [height, setHeight] = reactExports.useState(0);
+    const [width, setWidth] = reactExports.useState(0);
+    const [overlays, setOverlay] = useAtom(overlayAtom);
+    const [onlyShowSelectedColors, setOnlyShowSelectedColors] = reactExports.useState(false);
     const name = useParam("name");
     const navigate = useNavigate();
     const currentOverlayIndex = reactExports.useMemo(() => {
@@ -15905,8 +15934,8 @@
         className: "btn btn-sm",
         onClick: async () => {
           const overlay = overlays[currentOverlayIndex];
-          const image = base64ToImage(overlay.image, "image/png");
-          const imageBuffer = bufferExports.Buffer.from(await image.arrayBuffer());
+          const image2 = base64ToImage(overlay.image, "image/png");
+          const imageBuffer = bufferExports.Buffer.from(await image2.arrayBuffer());
           const chunks = extract(imageBuffer);
           chunks.splice(
             chunks.length - 1,
@@ -15950,53 +15979,15 @@
         showBack: true,
         customRenderer: /* @__PURE__ */ React.createElement("div", null, exportButton, deleteButton)
       },
-      /* @__PURE__ */ React.createElement("h2", null, " Position: "),
-      /* @__PURE__ */ React.createElement("div", { className: "row", style: { flexWrap: "nowrap" } }, /* @__PURE__ */ React.createElement("div", { className: "row" }, /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CX"), /* @__PURE__ */ React.createElement(
-        "input",
+      /* @__PURE__ */ React.createElement("table", { className: "table max-sm:text-sm" }, /* @__PURE__ */ React.createElement("tbody", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Coordinates "), /* @__PURE__ */ React.createElement(
+        CoordinateForm,
         {
-          placeholder: "Chunk",
-          type: "number",
-          value: startChunk[0],
-          onChange: (event) => setStartChunk(([x, y]) => [Number(event.target.value), y])
+          chunkValue: startChunk,
+          coordinateValue: startPosition,
+          setChunkValue: setStartChunk,
+          setCoordinateValue: setStartPosition
         }
-      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "CY"), /* @__PURE__ */ React.createElement(
-        "input",
-        {
-          placeholder: "Chunk",
-          type: "number",
-          value: startChunk[1],
-          onChange: (event) => setStartChunk(([x, y]) => [x, Number(event.target.value)])
-        }
-      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PX"), /* @__PURE__ */ React.createElement(
-        "input",
-        {
-          placeholder: "Pos.",
-          type: "number",
-          value: startPosition[0],
-          onChange: (event) => setStartPosition(([x, y]) => [Number(event.target.value), y])
-        }
-      )), /* @__PURE__ */ React.createElement("label", { className: "input" }, /* @__PURE__ */ React.createElement("span", { className: "label" }, "PY"), /* @__PURE__ */ React.createElement(
-        "input",
-        {
-          placeholder: "Pos.",
-          type: "number",
-          value: startPosition[1],
-          onChange: (event) => setStartPosition(([x, y]) => [x, Number(event.target.value)])
-        }
-      ))), /* @__PURE__ */ React.createElement(
-        "button",
-        {
-          className: "btn btn-md",
-          onClick: () => {
-            if (position.position.length && position.chunk.length) {
-              setStartChunk(position.chunk);
-              setStartPosition(position.position);
-            }
-          }
-        },
-        /* @__PURE__ */ React.createElement(Location, { className: "icon" })
-      )),
-      /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
+      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Template Colors "), /* @__PURE__ */ React.createElement("label", null, /* @__PURE__ */ React.createElement(
         "input",
         {
           type: "checkbox",
@@ -16006,15 +15997,22 @@
           },
           style: { marginRight: "10px" }
         }
-      ), "Only show selected Colors"),
-      /* @__PURE__ */ React.createElement(
+      ), "Only show selected Colors"), /* @__PURE__ */ React.createElement(
         ColorPicker,
         {
           colorList: overlays[currentOverlayIndex]?.templateColors,
           setSelectedColorState: setSelectedColors,
           selectedColorState: selectedColors
         }
-      ),
+      ))), /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("td", { className: "column", style: { alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("h2", null, " Change Template Image"), /* @__PURE__ */ React.createElement(
+        ImageUpload,
+        {
+          setImage,
+          setImageColors,
+          setHeight,
+          setWidth
+        }
+      ))))),
       /* @__PURE__ */ React.createElement(
         "button",
         {
@@ -16027,7 +16025,13 @@
                 colorSelection: selectedColors,
                 chunk: startChunk,
                 coordinate: startPosition,
-                onlyShowSelectedColors
+                onlyShowSelectedColors,
+                .../* @__PURE__ */ (() => image ? {
+                  image,
+                  height,
+                  width,
+                  imageColors
+                } : {})()
               },
               ...overlays.slice(currentOverlayIndex + 1)
             ]);
@@ -16299,7 +16303,7 @@
 ;
 (function(){
                     const el = document.createElement("style");
-                    el.innerText = ".OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}\n\n.coordinates {\n    display: none !important;\n}\n\n@media only screen and (min-width: 575px) {\n    .coordinates {\n        display: flex !important;\n    }\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    pointer-events: all;\n    gap: 1rem;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n    width: 100vw;\n    bottom: 0;\n    left: 0;\n    border-radius: var(--radius-box);\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}\n\n@media only screen and (min-width: 835px) {\n    .Overlay {\n        top: 10px;\n        right: 80px;\n        left: unset;\n        height: max-content;\n        width: max-content;\n        max-width: 80vw;\n        max-height: 90vh;\n        border-radius: var(--radius-box);\n    }\n\n    .mobile-only {\n        display: none !important;\n    }\n}.App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 1000 ;\n    pointer-events: none;\n}\n\n@media only screen and (min-width: 835px) {\n    .App {\n        z-index: 10;\n    }\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    flex-grow: 0;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}\n\n.input {\n    max-width: max-content;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(6, 2rem);\n    gap: 8px;\n}\n\n@media only screen and (min-width: 350px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(8, 2rem);\n        }\n    }\n}\n\n@media only screen and (min-width: 580px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(14, 2rem);\n        }\n    }\n\n    .desktop-auto {\n        max-width: unset !important;\n    }\n}\n";
+                    el.innerText = ".OverlayList {\n    display: flex;\n    flex-direction: column;\n}\n\n.OverlayList > button {\n    padding: 8px;\n    margin-top: 6px;\n}\n\n.OverlayListEntry {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    width: 100%;\n    min-width: 24rem;\n    gap: 1.5rem;\n    height: 2.5rem;\n}\n\n.OverlayList span {\n    max-width: 10rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    min-width: 2.5rem;\n}\n\n.OverlayListEntry > div > img {\n    max-width: 2.5rem;\n    max-height: 2.5rem;\n    border-radius: 100%;\n}\n\n.coordinate-display {\n    width: 3rem;\n}\n\n.coordinates {\n    display: none !important;\n}\n\n@media only screen and (min-width: 575px) {\n    .coordinates {\n        display: flex !important;\n    }\n}.Overlay {\n    position: fixed;\n    display: flex;\n    flex-direction: column;\n    pointer-events: all;\n    gap: 1rem;\n    flex-grow: 0;\n    flex-wrap: nowrap;\n    overflow: auto;\n    width: 100vw;\n    bottom: 0;\n    left: 0;\n    border-radius: var(--radius-box);\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n}\n\n.Overlay > nav {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    gap: 1rem;\n}\n\n.Overlay h1 {\n    max-width: 20rem;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n}\n\n.Overlay > nav > div {\n    display: flex;\n    flex-direction: row;\n    gap: 1rem;\n}\n\n.Overlay > nav > div > button > img {\n    width: 1rem;\n    height: 1rem;\n}\n\n.Overlay input[type=\"number\"] {\n    width: 3.5rem;\n}\n\n@media only screen and (min-width: 835px) {\n    .Overlay {\n        top: 10px;\n        right: 80px;\n        left: unset;\n        height: max-content;\n        width: max-content;\n        max-width: 80vw;\n        max-height: 90vh;\n        border-radius: var(--radius-box);\n    }\n\n    .mobile-only {\n        display: none !important;\n    }\n}.App {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    height: 100vh;\n    width: 100vw;\n    z-index: 1000 ;\n    pointer-events: none;\n}\n\n@media only screen and (min-width: 835px) {\n    .App {\n        z-index: 10;\n    }\n}\n\n.App-logo {\n    height: 40vmin;\n}\n.App-link {\n    color: #09d3ac;\n}\n\nh1 {\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n.row {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    flex-grow: 0;\n    align-items: center;\n    gap: 8px;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n    height: 100%;\n    justify-content: center;\n    align-items: center;\n    gap: 8px;\n}\n\n.groupRow {\n    display: flex;\n    flex-direction: row;\n    gap: 0.5rem;\n    align-items: center;\n}\n\n.ColorCheckbox {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    position: relative;\n    cursor: pointer;\n}\n\n.icon {\n    width: 1rem;\n    height: 1rem;\n    cursor: pointer;\n}\n\n.ColorCheckbox input[type=\"checkbox\"] {\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    appearance: none;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #ccc;\n    border-radius: 4px;\n    cursor: pointer;\n    position: relative;\n    margin: 0;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked {\n    border-color: #666;\n}\n\n.ColorCheckbox input[type=\"checkbox\"]:checked::before {\n    content: '✓';\n    position: absolute;\n    color: white;\n    font-size: 16px;\n    left: 50%;\n    top: 50%;\n    transform: translate(-50%, -50%);\n    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);\n}\n\n.ColorCheckbox span {\n    visibility: hidden;\n    background-color: rgba(0, 0, 0, 0.8);\n    color: white;\n    text-align: center;\n    padding: 4px 8px;\n    border-radius: 4px;\n    position: absolute;\n    z-index: 1;\n    bottom: 125%;\n    left: 50%;\n    transform: translateX(-50%);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.ColorCheckbox span::after {\n    content: \"\";\n    position: absolute;\n    top: 100%;\n    left: 50%;\n    margin-left: -5px;\n    border-width: 5px;\n    border-style: solid;\n    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;\n}\n\n.ColorCheckbox:hover span {\n    visibility: visible;\n}\n\n.FileInput {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n}\n\n.FileInput > input::file-selector-button {\n    display: none;\n}\n\n.FileInput > input[type=file] {\n    height: auto;\n    width: min-content;\n}\n\n.icon path {\n    fill: var(--color-base-content);;\n}\n\n#imagePreview {\n    min-height: 4rem;\n    max-height: 12rem;\n}\n\ndetails {\n    user-select: none;\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n}\n\nsummary {\n    display: flex;\n    cursor: pointer;\n}\n\nsummary::-webkit-details-marker {\n    display: none;\n}\n\ntr {\n    width: 100%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    gap: 1rem;\n}\n\n.input {\n    max-width: max-content;\n}\n\n.Grid {\n    display: grid;\n    grid-template-columns: repeat(6, 2rem);\n    gap: 8px;\n}\n\n@media only screen and (min-width: 350px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(8, 2rem);\n        }\n    }\n}\n\n@media only screen and (min-width: 580px) {\n    .Overlay {\n        .Grid {\n            grid-template-columns: repeat(14, 2rem);\n        }\n    }\n\n    .desktop-auto {\n        max-width: unset !important;\n    }\n}\n\nh2 {\n    font-size: 14pt;\n    font-weight: bold;\n}";
                     el.type = "text/css";
                     document.head.appendChild(el);
                 })();

@@ -208,3 +208,8 @@ tr {
         max-width: unset !important;
     }
 }
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+}
