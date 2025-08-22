@@ -213,3 +213,7 @@
     font-size: 14pt;
     font-weight: bold;
 }
+
+.Overlay img {
+    image-rendering: pixelated;
+}
