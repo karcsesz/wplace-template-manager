@@ -217,3 +217,11 @@
 .Overlay img {
     image-rendering: pixelated;
 }
+
+.Overlay ul {
+    list-style-type: circle;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
