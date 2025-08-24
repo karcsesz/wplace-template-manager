@@ -11,6 +11,7 @@ export type Overlay = {
     colorSelection: Color[];
     onlyShowSelectedColors: boolean;
     name: string;
+    hidden: boolean;
 };
 
 export const overlayAtom = atomWithStorage<Overlay[]>("overlays", []);

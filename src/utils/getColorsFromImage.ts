@@ -31,8 +31,6 @@ export const getColorsFromImage = async (image: ImageBitmap) => {
         }
     }
 
-    console.log(colors);
-
     const mappedColors = Array.from(colors.values()).map((hex) => {
         let color: Color | undefined = InvertedFreeColorMap.get(hex as FreeColor);
         if (!color) {

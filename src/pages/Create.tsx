@@ -76,6 +76,7 @@ export const Create: FC = () => {
                             templateColors: imageColors!,
                             height,
                             width,
+                            hidden: false,
                         },
                     ]);
                     navigate("/");

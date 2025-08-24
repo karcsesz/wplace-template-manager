@@ -46,6 +46,8 @@ export async function renderSquares(
     ctx.drawImage(img, 0, 0, 3000, 3000);
 
     for (const overlay of chunkOverlays) {
+        if (overlay.hidden) continue;
+
         const chunkXIndex = overlay.toChunkX - overlay.chunk[0] - (overlay.toChunkX - chunkX);
         const chunkYIndex = overlay.toChunkY - overlay.chunk[1] - (overlay.toChunkY - chunkY);
 
