@@ -147,6 +147,7 @@
 
 .Overlay .icon path {
     fill: var(--color-base-content);;
+    stroke: var(--color-base-content);;
 }
 
 #imagePreview {
