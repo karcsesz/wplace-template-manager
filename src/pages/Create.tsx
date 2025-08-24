@@ -11,6 +11,7 @@ export const Create: FC = () => {
     const [error, setError] = useState<string>();
     // Inputs
     const [name, setName] = useState<string>("");
+    const [previewName, setPreviewName] = useState<string>();
     const [startChunk, setStartChunk] = useState<number[]>([]);
     const [startPosition, setStartPosition] = useState<number[]>([]);
 
@@ -39,7 +40,7 @@ export const Create: FC = () => {
                 <span className="label">Name</span>
                 <input
                     onChange={(event) => setName(event.target.value)}
-                    placeholder={"Name"}
+                    placeholder={previewName ?? "Name"}
                     className={"h-full"}
                     onKeyDown={(event) => {
                         event.stopPropagation();
@@ -57,6 +58,7 @@ export const Create: FC = () => {
                 setImageColors={setImageColors}
                 setHeight={setHeight}
                 setWidth={setWidth}
+                setName={setPreviewName}
             />
             <button
                 disabled={!name || !image || !startChunk.length || !startPosition.length || !!error}

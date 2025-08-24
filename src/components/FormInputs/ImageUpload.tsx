@@ -17,7 +17,8 @@ export const ImageUpload: FC<{
     setImageColors: Dispatch<SetStateAction<Color[] | undefined>>;
     setHeight: Dispatch<SetStateAction<number>>;
     setWidth: Dispatch<SetStateAction<number>>;
-}> = ({ setImageColors, setImage, setWidth, setHeight }) => {
+    setName?: Dispatch<SetStateAction<string | undefined>>;
+}> = ({ setImageColors, setImage, setWidth, setHeight, setName }) => {
     const [optimizeImage, setOptimizeImage] = useState<boolean>(false);
     const [selectedColors, setSelectedColors] = useState<Color[]>([]);
     const [scale, setScale] = useState<number>(1);
@@ -104,7 +105,13 @@ export const ImageUpload: FC<{
                     ref={fileInput}
                     accept={"image/png, image/jpeg"}
                     onChange={async (e) => {
-                        setUploadBlob(e.target.files![0]);
+                        const file = e.target.files![0];
+                        setUploadBlob(file);
+
+                        const originalName = file.name;
+                        const nameParts = originalName.split(".");
+                        const name = nameParts.slice(0, nameParts.length - 1).join(".");
+                        if (setName) setName(name);
                     }}
                 />
             </label>

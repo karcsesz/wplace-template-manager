@@ -132,7 +132,7 @@ export const Edit: FC = () => {
                                 <span className="label">Name</span>
                                 <input
                                     onChange={(event) => setChangeName(event.target.value)}
-                                    placeholder={"Name"}
+                                    placeholder={overlays[currentOverlayIndex]?.name ?? "Name"}
                                     className={"h-full"}
                                     onKeyDown={(event) => {
                                         event.stopPropagation();
