@@ -16256,6 +16256,7 @@
     return blob;
   }
   const createTemplateBitmap = async (imageBitmap, colorFilter) => {
+    const begin = Date.now();
     if (colorFilter) {
       const filtering_canvas = document.createElement("canvas");
       filtering_canvas.width = imageBitmap.width;
@@ -16283,15 +16284,17 @@
     canvas.height = imageBitmap.height * 3;
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
+    const mask = new Uint8ClampedArray(3 * 3 * 4);
+    for (let channel = 0; channel < 4; channel++) mask[4 * 4 + channel] = 255;
+    const mask_image = new ImageData(mask, 3);
+    const mask_uploaded = await createImageBitmap(mask_image);
+    ctx.fillStyle = ctx.createPattern(mask_uploaded, "repeat");
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    for (let row = -3; row < canvas.height; row += 3) {
-      ctx.clearRect(0, row + 2, canvas.width, 2);
-    }
-    for (let col = -3; col < canvas.height; col += 3) {
-      ctx.clearRect(col + 2, 0, 2, canvas.height);
-    }
     const bitmap = createImageBitmap(canvas);
     canvas.remove();
+    console.log(Date.now() - begin);
     return bitmap;
   };
   var reactDomExports = requireReactDom();
