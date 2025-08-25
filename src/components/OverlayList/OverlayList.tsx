@@ -17,7 +17,7 @@ export const OverlayList: FC = () => {
 
     const overlaysList = useMemo(
         () =>
-            overlays.map(({ image, name, chunk, coordinate, hidden }, index) => {
+            overlays.map(({ image, name, chunk, coordinate, hidden, width, height }, index) => {
                 return (
                     <OverlayListEntry
                         name={name}
@@ -27,6 +27,8 @@ export const OverlayList: FC = () => {
                         position={coordinate}
                         isHidden={hidden}
                         toggleVisiblity={() => toggleVisibility(hidden, index)}
+                        width={width}
+                        height={height}
                     />
                 );
             }),

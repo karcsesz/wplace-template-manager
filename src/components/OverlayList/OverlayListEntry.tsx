@@ -13,7 +13,9 @@ export const OverlayListEntry: FC<{
     position: [number, number];
     isHidden: boolean;
     toggleVisiblity: () => void;
-}> = ({ name, image, chunk, position, isHidden, toggleVisiblity }) => {
+    height: number;
+    width: number;
+}> = ({ name, image, chunk, position, isHidden, toggleVisiblity, width, height }) => {
     const navigate = useNavigate();
     const imgRef = useRef<HTMLImageElement>(null);
 
@@ -49,7 +51,7 @@ export const OverlayListEntry: FC<{
                         window.postMessage({
                             source: "overlay-location-service",
                             chunk,
-                            position,
+                            position: [position[0] + width / 2, position[1] + height / 2],
                         } as JumpEventData);
                         awaitElement("button[title='Explore']").then((button) => {
                             button.dispatchEvent(
