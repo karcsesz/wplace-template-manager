@@ -93,36 +93,52 @@ const createTemplateBitmap = async (
     imageBitmap: ImageBitmap,
     colorFilter?: ColorValue[],
 ): Promise<ImageBitmap> => {
+    if (colorFilter) {
+        const filtering_canvas = document.createElement("canvas");
+        filtering_canvas.width = imageBitmap.width;
+        filtering_canvas.height = imageBitmap.height;
+        const ctx = filtering_canvas.getContext("2d", { willReadFrequently: true })!;
+        ctx.drawImage(imageBitmap, 0, 0);
+        const imageData = ctx.getImageData(0, 0, filtering_canvas.width, filtering_canvas.height);
+        filtering_canvas.remove();
+        for (let y = 0; y < imageData.height; y++) {
+            for (let x = 0; x < imageData.width; x++) {
+                const pixelIndex = (y * imageData.width + x) * 4;
+                const r = imageData.data[pixelIndex];
+                const g = imageData.data[pixelIndex + 1];
+                const b = imageData.data[pixelIndex + 2];
+
+                const hex = rgbToHex(r, g, b);
+                if (!colorFilter.includes(hex as ColorValue)) {
+                    imageData.data[pixelIndex + 3] = 0;
+                }
+            }
+        }
+        imageBitmap = await createImageBitmap(imageData);
+    }
     const canvas = document.createElement("canvas");
 
     canvas.width = imageBitmap.width * 3;
     canvas.height = imageBitmap.height * 3;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+    const ctx = canvas.getContext("2d")!;
     ctx.imageSmoothingEnabled = false;
 
+    // Create a 3x3 mask, defaults to transparent black
+    const mask = new Uint8ClampedArray(3 * 3 * 4);
+    // Set the middle pixel to be opaque white
+    for (let channel = 0; channel < 4; channel++) mask[4 * 4 + channel] = 255;
+    // Convert to pattern
+    const mask_image = new ImageData(mask, 3);
+    const mask_uploaded = await createImageBitmap(mask_image);
+    ctx.fillStyle = ctx.createPattern(mask_uploaded, "repeat")!;
+
+    // Fill the canvas with the pattern
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Composite the image over it
+    ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    for (let y = 0; y < canvas.height; y++) {
-        for (let x = 0; x < canvas.width; x++) {
-            const pixelIndex = (y * canvas.width + x) * 4;
-            const r = imageData.data[pixelIndex];
-            const g = imageData.data[pixelIndex + 1];
-            const b = imageData.data[pixelIndex + 2];
-
-            const hex = rgbToHex(r, g, b);
-
-            if (x % 3 !== 1 || y % 3 !== 1) {
-                imageData.data[pixelIndex + 3] = 0;
-            }
-            if (colorFilter && !colorFilter.includes(hex as ColorValue)) {
-                imageData.data[pixelIndex + 3] = 0;
-            }
-        }
-    }
-
-    ctx.putImageData(imageData, 0, 0);
     const bitmap = createImageBitmap(canvas);
     canvas.remove();
 
