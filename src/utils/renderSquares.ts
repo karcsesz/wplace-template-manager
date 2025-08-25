@@ -93,36 +93,45 @@ const createTemplateBitmap = async (
     imageBitmap: ImageBitmap,
     colorFilter?: ColorValue[],
 ): Promise<ImageBitmap> => {
+    if (colorFilter) {
+        const filtering_canvas = document.createElement("canvas");
+        filtering_canvas.width = imageBitmap.width;
+        filtering_canvas.height = imageBitmap.height;
+        const ctx = filtering_canvas.getContext("2d", { willReadFrequently: true })!;
+        ctx.drawImage(imageBitmap, 0, 0);
+        const imageData = ctx.getImageData(0, 0, filtering_canvas.width, filtering_canvas.height);
+        filtering_canvas.remove();
+        for (let y = 0; y < imageData.height; y++) {
+            for (let x = 0; x < imageData.width; x++) {
+                const pixelIndex = (y * imageData.width + x) * 4;
+                const r = imageData.data[pixelIndex];
+                const g = imageData.data[pixelIndex + 1];
+                const b = imageData.data[pixelIndex + 2];
+
+                const hex = rgbToHex(r, g, b);
+                if (!colorFilter.includes(hex as ColorValue)) {
+                    imageData.data[pixelIndex + 3] = 0;
+                }
+            }
+        }
+        imageBitmap = await createImageBitmap(imageData);
+    }
     const canvas = document.createElement("canvas");
 
     canvas.width = imageBitmap.width * 3;
     canvas.height = imageBitmap.height * 3;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+    const ctx = canvas.getContext("2d")!;
     ctx.imageSmoothingEnabled = false;
 
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    for (let y = 0; y < canvas.height; y++) {
-        for (let x = 0; x < canvas.width; x++) {
-            const pixelIndex = (y * canvas.width + x) * 4;
-            const r = imageData.data[pixelIndex];
-            const g = imageData.data[pixelIndex + 1];
-            const b = imageData.data[pixelIndex + 2];
-
-            const hex = rgbToHex(r, g, b);
-
-            if (x % 3 !== 1 || y % 3 !== 1) {
-                imageData.data[pixelIndex + 3] = 0;
-            }
-            if (colorFilter && !colorFilter.includes(hex as ColorValue)) {
-                imageData.data[pixelIndex + 3] = 0;
-            }
-        }
+    for (let row = 0; row < canvas.height; row++) {
+        if (row % 3 == 1) continue;
+        ctx.clearRect(0, row, canvas.width, 1);
     }
-
-    ctx.putImageData(imageData, 0, 0);
+    for (let col = 0; col < canvas.height; col++) {
+        if (col % 3 == 1) continue;
+        ctx.clearRect(col, 0, 1, canvas.height);
+    }
     const bitmap = createImageBitmap(canvas);
     canvas.remove();
 
