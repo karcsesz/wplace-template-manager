@@ -123,15 +123,22 @@ const createTemplateBitmap = async (
     const ctx = canvas.getContext("2d")!;
     ctx.imageSmoothingEnabled = false;
 
+    // Create a 3x3 mask, defaults to transparent black
+    const mask = new Uint8ClampedArray(3 * 3 * 4);
+    // Set the middle pixel to be opaque white
+    for (let channel = 0; channel < 4; channel++) mask[4 * 4 + channel] = 255;
+    // Convert to pattern
+    const mask_image = new ImageData(mask, 3);
+    const mask_uploaded = await createImageBitmap(mask_image);
+    ctx.fillStyle = ctx.createPattern(mask_uploaded, "repeat")!;
+
+    // Fill the canvas with the pattern
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Composite the image over it
+    ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    // Needs to start running from -3 because it deletes the bottom pixels for the current row, as well as the top pixels for the next one. This way we don't miss the topmost row of pixels
-    for (let row = -3; row < canvas.height; row += 3) {
-        ctx.clearRect(0, row + 2, canvas.width, 2);
-    }
-    // Needs to start running from -3 because it deletes the right pixels for the current column, as well as the left pixels for the next one. This way we don't miss the leftmost column of pixels
-    for (let col = -3; col < canvas.height; col += 3) {
-        ctx.clearRect(col + 2, 0, 2, canvas.height);
-    }
+
     const bitmap = createImageBitmap(canvas);
     canvas.remove();
 
