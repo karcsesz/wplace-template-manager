@@ -124,13 +124,13 @@ const createTemplateBitmap = async (
     ctx.imageSmoothingEnabled = false;
 
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    for (let row = 0; row < canvas.height; row++) {
-        if (row % 3 == 1) continue;
-        ctx.clearRect(0, row, canvas.width, 1);
+    // Needs to start running from -3 because it deletes the bottom pixels for the current row, as well as the top pixels for the next one. This way we don't miss the topmost row of pixels
+    for (let row = -3; row < canvas.height; row += 3) {
+        ctx.clearRect(0, row + 2, canvas.width, 2);
     }
-    for (let col = 0; col < canvas.height; col++) {
-        if (col % 3 == 1) continue;
-        ctx.clearRect(col, 0, 1, canvas.height);
+    // Needs to start running from -3 because it deletes the right pixels for the current column, as well as the left pixels for the next one. This way we don't miss the leftmost column of pixels
+    for (let col = -3; col < canvas.height; col += 3) {
+        ctx.clearRect(col + 2, 0, 2, canvas.height);
     }
     const bitmap = createImageBitmap(canvas);
     canvas.remove();
