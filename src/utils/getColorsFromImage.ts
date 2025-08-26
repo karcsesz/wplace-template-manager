@@ -7,17 +7,18 @@ import {
     PaidColor,
 } from "../colorMap";
 import { rgbToHex } from "./rgbToHex";
+import { CustomCanvas } from "./CustomCanvas";
 
 export const getColorsFromImage = async (image: ImageBitmap) => {
-    const canvas = document.createElement("canvas");
+    const renderingCanvas = new CustomCanvas(image.width, image.height);
+    renderingCanvas.ctx.drawImage(image, 0, 0);
 
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    const ctx = canvas.getContext("2d")!;
-    ctx.drawImage(image, 0, 0);
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = renderingCanvas.ctx.getImageData(
+        0,
+        0,
+        renderingCanvas.canvas.width,
+        renderingCanvas.canvas.height,
+    );
     const colors: Set<ColorValue> = new Set();
 
     for (let i = 0; i < imageData.data.length; i += 4) {
@@ -40,7 +41,7 @@ export const getColorsFromImage = async (image: ImageBitmap) => {
         return color;
     });
 
-    canvas.remove();
+    renderingCanvas.destroy();
 
     return mappedColors.filter((color) => !!color);
 };

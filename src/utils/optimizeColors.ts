@@ -1,21 +1,27 @@
 import { ColorValue } from "../colorMap";
 import { hexToRgb } from "./hexToRgb";
+import { CustomCanvas } from "./CustomCanvas";
 
 export const optimizeColors = async (
     imageBitmap: ImageBitmap,
     colorList: ColorValue[],
     scale = 1,
 ): Promise<Blob> => {
-    const canvas = document.createElement("canvas");
+    const renderingCanvas = new CustomCanvas(imageBitmap.width * scale, imageBitmap.height * scale);
 
-    canvas.width = Math.floor(imageBitmap.width * scale);
-    canvas.height = Math.floor(imageBitmap.height * scale);
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
-    ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    ctx.imageSmoothingEnabled = false;
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    renderingCanvas.ctx.drawImage(
+        imageBitmap,
+        0,
+        0,
+        renderingCanvas.canvas.width,
+        renderingCanvas.canvas.height,
+    );
+    const imageData = renderingCanvas.ctx.getImageData(
+        0,
+        0,
+        renderingCanvas.canvas.width,
+        renderingCanvas.canvas.height,
+    );
     const data = imageData.data;
 
     const rgbColors = colorList.map(hexToRgb);
@@ -77,13 +83,13 @@ export const optimizeColors = async (
         }
     }
 
-    ctx.putImageData(imageData, 0, 0);
+    renderingCanvas.ctx.putImageData(imageData, 0, 0);
 
     const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => resolve(blob!));
+        renderingCanvas.canvas.toBlob((blob) => resolve(blob!));
     });
 
-    canvas.remove();
+    renderingCanvas.destroy();
 
     return blob;
 };

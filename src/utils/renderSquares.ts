@@ -1,8 +1,8 @@
-import { Overlay, overlayAtom } from "../atoms/overlay";
+import { Overlay } from "../atoms/overlay";
 import { base64ToImage } from "./base64ToImage";
-import { Color, ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
-import { log } from "./log";
+import { ColorValue, FreeColor, FreeColorMap, PaidColor, PaidColorMap } from "../colorMap";
 import { rgbToHex } from "./rgbToHex";
+import { CustomCanvas } from "./CustomCanvas";
 
 export async function renderSquares(
     baseBlob: Blob,
@@ -10,6 +10,10 @@ export async function renderSquares(
     chunkX: number,
     chunkY: number,
 ): Promise<Blob | null> {
+    const CANVAS_SIZE = 1000;
+    const RESCALE_FACTOR = 3; // 3x3 pixel size
+    const RESCALED_CANVAS_SIZE = CANVAS_SIZE * RESCALE_FACTOR;
+
     const expandedOverlays = await Promise.all(
         overlays.map(async (overlay) => {
             const image = base64ToImage(overlay.image, "image/png");
@@ -21,9 +25,11 @@ export async function renderSquares(
                 width: bitmap.width,
                 bitmap: bitmap,
                 toChunkX:
-                    overlay.chunk[0] + Math.floor((overlay.coordinate[0] + bitmap.width) / 1000),
+                    overlay.chunk[0] +
+                    Math.floor((overlay.coordinate[0] + bitmap.width) / CANVAS_SIZE),
                 toChunkY:
-                    overlay.chunk[1] + Math.floor((overlay.coordinate[1] + bitmap.height) / 1000),
+                    overlay.chunk[1] +
+                    Math.floor((overlay.coordinate[1] + bitmap.height) / CANVAS_SIZE),
             };
         }),
     );
@@ -34,16 +40,10 @@ export async function renderSquares(
         return greaterThanMin && smallerThanMax;
     });
 
-    const canvas = document.createElement("canvas");
-
-    canvas.width = 3000;
-    canvas.height = 3000;
-
-    const ctx = canvas.getContext("2d")!;
-    ctx.imageSmoothingEnabled = false;
+    const renderingCanvas = new CustomCanvas(RESCALED_CANVAS_SIZE);
 
     const img = await createImageBitmap(baseBlob);
-    ctx.drawImage(img, 0, 0, 3000, 3000);
+    renderingCanvas.ctx.drawImage(img, 0, 0, RESCALED_CANVAS_SIZE, RESCALED_CANVAS_SIZE);
 
     for (const overlay of chunkOverlays) {
         if (overlay.hidden) continue;
@@ -69,41 +69,49 @@ export async function renderSquares(
             });
         }
 
-        const templateBitmap = await createTemplateBitmap(bitmap, colorFilter);
+        const templateBitmap = await createTemplateBitmap(bitmap, RESCALE_FACTOR, colorFilter);
 
-        ctx.drawImage(
+        renderingCanvas.ctx.drawImage(
             templateBitmap,
-            overlay.coordinate[0] * 3 - chunkXIndex * 3000,
-            overlay.coordinate[1] * 3 - chunkYIndex * 3000,
+            overlay.coordinate[0] * RESCALE_FACTOR - chunkXIndex * RESCALED_CANVAS_SIZE,
+            overlay.coordinate[1] * RESCALE_FACTOR - chunkYIndex * RESCALED_CANVAS_SIZE,
             templateBitmap.width,
             templateBitmap.height,
         );
     }
 
     const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => resolve(blob!));
+        renderingCanvas.canvas.toBlob((blob) => resolve(blob!));
     });
 
-    canvas.remove();
+    renderingCanvas.destroy();
 
     return blob;
 }
 
 const createTemplateBitmap = async (
     imageBitmap: ImageBitmap,
+    pixelSize: number,
     colorFilter?: ColorValue[],
 ): Promise<ImageBitmap> => {
+    const COLOR_CHANNELS = 4;
+
     if (colorFilter) {
-        const filtering_canvas = document.createElement("canvas");
-        filtering_canvas.width = imageBitmap.width;
-        filtering_canvas.height = imageBitmap.height;
-        const ctx = filtering_canvas.getContext("2d", { willReadFrequently: true })!;
-        ctx.drawImage(imageBitmap, 0, 0);
-        const imageData = ctx.getImageData(0, 0, filtering_canvas.width, filtering_canvas.height);
-        filtering_canvas.remove();
+        const filteringCanvas = new CustomCanvas(imageBitmap.width, imageBitmap.height);
+
+        filteringCanvas.ctx.drawImage(imageBitmap, 0, 0);
+
+        const imageData = filteringCanvas.ctx.getImageData(
+            0,
+            0,
+            imageBitmap.width,
+            imageBitmap.height,
+        );
+        filteringCanvas.destroy();
+
         for (let y = 0; y < imageData.height; y++) {
             for (let x = 0; x < imageData.width; x++) {
-                const pixelIndex = (y * imageData.width + x) * 4;
+                const pixelIndex = (y * imageData.width + x) * COLOR_CHANNELS;
                 const r = imageData.data[pixelIndex];
                 const g = imageData.data[pixelIndex + 1];
                 const b = imageData.data[pixelIndex + 2];
@@ -114,33 +122,32 @@ const createTemplateBitmap = async (
                 }
             }
         }
+
         imageBitmap = await createImageBitmap(imageData);
     }
-    const canvas = document.createElement("canvas");
 
-    canvas.width = imageBitmap.width * 3;
-    canvas.height = imageBitmap.height * 3;
-    const ctx = canvas.getContext("2d")!;
-    ctx.imageSmoothingEnabled = false;
+    const renderingCanvas = new CustomCanvas(
+        imageBitmap.width * pixelSize,
+        imageBitmap.height * pixelSize,
+    );
 
-    // Create a 3x3 mask, defaults to transparent black
-    const mask = new Uint8ClampedArray(3 * 3 * 4);
-    // Set the middle pixel to be opaque white
-    for (let channel = 0; channel < 4; channel++) mask[4 * 4 + channel] = 255;
-    // Convert to pattern
-    const mask_image = new ImageData(mask, 3);
+    const canvas = renderingCanvas.canvas;
+    const ctx = renderingCanvas.ctx;
+
+    const mask = new Uint8ClampedArray(pixelSize * pixelSize * COLOR_CHANNELS);
+    for (let channel = 0; channel < COLOR_CHANNELS; channel++) mask[4 * 4 + channel] = 255;
+
+    const mask_image = new ImageData(mask, pixelSize);
     const mask_uploaded = await createImageBitmap(mask_image);
     ctx.fillStyle = ctx.createPattern(mask_uploaded, "repeat")!;
 
-    // Fill the canvas with the pattern
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Composite the image over it
     ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
 
     const bitmap = createImageBitmap(canvas);
-    canvas.remove();
+    renderingCanvas.destroy();
 
     return bitmap;
 };

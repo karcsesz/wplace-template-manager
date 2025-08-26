@@ -15248,13 +15248,35 @@
   const rgbToHex = (r, g, b) => {
     return "#" + r.toString(16).padStart(2, "0") + g.toString(16).padStart(2, "0") + b.toString(16).padStart(2, "0");
   };
+  class CustomCanvas {
+    _canvas;
+    _ctx;
+    constructor(width, height) {
+      this._canvas = document.createElement("canvas");
+      this._canvas.width = width;
+      this._canvas.height = height ?? width;
+      this._ctx = this._canvas.getContext("2d", { willReadFrequently: true });
+      this._ctx.imageSmoothingEnabled = false;
+    }
+    get ctx() {
+      return this._ctx;
+    }
+    get canvas() {
+      return this._canvas;
+    }
+    destroy() {
+      this._canvas.remove();
+    }
+  }
   const getColorsFromImage = async (image) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(image, 0, 0);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const renderingCanvas = new CustomCanvas(image.width, image.height);
+    renderingCanvas.ctx.drawImage(image, 0, 0);
+    const imageData = renderingCanvas.ctx.getImageData(
+      0,
+      0,
+      renderingCanvas.canvas.width,
+      renderingCanvas.canvas.height
+    );
     const colors = /* @__PURE__ */ new Set();
     for (let i = 0; i < imageData.data.length; i += 4) {
       const r = imageData.data[i];
@@ -15272,7 +15294,7 @@
       }
       return color;
     });
-    canvas.remove();
+    renderingCanvas.destroy();
     return mappedColors.filter((color) => !!color);
   };
   const hexToRgb = (hex) => {
@@ -15287,13 +15309,20 @@
     };
   };
   const optimizeColors = async (imageBitmap, colorList, scale = 1) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.floor(imageBitmap.width * scale);
-    canvas.height = Math.floor(imageBitmap.height * scale);
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-    ctx.imageSmoothingEnabled = false;
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const renderingCanvas = new CustomCanvas(imageBitmap.width * scale, imageBitmap.height * scale);
+    renderingCanvas.ctx.drawImage(
+      imageBitmap,
+      0,
+      0,
+      renderingCanvas.canvas.width,
+      renderingCanvas.canvas.height
+    );
+    const imageData = renderingCanvas.ctx.getImageData(
+      0,
+      0,
+      renderingCanvas.canvas.width,
+      renderingCanvas.canvas.height
+    );
     const data = imageData.data;
     const rgbColors = colorList.map(hexToRgb);
     const COLOR_SPACE_PRECISION = 16;
@@ -15337,11 +15366,11 @@
         data[i + 3] = 0;
       }
     }
-    ctx.putImageData(imageData, 0, 0);
+    renderingCanvas.ctx.putImageData(imageData, 0, 0);
     const blob = await new Promise((resolve) => {
-      canvas.toBlob((blob2) => resolve(blob2));
+      renderingCanvas.canvas.toBlob((blob2) => resolve(blob2));
     });
-    canvas.remove();
+    renderingCanvas.destroy();
     return blob;
   };
   const ImageUpload = ({ setImageColors, setImage, setWidth, setHeight, setName }) => {
@@ -16197,6 +16226,9 @@
     );
   };
   async function renderSquares(baseBlob, overlays, chunkX, chunkY) {
+    const CANVAS_SIZE = 1e3;
+    const RESCALE_FACTOR = 3;
+    const RESCALED_CANVAS_SIZE = CANVAS_SIZE * RESCALE_FACTOR;
     const expandedOverlays = await Promise.all(
       overlays.map(async (overlay) => {
         const image = base64ToImage(overlay.image, "image/png");
@@ -16206,8 +16238,8 @@
           height: bitmap.height,
           width: bitmap.width,
           bitmap,
-          toChunkX: overlay.chunk[0] + Math.floor((overlay.coordinate[0] + bitmap.width) / 1e3),
-          toChunkY: overlay.chunk[1] + Math.floor((overlay.coordinate[1] + bitmap.height) / 1e3)
+          toChunkX: overlay.chunk[0] + Math.floor((overlay.coordinate[0] + bitmap.width) / CANVAS_SIZE),
+          toChunkY: overlay.chunk[1] + Math.floor((overlay.coordinate[1] + bitmap.height) / CANVAS_SIZE)
         };
       })
     );
@@ -16216,13 +16248,9 @@
       const smallerThanMax = chunkX <= overlay.toChunkX && chunkY <= overlay.toChunkY;
       return greaterThanMin && smallerThanMax;
     });
-    const canvas = document.createElement("canvas");
-    canvas.width = 3e3;
-    canvas.height = 3e3;
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
+    const renderingCanvas = new CustomCanvas(RESCALED_CANVAS_SIZE);
     const img = await createImageBitmap(baseBlob);
-    ctx.drawImage(img, 0, 0, 3e3, 3e3);
+    renderingCanvas.ctx.drawImage(img, 0, 0, RESCALED_CANVAS_SIZE, RESCALED_CANVAS_SIZE);
     for (const overlay of chunkOverlays) {
       if (overlay.hidden) continue;
       const chunkXIndex = overlay.toChunkX - overlay.chunk[0] - (overlay.toChunkX - chunkX);
@@ -16242,33 +16270,36 @@
           }
         });
       }
-      const templateBitmap = await createTemplateBitmap(bitmap, colorFilter);
-      ctx.drawImage(
+      const templateBitmap = await createTemplateBitmap(bitmap, RESCALE_FACTOR, colorFilter);
+      renderingCanvas.ctx.drawImage(
         templateBitmap,
-        overlay.coordinate[0] * 3 - chunkXIndex * 3e3,
-        overlay.coordinate[1] * 3 - chunkYIndex * 3e3,
+        overlay.coordinate[0] * RESCALE_FACTOR - chunkXIndex * RESCALED_CANVAS_SIZE,
+        overlay.coordinate[1] * RESCALE_FACTOR - chunkYIndex * RESCALED_CANVAS_SIZE,
         templateBitmap.width,
         templateBitmap.height
       );
     }
     const blob = await new Promise((resolve) => {
-      canvas.toBlob((blob2) => resolve(blob2));
+      renderingCanvas.canvas.toBlob((blob2) => resolve(blob2));
     });
-    canvas.remove();
+    renderingCanvas.destroy();
     return blob;
   }
-  const createTemplateBitmap = async (imageBitmap, colorFilter) => {
+  const createTemplateBitmap = async (imageBitmap, pixelSize, colorFilter) => {
+    const COLOR_CHANNELS = 4;
     if (colorFilter) {
-      const filtering_canvas = document.createElement("canvas");
-      filtering_canvas.width = imageBitmap.width;
-      filtering_canvas.height = imageBitmap.height;
-      const ctx2 = filtering_canvas.getContext("2d", { willReadFrequently: true });
-      ctx2.drawImage(imageBitmap, 0, 0);
-      const imageData = ctx2.getImageData(0, 0, filtering_canvas.width, filtering_canvas.height);
-      filtering_canvas.remove();
+      const filteringCanvas = new CustomCanvas(imageBitmap.width, imageBitmap.height);
+      filteringCanvas.ctx.drawImage(imageBitmap, 0, 0);
+      const imageData = filteringCanvas.ctx.getImageData(
+        0,
+        0,
+        imageBitmap.width,
+        imageBitmap.height
+      );
+      filteringCanvas.destroy();
       for (let y = 0; y < imageData.height; y++) {
         for (let x = 0; x < imageData.width; x++) {
-          const pixelIndex = (y * imageData.width + x) * 4;
+          const pixelIndex = (y * imageData.width + x) * COLOR_CHANNELS;
           const r = imageData.data[pixelIndex];
           const g = imageData.data[pixelIndex + 1];
           const b = imageData.data[pixelIndex + 2];
@@ -16280,21 +16311,22 @@
       }
       imageBitmap = await createImageBitmap(imageData);
     }
-    const canvas = document.createElement("canvas");
-    canvas.width = imageBitmap.width * 3;
-    canvas.height = imageBitmap.height * 3;
-    const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
-    const mask = new Uint8ClampedArray(3 * 3 * 4);
-    for (let channel = 0; channel < 4; channel++) mask[4 * 4 + channel] = 255;
-    const mask_image = new ImageData(mask, 3);
+    const renderingCanvas = new CustomCanvas(
+      imageBitmap.width * pixelSize,
+      imageBitmap.height * pixelSize
+    );
+    const canvas = renderingCanvas.canvas;
+    const ctx = renderingCanvas.ctx;
+    const mask = new Uint8ClampedArray(pixelSize * pixelSize * COLOR_CHANNELS);
+    for (let channel = 0; channel < COLOR_CHANNELS; channel++) mask[4 * 4 + channel] = 255;
+    const mask_image = new ImageData(mask, pixelSize);
     const mask_uploaded = await createImageBitmap(mask_image);
     ctx.fillStyle = ctx.createPattern(mask_uploaded, "repeat");
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.globalCompositeOperation = "source-in";
     ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
     const bitmap = createImageBitmap(canvas);
-    canvas.remove();
+    renderingCanvas.destroy();
     return bitmap;
   };
   var reactDomExports = requireReactDom();
